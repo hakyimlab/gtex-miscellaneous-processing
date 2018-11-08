@@ -1,0 +1,103 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/dap_on_study.py"
+  template: dap_on_study.jinja
+
+  default_arguments:
+    job_memory: "20gb"
+    job_walltime: "140:00:00"
+    logs_folder: logs_dap
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    dap_g: &DAP_G_K /gpfs/data/im-lab/nas40t2/abarbeira/software/dap/dap_src/dap-g
+    intron_annotation: &INTRON_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/intron_annotation.txt.gz
+    output_folder: &OUTPUT resuls/dapg
+    scratch_folder: &SCRATCH resuls/dapg
+    torus_root: &TORUS /scratch/abarbeira3/v8_process/torus/sqtl_fail/results/torus_prior
+    splicing_root: &SPLICING /scratch/abarbeira3/data/model_training_to_parquet/splicing
+
+    genotype_pattern: &GENOTYPE_PATTERN "/scratch/abarbeira3/data/model_training_to_parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/data/model_training_to_parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
+    #genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
+    whitelist: &WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eqtl_whitelist_c.txt
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '([ -d results/dapg ] || mkdir -p results/dapg) && ([ -d scratch_dapg ] || mkdir -p scratch_dapg)'
+
+arguments:
+  - !Scalar { name: dap_command, prefix: "-dap_command", value: *DAP_G_K }
+
+  - !Scalar { name: frequency_filter, prefix: "-frequency_filter", value: 0.01,
+    metadata_rules: [ !SaveValueInMetadata {path: "parameters/af"} ] }
+
+
+  - !Scalar { name: options, prefix: -options, value: "ld_control 0.75" }
+
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *INTRON_ANNOTATION_K }
+
+  - !Range { name: chromosome, prefix: "-chromosome", start: 1, end: 23,
+    metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ] }
+
+  - !ArgumentFromMetadata { name: genotype, prefix: "-parquet_genotype", format_rule: *GENOTYPE_PATTERN,
+    sources: [ {path: "job/chromosome", destination: chromosome}] }
+
+  - !Scalar { name: genotype_metadata, prefix: "-parquet_genotype_metadata", value: *GENOTYPE_METADATA }
+
+  - !Scalar { name: window, prefix: "-window", value: "1000000",
+    metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "8" }
+
+  - !FilesInFolder
+    name: phenotype
+    prefix: "-parquet_phenotype"
+    sort: true
+    folder: *SPLICING
+    regexp_filter: "(.*).splicing.parquet"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !Whitelist { list_from_file: *WHITE_LIST, in_metadata_path: "tissue/name" }
+
+  - !ArgumentFromMetadata
+    name: priors_folder
+    prefix: "-priors_folder"
+    prepend: *TORUS
+    format_rule: "{tissue}.v8.sqtl/priors"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: intermediate_folder
+    prefix: "-intermediate_folder"
+    prepend: "scratch_dapg"
+    format_rule: "{tissue}_{chromosome}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome}
+    ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output_folder"
+    prepend: "results/dapg_maf{af}_w{window}"
+    format_rule: "{tissue}_chr{chromosome}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome},
+      {path: parameters/window, destination: window},
+      {path: parameters/af, destination: af}
+    ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_chr{chromosome}_gtexv8_dapg_sqtl"
+    sources:
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome}
+    ]

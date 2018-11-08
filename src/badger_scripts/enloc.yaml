@@ -1,0 +1,65 @@
+---
+definitions:
+  command: "#perl bin/enloc"
+  template: enloc.jinja
+
+  default_arguments:
+    job_memory: "16gb"
+    job_walltime: "48:00:00"
+    logs_folder: logs_enloc
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_enloc
+      job_name_key: job_name
+      fake_submission: true
+
+  constants:
+    bin: &BIN_K /scratch/abarbeira3/v8_process/enloc/bin
+    dapg_runs: &DAPG_RUNS_K /scratch/abarbeira3/v8_process/dapg/results/collapsed_dapg_maf0.01_w1000000
+    gwas: &SLICED_GWAS_K /scratch/abarbeira3/v8_process/slice/results/
+    output_folder: &OUTPUT_FOLDER_K results
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results ] || mkdir -p results'
+
+arguments:
+  - !Scalar { name: bin, value: *BIN_K }
+
+  - !FilesInFolder
+    name: gwas_path
+    sort: true
+    folder: *SLICED_GWAS_K
+    regexp_filter: "sliced_(.*).txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: gwas/tag} ]
+
+  - !FilesInFolder
+    name: tissue_folder
+    sort: true
+    folder: *DAPG_RUNS_K
+    regexp_filter: "(.*)"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: output_folder
+    prepend: *OUTPUT_FOLDER_K
+    format_rule: "{gwas}__PM__{tissue}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: gwas/tag, destination: gwas}
+    ]
+
+  - !ArgumentFromMetadata
+    name: gwas_name
+    format_rule: "{gwas}"
+    sources: [ {path: gwas/tag, destination: gwas} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "gtexv8_dapg_{gwas}__PM__{tissue}"
+    sources:
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: gwas/tag, destination: gwas}
+    ]

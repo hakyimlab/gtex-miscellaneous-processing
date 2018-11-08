@@ -1,0 +1,51 @@
+---
+definitions:
+  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/parse_splicing_for_stats.py
+
+  template: parse_splicing_for_stats.jinja
+  default_arguments:
+    job_memory: "2gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    pheno_folder: &PHENO_FOLDER /gpfs/data/gtex-group/v8/Leafcutter/GTEx_Analysis_v8_sQTL_phenotype_matrices
+    gencode: &GENCODE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/expression/gencode_v26_parsed.txt
+    results_folder: &RESULTS_FOLDER results
+
+  pre_command:
+  - '[ -d results ] || mkdir -p results'
+
+arguments:
+  - !FilesInFolder
+    name: input
+    prefix: -input
+    sort: true
+    folder: *PHENO_FOLDER
+    regexp_filter: "(.*).v8.leafcutter_phenotypes.bed.gz$"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue
+
+  #Not needed for now
+  #- !Scalar {name: region_file, prefix: "-gencode", value: *GENCODE }
+
+  - !Scalar {name: parsimony, prefix: "-parsimony", value: 8 }
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "{tissue}.txt.gz"
+    sources: [ { path: tissue, destination: tissue } ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "parse_splicing_{tissue}"
+    sources: [ { path: tissue, destination: tissue } ]

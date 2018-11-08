@@ -1,0 +1,67 @@
+---
+#TODO: add argument from dictionary rule
+definitions:
+  command: /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
+
+  template: metaxcan.jinja
+  default_arguments:
+    job_memory: "2gb"
+    job_walltime: "0:30:00"
+    logs_folder: logs_sp_t
+    n_cpu: "1"
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_sp_t
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/rbonazzola/GTEx/v8/models/1_snp_models/conditional_regression/conditional_regression_betas/models
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38/
+    results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_conditional_gtex_tertiary
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/sp_imputed_gwas_conditional_gtex_tertiary ] || mkdir -p results/sp_imputed_gwas_conditional_gtex_tertiary'
+
+arguments:
+  - !FilesInFolder
+    name: gwas_file
+    prefix: --gwas_file
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "imputed_(.*).txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: gwas/tag
+
+  - !Scalar {name: model_db_snp_key, prefix: "--model_db_snp_key", value: "varID" }
+
+  - !Scalar {name: keep_non_rsid, prefix: "--keep_non_rsid" }
+
+  - !Scalar {name: single_snp_model, prefix: "--single_snp_model" }
+
+  - !Scalar {value: "--snp_column gtex_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+
+  - !FilesInFolder
+    name: model
+    prefix: --model_db_path
+    sort: true
+    folder: *MODEL_FOLDER
+    regexp_filter: "(.*)_tertiary_eQTLs.db"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: model/name
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "--output_file"
+    prepend: *RESULTS_FOLDER
+    format_rule: "spredixcan_igwas_cgtext_{study}__PM__{model}.csv"
+    sources: [ {path: gwas/tag, destination: study}, {path: model/name, destination: model} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "spredixcan_igwas_cgtext_{study}__PM__{model}"
+    sources: [ {path: gwas/tag, destination: study}, {path: model/name, destination: model} ]

@@ -1,0 +1,121 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/dap_on_study.py"
+  template: dap_on_study.jinja
+
+  default_arguments:
+    job_memory: "20gb"
+    job_walltime: "72:00:00"
+    logs_folder: logs_dap
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      fake_submission: true
+
+  constants:
+    dap_g: &DAP_G_K /gpfs/data/im-lab/nas40t2/abarbeira/software/dap/dap_src/dap-g
+    grid: &GRID_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dap_grid.txt
+    gene_annotation: &GENE_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+
+    output_folder: &OUTPUT resuls/dapg
+    scratch_folder: &SCRATCH resuls/dapg
+    torus_root: &TORUS /scratch/abarbeira3/v8_process/torus/results/torus_prior
+    expression_root: &EXPRESSION /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/expression
+    covariate_root: &COVARIATE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/covariates
+
+    #genotype: &GENOTYPE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_maf0.01.variants.parquet
+    genotype_pattern: &GENOTYPE_PATTERN "/scratch/abarbeira3/v8_process/to_parquet/results/parquet/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/v8_process/to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet"
+    #genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '([ -d results/dapg ] || mkdir -p results/dapg) && ([ -d scratch_dapg ] || mkdir -p scratch_dapg)'
+
+arguments:
+  - !Scalar { name: dap_command, prefix: "-dap_command", value: *DAP_G_K }
+
+  - !Scalar { name: frequency_filter, prefix: "-frequency_filter", value: 0.01,
+    metadata_rules: [ !SaveValueInMetadata {path: "parameters/af"} ] }
+
+#  - !Scalar { name: grid, prefix: "-grid_file", value: *GRID_K }
+
+  - !Scalar { name: options, prefix: -options, value: "ld_control 0.75" }
+
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *GENE_ANNOTATION_K }
+
+#  - !Scalar
+#    name: genotype
+#    prefix: "-parquet_genotype"
+#    value: *GENOTYPE
+
+  - !Range { name: chromosome, prefix: "-chromosome", start: 1, end: 23,
+    metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ] }
+
+  - !ArgumentFromMetadata { name: genotype, prefix: "-parquet_genotype", format_rule: *GENOTYPE_PATTERN,
+    sources: [ {path: "job/chromosome", destination: chromosome}] }
+
+  - !Scalar { name: genotype_metadata, prefix: "-parquet_genotype_metadata", value: *GENOTYPE_METADATA }
+
+  - !Scalar { name: window, prefix: "-window", value: "1000000",
+    metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }
+
+  - !FilesInFolder
+    name: phenotype
+    prefix: "-parquet_phenotype"
+    sort: true
+    folder: *EXPRESSION
+    regexp_filter: "(.*).expression.parquet"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: covariate
+    prefix: "-parquet_covariate"
+    prepend: *COVARIATE
+    format_rule: "{tissue}.covariate.parquet"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: priors_folder
+    prefix: "-priors_folder"
+    prepend: *TORUS
+    format_rule: "{tissue}/priors"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: intermediate_folder
+    prefix: "-intermediate_folder"
+    prepend: "scratch_dapg"
+    format_rule: "{tissue}_{chromosome}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome}
+    ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output_folder"
+    prepend: "results/dapg_maf{af}_w{window}"
+    format_rule: "{tissue}_chr{chromosome}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome},
+      {path: parameters/window, destination: window},
+      {path: parameters/af, destination: af}
+    ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "gtexv8_dapg_{tissue}_chr{chromosome}"
+    sources:
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome}
+    ]
+
+  - !Scalar
+    name: parsimony
+    prefix: "-parsimony"
+    value: "8"

@@ -1,0 +1,29 @@
+
+definitions:
+ title: "test"
+ command: "echo"
+ destination: "_jobs"
+
+ constants:
+  TEST_FOLDER: &TEST_FOLDER__ /home/heroico/Documents/Projects/data/test
+
+
+arguments:
+  - !FilesInFolder
+    name: model
+    prefix: --model_db_path
+    sort: true
+    folder: *TEST_FOLDER__
+    regexp_filter: "(.*).txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: model/name
+
+  - !ArgumentFromMetadata
+    name: covariance
+    sources:
+    -
+      path: model/name
+      name: model_name
+    prepend: *TEST_FOLDER__
+    format_rule: "{model_name}.k"

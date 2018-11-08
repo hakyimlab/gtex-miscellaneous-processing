@@ -1,0 +1,72 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/run_susier.py"
+  template: susier.jinja
+
+  copy_to_item: true
+
+  default_arguments:
+    job_memory: "16gb"
+    job_walltime: "72:00:00"
+    logs_folder: logs
+    n_cpu: 1
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    genotype_folder: &GENOTYPE_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic
+    genotype_pattern: &GENOTYPE_PATTERN_K '"gtex_v8_eur_itm.(chr\d+).variants.parquet"'
+    variants_metadata: &VARIANTS_METADATA_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    eqtl_folder: &EQTL_FOLDER_K /gpfs/data/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results ] || mkdir -p results'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: gtex_info.yaml
+
+arguments:
+  - !Scalar { name: parquet_genotype_folder, prefix: "-parquet_genotype_folder", value: *GENOTYPE_FOLDER_K }
+  - !Scalar { name: parquet_genotype_pattern, prefix: "-parquet_genotype_pattern", value: *GENOTYPE_PATTERN_K }
+  - !Scalar { name: parquet_genotype_metadata, prefix: "-parquet_genotype_metadata", value: *VARIANTS_METADATA_K }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "8" }
+
+  - !FilesInFolder
+    name: eqtl
+    prefix: -eqtl
+    sort: true
+    folder: *EQTL_FOLDER_K
+    regexp_filter: "(.*).allpairs.txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name } ]
+
+  - !ArgumentFromMetadata
+    {name: sample_size, prefix: "-sample_size", sub_key: gtex_sample_size, options_from_metadata_path: __configuration/gtex_info,
+    sources: [ {path: tissue/name} ]}
+
+  - !ArgumentFromMetadata
+    name: cs_output
+    prefix: "-cs_output"
+    prepend: "results"
+    format_rule: "{tissue}__cs.txt.gz"
+    sources: [ {path: tissue/name, destination: tissue } ]
+
+  - !ArgumentFromMetadata
+    name: var_output
+    prefix: "-var_output"
+    prepend: "results"
+    format_rule: "{tissue}__vars.txt.gz"
+    sources: [ {path: tissue/name, destination: tissue } ]
+
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}__susier"
+    sources: [ {path: tissue/name, destination: tissue} ]

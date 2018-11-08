@@ -1,0 +1,42 @@
+INFO - Creating context
+INFO - Loading gene annotation
+INFO - Discarding sex chromosome data, if any
+INFO - Loading study
+INFO - Loading variants
+INFO - Loading variants metadata
+INFO - Retained metadata for 1/2509455 variants
+INFO - Loading phenotype
+Level 8 - Processing 1/2:ENSG00000226007.2
+INFO - Reportable exception running gemma: no_variants_available
+Level 7 - Elapsed: 0.010994158685207367
+Level 8 - Processing 2/2:ENSG00000237869.2
+Level 7 - Elapsed: 27.782554402947426
+Traceback (most recent call last):
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/internals.py", line 4617, in create_block_manager_from_blocks
+    placement=slice(0, len(axes[0])))]
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/internals.py", line 2952, in make_block
+    return klass(values, ndim=ndim, fastpath=fastpath, placement=placement)
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/internals.py", line 2077, in __init__
+    placement=placement, **kwargs)
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/internals.py", line 120, in __init__
+    len(self.mgr_locs)))
+ValueError: Wrong number of items passed 1, placement implies 19
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/BSLMMOnStudy.py", line 93, in <module>
+    run(args)
+  File "/group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/BSLMMOnStudy.py", line 62, in run
+    hyperparameters = Utilities.to_dataframe(hyperparameters, list(RunGEMMA.HyperParameters._fields))
+  File "/group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/genomic_tools_lib/Utilities.py", line 57, in to_dataframe
+    data = pandas.DataFrame(data, columns=columns)
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/frame.py", line 385, in __init__
+    copy=copy)
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/frame.py", line 533, in _init_ndarray
+    return create_block_manager_from_blocks([values], [columns, index])
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/internals.py", line 4626, in create_block_manager_from_blocks
+    construction_error(tot_items, blocks[0].shape[1:], axes, e)
+  File "/apps/software/gcc-6.2.0/python/3.5.3/lib/python3.5/site-packages/pandas/core/internals.py", line 4603, in construction_error
+    passed, implied))
+ValueError: Shape of passed values is (1, 2), indices imply (19, 2)

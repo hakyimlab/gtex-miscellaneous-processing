@@ -1,0 +1,263 @@
+---
+definitions:
+  constants:
+    #gwas_folder: &UKB_FOLDER /home/numa/Documents/Projects/data/GWAS/UKBN
+    gwas_folder: &UKB_FOLDER /group/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS/
+
+arguments:
+  - !RulesMap
+    name: gwas_map
+    metadata_rules:
+      - !RulesMapGetKeyMetadata
+        path: gwas/tag
+    rules:
+      UKB_1160_Sleep_duration:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 1160.assoc.tsv.gz
+      UKB_180_Morning_or_evening_person_chronotype:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 1180.assoc.tsv.gz
+      UKB_1200_Sleeplessness_or_insomnia:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 1200.assoc.tsv.gz
+      UKB_1807_Fathers_age_at_death:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 1807.assoc.tsv.gz
+      UKB_20002_1094_self_reported_deep_venous_thrombosis_dvt:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1094.assoc.tsv.gz
+      UKB_20002_1111_self_reported_asthma:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1111.assoc.tsv.gz
+      UKB_20002_1154_self_reported_irritable_bowel_syndrome:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1154.assoc.tsv.gz
+      UKB_20002_1222_self_reported_type_1_diabetes:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1222.assoc.tsv.gz
+      UKB_20002_1223_self_reported_type_2_diabetes:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1223.assoc.tsv.gz
+      UKB_20002_1225_self_reported_hyperthyroidism_or_thyrotoxicosis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1225.assoc.tsv.gz
+      UKB_20002_1226_self_reported_hypothyroidism_or_myxoedema:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1226.assoc.tsv.gz
+      UKB_20002_1243_self_reported_psychological_or_psychiatric_problem:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1243.assoc.tsv.gz
+      UKB_20002_1261_self_reported_multiple_sclerosis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1261.assoc.tsv.gz
+      UKB_20002_1262_self_reported_parkinsons_disease:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1262.assoc.tsv.gz
+      UKB_20002_1265_self_reported_migraine:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1265.assoc.tsv.gz
+      UKB_20002_1289_self_reported_schizophrenia:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1289.assoc.tsv.gz
+      UKB_20002_1309_self_reported_osteoporosis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1309.assoc.tsv.gz
+      UKB_20002_1313_self_reported_ankylosing_spondylitis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1313.assoc.tsv.gz
+      UKB_20002_1452_self_reported_eczema_or_dermatitis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1452.assoc.tsv.gz
+      UKB_20002_1453_self_reported_psoriasis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1453.assoc.tsv.gz
+      UKB_20002_1461_self_reported_inflammatory_bowel_disease:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1461.assoc.tsv.gz
+      UKB_20002_1462_self_reported_crohns_disease:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1462.assoc.tsv.gz
+      UKB_20002_1463_self_reported_ulcerative_colitis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1463.assoc.tsv.gz
+      UKB_20002_1464_self_reported_rheumatoid_arthritis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1464.assoc.tsv.gz
+      UKB_20002_1466_self_reported_gout:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1466.assoc.tsv.gz
+      UKB_20002_1473_self_reported_high_cholesterol:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1473.assoc.tsv.gz
+      UKB_20002_1528_self_reported_macular_degeneration:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1528.assoc.tsv.gz
+      UKB_20002_1616_self_reported_insomnia:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20002_1616.assoc.tsv.gz
+      UKB_20016_Fluid_intelligence_score:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20016.assoc.tsv.gz
+      UKB_20022_Birth_weight:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20022.assoc.tsv.gz
+      UKB_20127_Neuroticism_score:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 20127.assoc.tsv.gz
+      UKB_21001_Body_mass_index_BMI:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 21001.assoc.tsv.gz
+      UKB_23099_Body_fat_percentage:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 23099.assoc.tsv.gz
+      UKB_2395_2_Hair_or_balding_pattern_Pattern_2:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 2395_2.assoc.tsv.gz
+      UKB_2395_3_Hair_or_balding_pattern_Pattern_3:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 2395_3.assoc.tsv.gz
+      UKB_2395_4_Hair_or_balding_pattern_Pattern_4:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 2395_4.assoc.tsv.gz
+      UKB_3526_Mothers_age_at_death:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 3526.assoc.tsv.gz
+      UKB_40001_G20_Underlying_primary_cause_of_death_ICD10_G20_Parkinsons_disease:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 40001_G20.assoc.tsv.gz
+      UKB_40001_G309_Underlying_primary_cause_of_death_ICD10_G30_9_Alzheimers_disease_unspecified:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 40001_G309.assoc.tsv.gz
+      UKB_40001_I330_Underlying_primary_cause_of_death_ICD10_I33_0_Acute_and_subacute_infective_endocarditis:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 40001_I330.assoc.tsv.gz
+      UKB_40001_I739_Underlying_primary_cause_of_death_ICD10_I73_9_Peripheral_vascular_disease_unspecified:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 40001_I739.assoc.tsv.gz
+      UKB_50_Standing_height:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 50.assoc.tsv.gz
+      UKB_6148_5_Eye_problems_or_disorders_Macular_degeneration:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 6148_5.assoc.tsv.gz
+      UKB_6150_1_Vascular_or_heart_problems_diagnosed_by_doctor_Heart_attack:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 6150_1.assoc.tsv.gz
+      UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 6152_5.assoc.tsv.gz
+      UKB_6152_7_diagnosed_by_doctor_Blood_clot_in_the_lung:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 6152_7.assoc.tsv.gz
+      UKB_6152_8_diagnosed_by_doctor_Asthma:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 6152_8.assoc.tsv.gz
+      UKB_6152_9_diagnosed_by_doctor_Hayfever_allergic_rhinitis_or_eczema:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: 6152_9.assoc.tsv.gz
+      UKB_G40_Diagnoses_main_ICD10_G40_Epilepsy:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: G40.assoc.tsv.gz
+      UKB_G43_Diagnoses_main_ICD10_G43_Migraine:
+        - !Scalar
+          prepend: *UKB_FOLDER
+          prefix: "--gwas_file"
+          value: G43.assoc.tsv.gz

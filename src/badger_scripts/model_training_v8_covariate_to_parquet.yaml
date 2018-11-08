@@ -1,0 +1,51 @@
+---
+definitions:
+  command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/model_training_variable_to_parquet.py"
+
+
+  template: model_training_variable_to_parquet.jinja
+
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/covariates ] || mkdir -p results/covariates'
+
+
+arguments:
+  - !FilesInFolder
+    name: input_variable
+    prefix: -variable_file
+    sort: true
+    folder: /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/covariates/
+    regexp_filter: "(.*)_Analysis.combined_covariates.txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue/name
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-parquet_output"
+    prepend: "results/covariates"
+    format_rule: "{tissue}.covariate.parquet"
+    sources:
+    -
+      path: tissue/name
+      destination: tissue
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "model_training_covariate_to_parquet_{tissue}"
+    sources:
+    -
+      path: tissue/name
+      destination: tissue

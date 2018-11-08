@@ -1,0 +1,861 @@
+      MAGNETIC_AcAce:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/AcAce/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Ace:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Ace/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Ala:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Ala/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Alb:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Alb/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_ApoA1:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/ApoA1/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_ApoB:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/ApoB/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Bis.DB.ratio:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Bis.DB.ratio/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Bis.FA.ratio:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Bis.FA.ratio/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_CH2.DB.ratio:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/CH2.DB.ratio/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_CH2.in.FA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/CH2.in.FA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Cit:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Cit/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Crea:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Crea/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_DB.in.FA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/DB.in.FA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_DHA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/DHA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Est.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Est.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_FALen:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/FALen/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_FAw3:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/FAw3/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_FAw6:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/FAw6/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_FAw79S:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/FAw79S/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Free.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Free.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Glc:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Glc/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Gln:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Gln/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Glol:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Glol/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Gly:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Gly/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Gp:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Gp/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_HDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_HDL.D:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/HDL.D/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_His:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/His/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_IDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_IDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_IDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_IDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_IDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_IDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Ile:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Ile/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.HDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.HDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.HDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.HDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.HDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.HDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.LDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.LDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.LDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.LDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.LDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.LDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_L.VLDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_LA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/LA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_LDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_LDL.D:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/LDL.D/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Lac:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Lac/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Leu:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Leu/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.HDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.HDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.HDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.HDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.HDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.HDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.LDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.LDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.LDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.LDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.LDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_M.VLDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_MUFA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/MUFA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_PC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/PC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Phe:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Phe/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Pyr:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Pyr/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.HDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.HDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.HDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.HDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.LDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.LDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.LDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.LDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.LDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.VLDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.VLDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.VLDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.VLDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.VLDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_S.VLDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_SM:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/SM/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Serum.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Serum.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Serum.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Serum.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Tot.FA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Tot.FA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_TotPG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/TotPG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Tyr:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Tyr/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Urea:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Urea/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_VLDL.D:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/VLDL.D/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_Val:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/Val/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.C:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.CE:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.FC:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.HDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.VLDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.VLDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.VLDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XL.VLDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XS.VLDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XS.VLDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XS.VLDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XS.VLDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XXL.VLDL.L:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XXL.VLDL.P:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XXL.VLDL.PL:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_XXL.VLDL.TG:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_bOHBut:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/bOHBut/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K
+      MAGNETIC_otPUFA:
+        - !Scalar
+          prepend: *GWAS_FOLDER
+          prefix: "--gwas_file"
+          value: MAGNETIC/otPUFA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS_K

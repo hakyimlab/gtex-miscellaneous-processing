@@ -1,0 +1,47 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/split_model_training_genotypes.py"
+
+  template: split_geno_files.jinja
+  default_arguments:
+    n_cpu: "1"
+    job_memory: "2gb"
+    job_walltime: "2:00:00"
+    logs_folder: logs_cg
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_cg
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    input_annotation: &INPUT_ANNOTATION /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predict_db_pipeline_v8_splicing/prepare_data/expression/intron_annotation.txt
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype
+    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predict_db_pipeline_v8_splicing/prepare_data/genotype
+    sub_jobs: &SUB_JOBS 200
+    window: &WINDOW 1000000
+
+arguments:
+  - !Scalar { name: input_annotation, prefix: "-input_annotation", value: *INPUT_ANNOTATION }
+  - !Scalar { name: output_folder, prefix: "-output_folder", value: *OUTPUT_FOLDER }
+  - !Scalar { name: sub_jobs, prefix: "-sub_jobs", value: *SUB_JOBS }
+  - !Scalar { name: window, prefix: "-window", value: *WINDOW }
+
+  - !Range { name: chromosome, prefix: "-chromosome", start: 1, end: 23,
+    metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ] }
+
+  - !ArgumentFromMetadata
+    name: input_file
+    prepend: *INPUT_FOLDER
+    prefix: "-input_file"
+    format_rule: "gtex_v8_eur_shapeit2_phased_maf01_qdimputed_maf0.01_chr{chrom}.txt.gz"
+    sources: [  {path: "job/chromosome", destination: chrom} ]
+
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "7" }
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "convert_splicing_geno_{chrom}"
+    sources: [  {path: "job/chromosome", destination: chrom} ]

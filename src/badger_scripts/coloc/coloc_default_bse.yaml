@@ -1,0 +1,101 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/run_coloc.py"
+  template: coloc.jinja
+
+  copy_to_item: true
+
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "24:00:00"
+    logs_folder: logs_default_bse
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_default_bse
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
+    eqtl_whitelist: &EQTL_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eqtl_whitelist.txt
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/formatted_gwas_hg38_1.2
+    eqtl_folder: &EQTL_FOLDER /gpfs/data/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations
+    output_folder: &OUTPUT_FOLDER results_default_bse
+    
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results_default_bse ] || mkdir -p results_default_bse'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: coloc_info.yaml
+
+arguments:
+  - !Scalar { name: gwas_mode,  prefix: "-gwas_mode", value: "bse" }
+  - !Scalar { name: eqtl_mode,  prefix: "-eqtl_mode", value: "bse" }
+
+  #- !Scalar { name: MAX_N,  prefix: "-MAX_N", value: 1000 }
+
+  - !FilesInFolder
+    name: gwas
+    prefix: "-gwas"
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "(.*).txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: gwas/name} ]
+
+  - !Whitelist {list_from_file:  *GWAS_WHITE_LIST, in_metadata_path: "gwas/name" }
+
+  - !FilesInFolder
+    name: eqtl
+    prefix: "-eqtl"
+    sort: true
+    folder: *EQTL_FOLDER
+    regexp_filter: "(.*).allpairs.txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !Whitelist { list_from_file:  *EQTL_WHITE_LIST, in_metadata_path: "tissue/name" }
+
+  - !Scalar { name: parsimony,  prefix: "-parsimony", value: "8" }
+
+  - !ArgumentFromMetadata { name: job_key, format_rule: "{trait}_{tissue}",
+      sources: [ {path: "gwas/name", destination: trait},  {path: "tissue/name", destination: tissue}],
+      metadata_rules: [ !SaveValueInMetadata {path: "job/key"} ]
+    }
+
+#  - !ArgumentFromMetadata
+#    {name: p1, prefix: "-p1", sub_key: p1, options_from_metadata_path: __configuration/coloc_info,
+#    sources: [ {path: job/key} ]}
+#
+#  - !ArgumentFromMetadata
+#    {name: p2, prefix: "-p2", sub_key: p2, options_from_metadata_path: __configuration/coloc_info,
+#    sources: [ {path: job/key} ]}
+#
+#  - !ArgumentFromMetadata
+#    {name: p12, prefix: "-p12", sub_key: p12, options_from_metadata_path: __configuration/coloc_info,
+#    sources: [ {path: job/key} ]}
+
+#  - !ArgumentFromMetadata
+#    {name: gwas_sample_size,  prefix: "-gwas_sample_size", sub_key: gwas_sample_size, options_from_metadata_path: __configuration/coloc_info,
+#    sources: [ {path: job/key} ]}
+
+  - !Scalar { name: gwas_sample_size,  prefix: "-gwas_sample_size", value: "FROM_GWAS" }
+
+  - !ArgumentFromMetadata
+    {name: eqtl_sample_size,  prefix: "-eqtl_sample_size", sub_key: gtex_sample_size, options_from_metadata_path: __configuration/coloc_info,
+    sources: [ {path: job/key} ]}
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait}__PM__{tissue}.txt.gz"
+    sources: [ {path: gwas/name, destination: trait}, {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: job_name
+    format_rule: "{trait}__PM__{tissue}_coloc_default_bse"
+    sources: [ {path: gwas/name, destination: trait}, {path: tissue/name, destination: tissue} ]

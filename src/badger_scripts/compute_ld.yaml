@@ -1,0 +1,76 @@
+---
+definitions:
+  command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/compute_ld_in_region.py"
+
+  template: compute_ld.jinja
+  default_arguments:
+    n_cpu: "1"
+    job_memory: "16gb"
+    job_walltime: "8:00:00"
+    logs_folder: logs_ld
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_ld
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    sub_batches: &SUB_BATCHES 10
+
+    #genotype_folder: &GENOTYPE_FOLDER "/scratch/abarbeira3/v8_process/to_parquet/results/parquet/"
+    #genotype_metadata: &GENOTYPE_METADATA /scratch/abarbeira3/v8_process/to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_folder: &GENOTYPE_FOLDER /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet
+    genotype_metadata: &GENOTYPE_METADATA /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_pattern: &GENOTYPE_PATTERN '"gtex_v8_eur_itm.chr(.*).variants.parquet"'
+
+    by_region_file: &BY_REGION_FILE /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
+
+    results_folder: &RESULTS_FOLDER results
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results ] || mkdir -p results'
+
+arguments:
+  - !Range
+    name: chromosome
+    prefix: "-chromosome"
+    start: 1
+    end: 23
+    metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ]
+
+  - !Scalar { name: genotype_metadata, prefix: "-parquet_genotype_metadata", value: *GENOTYPE_METADATA }
+
+  - !Scalar { name: genotype_folder, prefix: "-parquet_genotype_folder", value: *GENOTYPE_FOLDER }
+
+  - !Scalar { name: genotype_pattern, prefix: "-parquet_genotype_pattern", value: *GENOTYPE_PATTERN }
+
+  - !Scalar { name: region_file, prefix: "-region_file", value: *BY_REGION_FILE }
+
+  - !Scalar { name: sub_batches, prefix: "-sub_batches", value: *SUB_BATCHES }
+
+  - !Range { name: sub_batch, prefix: "-sub_batch", start: 0, end: *SUB_BATCHES,
+      metadata_rules: [ !SaveValueInMetadata {path: "job/sub_batch"} ]
+    }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "7" }
+
+#  - !Scalar { name: standardise_dosages, prefix: "--standardise_dosages" }
+
+  - !Scalar { name: window, prefix: "-window", value: 0 }
+
+  - !Scalar { name: frequency_filter, prefix: "--frequency_filter", value: "0.01",
+    metadata_rules: [ !SaveValueInMetadata { path: "job/frequency_filter" } ]
+  }
+
+  - !Scalar { name: standardise_geno, prefix: "--standardise_geno"}
+
+  - !Scalar { name: dapg_output, prefix: "--dapg_output"}
+
+  - !Scalar { name: output, prefix: "-text_output_folder", value: *RESULTS_FOLDER }
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "compute_ld_chr{chromosome}_sb{sub_batch}_by_region"
+    sources: [  {path: "job/chromosome", destination: "chromosome"},
+                {path: "job/sub_batch", destination: "sub_batch"} ]

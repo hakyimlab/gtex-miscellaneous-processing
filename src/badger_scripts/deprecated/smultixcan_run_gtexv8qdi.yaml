@@ -1,0 +1,110 @@
+---
+definitions:
+  command: /group/im-lab/nas40t2/abarbeira/software/MetaXcan/software/CrossModel.py
+
+  template: smultixcan.jinja
+  default_arguments:
+    job_memory: "8gb"
+    job_walltime: "12:00:00"
+    logs_folder: logs_smt
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_smt
+      job_name_key: job_name
+      fake_submission: true
+
+  constants:
+    models_folder: &MODELS_FOLDER /group/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
+    models_name_pattern: &MODELS_NAME_PATTERN '"gtex_v8_(.*)_qdir_signif.db"'
+    metaxcan_folder: &METAXCAN_FOLDER /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/metaxcan/results/sp_v8qdir
+    metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"spredixcan_gtexv8qdir_(.*)__PM__(.*).csv"'
+    metaxcan_filter_pattern: &METAXCAN_FILTER_PATTERN '"spredixcan_gtexv8qdir_{study}__PM__(.*).csv"'
+    snp_covariance: &SNP_COVARIANCE /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/covariance_builder/results/gtex_v8_snp_covariance.txt.gz
+    cutoff_condition_number: &CUTOFF_CONDITION_NUMBER "30"
+    #model_folder: &MODEL_FOLDER /home/numa/Documents/Projects/data/metaxcan/GTExV8/qdi
+
+    results_folder: &RESULTS_FOLDER results/smt_v8qdir
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/smt_v8qdir ] || mkdir -p results/smt_v8qdir'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: metaxcan_gwas_parameters.yaml
+
+arguments:
+  - !Whitelist
+    list_from_file: "/group/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_public_meta_analysis_whitelist.txt"
+    #list_from_file: "/home/numa/Documents/Projects/data/GWAS/gwas_public_meta_analysis_whitelist.txt"
+    in_metadata_path: "gwas/tag"
+
+  - !Scalar
+    name: models_folder
+    prefix: "--models_folder"
+    value: *MODELS_FOLDER
+
+  - !Scalar
+    name: models_name_pattern
+    prefix: --models_name_pattern
+    value: *MODELS_NAME_PATTERN
+
+  - !Scalar
+    name: snp_covariance
+    prefix: "--snp_covariance"
+    value: *SNP_COVARIANCE
+
+  - !Scalar
+    name: metaxcan_folder
+    prefix: "--metaxcan_folder"
+    value: *METAXCAN_FOLDER
+
+  - !Scalar
+    name: metaxcan_file_name_parse_pattern
+    prefix: "--metaxcan_file_name_parse_pattern"
+    value: *METAXCAN_FILE_NAME_PARSE_PATTERN
+
+  - !ArgumentFromMetadata
+    name: metaxcan_filter
+    prefix: "--metaxcan_filter"
+    format_rule: *METAXCAN_FILTER_PATTERN
+    sources:
+    -
+      path: gwas/tag
+      destination: study
+
+  - !Scalar
+    name: cutoff_condition_number
+    prefix: "--cutoff_condition_number"
+    value: *CUTOFF_CONDITION_NUMBER
+
+  - !Scalar
+    name: verbosity
+    prefix: "--verbosity"
+    value: "7"
+
+  #TODO: metadata rule that stores value, so that we pick the condition number
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "--output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "smultixcan_gtexv8qdir_{study}_ccn30.csv"
+    sources:
+    -
+      path: gwas/tag
+      destination: study
+    -
+      path: model/name
+      destination: model
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "smultixcan_gtexv8qdir_{study}_ccn30"
+    sources:
+    -
+      path: gwas/tag
+      destination: study
+    -
+      path: model/name
+      destination: model

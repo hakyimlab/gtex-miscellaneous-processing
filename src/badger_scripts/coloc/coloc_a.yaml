@@ -1,0 +1,122 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/run_coloc.py"
+  template: coloc.jinja
+
+  copy_to_item: true
+
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "24:00:00"
+    logs_folder: logs_a
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_a
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    formatted_gwas: &FORMATTED_GWAS /gpfs/data/im-lab/nas40t2/Data/SummaryResults/formatted_gwas_hg38_1.2/GIANT_HEIGHT.txt.gz
+    imputed_gwas: &IMPUTED_GWAS /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1/imputed_GIANT_HEIGHT.txt.gz
+    eqtl: &EQTL /gpfs/data/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations/Muscle_Skeletal.allpairs.txt.gz
+    eqtl_sample_size: &EQTL_N 706
+    trait: &TRAIT GIANT_HEIGHT
+    trait_sample_size: &TRAIT_N 253288
+    tissue: &TISSUE Muscle_Skeletal
+    output_folder: &OUTPUT_FOLDER results_a
+    p1: &P1 0.0000237567
+    p2: &P2 0.0016159400
+    p12: &P12 0.0000030885
+
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results_a ] || mkdir -p results_a'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: coloc_info.yaml
+
+arguments:
+  - !Range { name: gwas_mode, prefix: "-gwas_mode", values: ["pvalue", "bse", "zscore_1"],
+     metadata_rules: [ !SaveValueInMetadata { path: "job/gwas_mode" }] }
+
+  - !Range { name: eqtl_mode, prefix: "-eqtl_mode", values: ["pvalue", "bse", "zscore_1"],
+     metadata_rules: [ !SaveValueInMetadata { path: "job/eqtl_mode" }] }
+
+  - !Range { name: priors, values: ["default", "enloc", "enloc_reversed"],
+     metadata_rules: [ !SaveValueInMetadata { path: "job/priors" }] }
+
+  - !Range { name: gwas_samples_source, values: ["gwas", "external"],
+     metadata_rules: [ !SaveValueInMetadata { path: "job/gwas_samples_source" }] }
+
+  - !Scalar { name: MAX_N,  prefix: "-MAX_N", value: 2000 }
+
+########################################################################################################################
+  - !ArgumentFromMetadata { name: gwas, prefix: "-gwas",
+    options: { pvalue: *IMPUTED_GWAS, bse: *FORMATTED_GWAS, zscore_1: *IMPUTED_GWAS },
+    sources: [ {path: job/gwas_mode} ] }
+
+  - !ArgumentFromMetadata { name: gwas_sample_size, prefix: "-gwas_sample_size",
+    options: { gwas: FROM_GWAS, external: *TRAIT_N },
+    sources: [ {path: job/gwas_samples_source} ] }
+
+  - !MetadataOperation
+    metadata_rules:
+      - !SaveToMetadata { key: job/trait, value: *TRAIT }
+
+########################################################################################################################
+  - !Scalar { name: eqtl,  prefix: "-eqtl", value: *EQTL }
+
+  - !MetadataOperation
+    metadata_rules:
+      - !SaveToMetadata { key: "job/tissue", value: *TISSUE }
+
+  - !Scalar { name: eqtl_sample_size,  prefix: "-eqtl_sample_size", value: *ETL_N }
+
+########################################################################################################################
+
+  - !ArgumentFromMetadata { name: p1, prefix: "-p1",
+    options: { default: 0.0001, enloc: *P1, enloc_reversed: *P2 },
+    sources: [ {path: job/priors} ] }
+
+  - !ArgumentFromMetadata { name: p2, prefix: "-p2",
+    options: { default: 0.0001, enloc: *P2, enloc_reversed: *P1 },
+    sources: [ {path: job/priors} ] }
+
+  - !ArgumentFromMetadata { name: p12, prefix: "-p12",
+    options: { default: 0.00001, enloc: *P12, enloc_reversed: *P12 },
+    sources: [ {path: job/priors} ] }
+
+########################################################################################################################
+
+  - !Scalar { name: parsimony,  prefix: "-parsimony", value: "8" }
+
+  - !ArgumentFromMetadata { name: job_key, format_rule: "{trait}_{tissue}",
+      sources: [ {path: "job/trait", destination: trait},  {path: "job/tissue", destination: tissue}],
+      metadata_rules: [ !SaveValueInMetadata {path: "job/key"} ]
+    }
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait}__PM__{tissue}__g{gwas_mode}__e{eqtl_mode}__ss{gwas_samples_source}__p{priors}.txt.gz"
+    sources: [ {path: job/trait, destination: trait},
+               {path: job/tissue, destination: tissue},
+               {path: job/gwas_mode, destination: gwas_mode},
+               {path: job/eqtl_mode, destination: eqtl_mode},
+               {path: job/gwas_samples_source, destination: gwas_samples_source},
+               {path: job/priors, destination: priors}]
+
+  - !ArgumentFromMetadata
+    name: job_name
+    format_rule: "{trait}__PM__{tissue}__g{gwas_mode}__e{eqtl_mode}__ss{gwas_samples_source}__p{priors}__coloc_a"
+    sources: [ {path: job/trait, destination: trait},
+               {path: job/tissue, destination: tissue},
+               {path: job/gwas_mode, destination: gwas_mode},
+               {path: job/eqtl_mode, destination: eqtl_mode},
+               {path: job/gwas_samples_source, destination: gwas_samples_source},
+               {path: job/priors, destination: priors}]

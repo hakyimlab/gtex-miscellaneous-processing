@@ -1,0 +1,38 @@
+
+
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -S /bin/bash
+#PBS -l walltime={{job_walltime}}
+#PBS -l mem={{job_memory}}
+#PBS -l nodes=1:ppn=1
+
+#PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
+#PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
+
+#cd $PBS_O_WORKDIR
+
+module load gcc/6.2.0
+module load gsl/2.3
+module load boost/1.61.0
+module load bzip2/1.0.6
+module load perl/5.24.0
+
+## executable options
+
+create_config()
+{
+printf "bin_dir\t{{ bin }}/\n" > $1
+printf "gwas_data\t{{ gwas_path }}\n" >> $1
+printf "qtl_fm_dir\t{{ tissue_folder }}\n" >> $1
+printf "out_dir\t{{ output_folder }}\n" >> $1
+printf "trait\t{{ gwas_name }}\n" >> $1
+# bypass_enrichment_analysis 1
+printf "use_openmp\t0\n" >> $1
+}
+
+mkdir {{ output_folder }}
+
+{% raw %}create_config{% endraw %} {{ output_folder }}/enloc.params
+
+# perl {{ bin }}/enloc {{ output_folder }}/enloc.params

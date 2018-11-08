@@ -1,0 +1,92 @@
+---
+definitions:
+  # command: /home/numa/Documents/Projects/nextgen/genomic_tools/src/genomic_tools/gwas_parsing.py
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/gwas_parsing.py"
+
+  template: gwas_parsing.jinja
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "1:00:00"
+    logs_folder: logs_gwas_parsing_ukbn
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_gwas_parsing_ukbn
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+#    gwas_folder: &GWAS_FOLDER /home/numa/Documents/Projects/data/GWAS/UKBN/
+#    gwas_whitelist: &GWAS_WHITE_LIST /home/numa/Documents/Projects/data/GWAS/gwas_public_meta_analysis_whitelist.txt
+#    gtex_variant_blacklist: &GTEX_VARIANT_BLACKLIST /home/numa/Documents/Projects/data/GTEx/v8/gtex_variants_blacklist.txt.gz
+#    snp_metadata: &SNP_METADATA /home/numa/Documents/Projects/data/GTEx/v8/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
+#    hg19_snp: &HG19_SNP /home/numa/Documents/Projects/data/ucsc-hg/synth/snp150_hg19_parsed.txt.gz
+#    hg19_snp_blacklist: &HG19_SNP_BLACKLIST /home/numa/Documents/Projects/data/ucsc-hg/synth/snp150_hg19_blacklist.txt.gz
+#    hg19_chain: &HG19_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg19ToHg38.over.chain.gz
+
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS
+
+    gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/gwas_ukbiobank_neale_lab_whitelist.txt
+    snp_reference_metadata: &SNP_REFERENCE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_filtered_maf0.01_monoallelic_variants.txt.gz METADATA
+
+    hg19_chain: &HG19_CHAIN /gpfs/data/im-lab/nas40t2/abarbeira/data/liftover/hg19ToHg38.over.chain.gz
+
+    output_order: &OUTPUT_ORDER "variant_id panel_variant_id chromosome position effect_allele non_effect_allele frequency pvalue zscore effect_size standard_error sample_size n_cases"
+    results_folder: &RESULTS_FOLDER results_gwas_ukbn
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results_gwas_ukbn ] || mkdir -p results_gwas_ukbn'
+
+arguments:
+  - !Scalar
+    value: "-output_column_map rsid variant_id -output_column_map EA effect_allele -output_column_map NEA non_effect_allele
+     -output_column_map beta effect_size -output_column_map se standard_error -output_column_map nCompleteSamples sample_size
+     -output_column_map chr chromosome --chromosome_format -output_column_map position position"
+
+  - !FilesInFolder
+    name: gwas_file
+    prefix: -gwas_file
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "(.*).assoc.tsv.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: gwas/code
+
+  - !MetadataOperation
+    metadata_rules:
+      - !MapMetadataValue
+        from_metadata_path: gwas/code
+        to_metadata_path: gwas/tag
+        using_map: ukbn_full_name_map.yaml
+
+  - !Whitelist
+    list_from_file:  *GWAS_WHITE_LIST
+    in_metadata_path: "gwas/tag"
+
+  - !Scalar
+    name: liftover
+    prefix: "-liftover"
+    value: *HG19_CHAIN
+
+  - !Scalar
+    name: output_order
+    prefix: "-output_order"
+    value: *OUTPUT_ORDER
+
+  - !Scalar
+    name: snp_reference_metadata
+    prefix: "-snp_reference_metadata"
+    value: *SNP_REFERENCE_METADATA
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "{study}.txt.gz"
+    sources: [ {path: gwas/tag, destination: study} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "gwas_parsing_{study}"
+    sources: [ {path: gwas/tag, destination: study} ]

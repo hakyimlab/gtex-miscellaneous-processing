@@ -1,0 +1,11 @@
+
+definitions:
+ title: "test"
+ command: "stat"
+ destination: "_jobs"
+
+arguments:
+  - !Scalar
+    value: "-t"
+  - !FilesInFolder
+    folder: "/home/numa/Documents"

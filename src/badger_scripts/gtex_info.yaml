@@ -1,0 +1,108 @@
+---
+gtex_info:
+  Nerve_Tibial:
+    { gtex_sample_size: 533 }
+  Cervix_Endocervix:
+    { gtex_sample_size: 10 }
+  Cervix_Ectocervix:
+    { gtex_sample_size: 9 }
+  Fallopian_Tube:
+    { gtex_sample_size: 8 }
+  Bladder:
+    { gtex_sample_size: 21 }
+  Cells_Cultured_fibroblasts:
+    { gtex_sample_size: 584 }
+  Thyroid:
+    { gtex_sample_size: 574 }
+  Lung:
+    { gtex_sample_size: 515 }
+  Kidney_Cortex:
+    { gtex_sample_size: 73 }
+  Artery_Tibial:
+    { gtex_sample_size: 584 }
+  Adipose_Subcutaneous:
+    { gtex_sample_size: 581 }
+  Skin_Sun_Exposed_Lower_leg:
+    { gtex_sample_size: 605 }
+  Minor_Salivary_Gland:
+    { gtex_sample_size: 144 }
+  Brain_Substantia_nigra:
+    { gtex_sample_size: 114 }
+  Brain_Spinal_cord_cervical_c-1:
+    { gtex_sample_size: 126 }
+  Brain_Amygdala:
+    { gtex_sample_size: 129 }
+  Uterus:
+    { gtex_sample_size: 129 }
+  Brain_Anterior_cingulate_cortex_BA24:
+    { gtex_sample_size: 147 }
+  Small_Intestine_Terminal_Ileum:
+    { gtex_sample_size: 174 }
+  Vagina:
+    { gtex_sample_size: 141 }
+  Brain_Hippocampus:
+    { gtex_sample_size: 165 }
+  Brain_Hypothalamus:
+    { gtex_sample_size: 170 }
+  Brain_Putamen_basal_ganglia:
+    { gtex_sample_size: 170 }
+  Whole_Blood:
+    { gtex_sample_size: 670 }
+  Ovary:
+    { gtex_sample_size: 168 }
+  Pituitary:
+    { gtex_sample_size: 237 }
+  Prostate:
+    { gtex_sample_size: 222 }
+  Spleen:
+    { gtex_sample_size: 227 }
+  Brain_Cerebellar_Hemisphere:
+    { gtex_sample_size: 175 }
+  Brain_Frontal_Cortex_BA9:
+    { gtex_sample_size: 175 }
+  Brain_Nucleus_accumbens_basal_ganglia:
+    { gtex_sample_size: 202 }
+  Brain_Cortex:
+    { gtex_sample_size: 205 }
+  Liver:
+    { gtex_sample_size: 208 }
+  Brain_Caudate_basal_ganglia:
+    { gtex_sample_size: 194 }
+  Brain_Cerebellum:
+    { gtex_sample_size: 209 }
+  Muscle_Skeletal:
+    { gtex_sample_size: 706 }
+  Cells_EBV-transformed_lymphocytes:
+    { gtex_sample_size: 147 }
+  Artery_Coronary:
+    { gtex_sample_size: 213 }
+  Colon_Sigmoid:
+    { gtex_sample_size: 319 }
+  Adrenal_Gland:
+    { gtex_sample_size: 233 }
+  Esophagus_Gastroesophageal_Junction:
+    { gtex_sample_size: 330 }
+  Pancreas:
+    { gtex_sample_size: 306 }
+  Testis:
+    { gtex_sample_size: 322 }
+  Heart_Atrial_Appendage:
+    { gtex_sample_size: 372 }
+  Colon_Transverse:
+    { gtex_sample_size: 369 }
+  Stomach:
+    { gtex_sample_size: 324 }
+  Breast_Mammary_Tissue:
+    { gtex_sample_size: 396 }
+  Adipose_Visceral_Omentum:
+    { gtex_sample_size: 469 }
+  Heart_Left_Ventricle:
+    { gtex_sample_size: 386 }
+  Skin_Not_Sun_Exposed_Suprapubic:
+    { gtex_sample_size: 518 }
+  Artery_Aorta:
+    { gtex_sample_size: 387 }
+  Esophagus_Muscularis:
+    { gtex_sample_size: 467 }
+  Esophagus_Mucosa:
+    { gtex_sample_size: 500 }

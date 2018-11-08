@@ -1,0 +1,96 @@
+---
+definitions:
+  command: /home/numa/Documents/Projects/nextgen/genomic_tools/src/genomic_tools/gwas_parsing.py
+  #command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/gwas_parsing.py"
+
+  template: gwas_parsing.jinja
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "8:00:00"
+    logs_folder: logs_gwas_parsing
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_gwas_parsing
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    snp_reference_metadata: &SNP_REFERENCE_METADATA /home/numa/Documents/Projects/data/GTEx/v8/synth/gtex_v8_eur_selected_variants.txt.gz
+#
+    hg17_snp: &HG17_SNP /home/numa/Documents/Projects/data/ucsc-hg/synth/snp125_hg17_parsed.txt.gz
+    hg18_snp: &HG18_SNP /home/numa/Documents/Projects/data/ucsc-hg/synth/snp130_hg18_parsed.txt.gz
+    hg19_snp: &HG19_SNP /home/numa/Documents/Projects/data/ucsc-hg/synth/snp150_hg19_parsed.txt.gz
+#
+    hg17_chain: &HG17_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg17ToHg38.over.chain.gz
+    hg18_chain: &HG18_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg18ToHg38.over.chain.gz
+    hg19_chain: &HG19_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg19ToHg38.over.chain.gz
+
+    gwas_whitelist: &GWAS_WHITE_LIST /home/numa/Documents/Projects/data/GWAS/gwas_public_meta_analysis_whitelist_f.txt
+#    gwas_whitelist: &GWAS_WHITE_LIST /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/gwas_public_meta_analysis_whitelist.txt
+#    gwas_whitelist: &GWAS_WHITE_LIST /group/im-lab/nas40t2/rbonazzola/GTEx/v8/gwas_conversion/gwas_public_meta_analysis_whitelist.txt
+
+
+#    snp_metadata: &SNP_METADATA /home/numa/Documents/Projects/data/GTEx/v8/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
+#
+#    hg17_snp: &HG17_SNP /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/dbsnp/results/snp125_hg17_parsed.txt.gz
+#    hg18_snp: &HG18_SNP /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/dbsnp/results/snp130_hg18_parsed.txt.gz
+#    hg19_snp: &HG19_SNP /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/dbsnp/results/snp150_hg19_parsed.txt.gz
+#
+#    hg17_snp_blacklist: &HG17_SNP_BLACKLIST /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/dbsnp/results/snp125_hg17_blacklist.txt.gz
+#    hg18_snp_blacklist: &HG18_SNP_BLACKLIST /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/dbsnp/results/snp130_hg18_blacklist.txt.gz
+#    hg19_snp_blacklist: &HG19_SNP_BLACKLIST /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/dbsnp/results/snp150_hg19_blacklist.txt.gz
+#
+#    hg17_chain: &HG17_CHAIN /group/im-lab/nas40t2/abarbeira/data/liftover/hg17ToHg38.over.chain.gz
+#    hg18_chain: &HG18_CHAIN /group/im-lab/nas40t2/abarbeira/data/liftover/hg18ToHg38.over.chain.gz
+#    hg19_chain: &HG19_CHAIN /group/im-lab/nas40t2/abarbeira/data/liftover/hg19ToHg38.over.chain.gz
+
+    results_folder: &RESULTS_FOLDER results_gwas
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results_gwas ] || mkdir -p results_gwas'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: gwas_parameters.yaml
+
+arguments:
+  - !Whitelist
+    list_from_file:  *GWAS_WHITE_LIST
+    in_metadata_path: "gwas/tag"
+
+  - !ArgumentFromMetadata
+    name: fill_from_snp_info
+    prefix: "-fill_from_snp_info"
+    options: { hg17: *HG17_SNP, hg18: *HG18_SNP, hg19: *HG19_SNP }
+    sources: [ {path: gwas/fill_from_snp_info} ]
+
+#  - !ArgumentFromMetadata
+#    name: snp_info_blacklist
+#    prefix: "-snp_info_blacklist"
+#    options: { hg17: *HG17_SNP_BLACKLIST, hg18: *HG18_SNP_BLACKLIST, hg19: *HG19_SNP_BLACKLIST }
+#    sources: [ {path: gwas/fill_from_snp_info} ]
+
+  - !ArgumentFromMetadata
+    name: liftover
+    prefix: "-liftover"
+    options: { hg17: *HG17_CHAIN, hg18: *HG18_CHAIN, hg19: *HG19_CHAIN}
+    sources: [ {path: gwas/liftover_from} ]
+
+  - !Scalar
+    name: snp_reference_metadata
+    prefix: "-snp_reference_metadata"
+    value: *SNP_REFERENCE_METADATA
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "{study}.txt.gz"
+    sources: [ {path: gwas/tag, destination: study} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "gwas_parsing_{study}"
+    sources: [ {path: gwas/tag, destination: study} ]

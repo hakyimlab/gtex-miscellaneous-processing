@@ -1,0 +1,4058 @@
+---
+definitions:
+  constants:
+    gwas_folder: &GWAS_FOLDER /home/numa/Documents/Projects/data/GWAS
+    beta_parameters:
+      ADIPOGen_PARAMETERS : &ADIPOGen_PARAMETERS__ "--snp_column marker --non_effect_allele_column other_allele --effect_allele_column reference_allele --beta_column beta --pvalue_column pvalue --se_column se"
+      AMD_PARAMETERS : &AMD_PARAMETERS__ "--snp_column Marker --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_sign_column Overall --pvalue_column GC.Pvalue"
+      ANGST_PARAMETERS : &ANGST_PARAMETERS__ "--snp_column SNPID --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column Effect --pvalue_column P.value"
+      Astle_et_al_2016_PARAMETERS : &Astle_et_al_2016_PARAMETERS__ "--snp_column ID --non_effect_allele_column ALT --effect_allele_column REF --beta_column EFFECT --se_column SE --pvalue_column P"
+      CARDIOGRAM_CAD_PARAMETERS : &CARDIOGRAM_CAD_PARAMETERS__ "--snp_column markername --non_effect_allele_column noneffect_allele --effect_allele_column effect_allele --beta_column beta --pvalue_column p_dgc"
+      CIAC_PARAMETERS : &CIAC_PARAMETERS__ "--se_column SE --or_column OR --pvalue_column P --effect_allele_column A1 --non_effect_allele_column A2"
+      CKDGen_PARAMETERS : &CKDGen_PARAMETERS__ "--snp_column rsID --non_effect_allele_column allele2 --effect_allele_column allele1 --beta_column beta --pvalue_column pval --separator ,"
+      CNCR_insomnia_PARAMETERS : &CNCR_insomnia_PARAMETERS__ "--snp_column SNP --non_effect_allele_column A2 --effect_allele_column A1 --freq_column EAF --beta_column BETA --se_column SE --pvalue_column P"
+      CNCR_intelligence_PARAMETERS : &CNCR_intelligence_PARAMETERS__ "--snp_column rsid --non_effect_allele_column alt --effect_allele_column ref --freq_column MAF --beta_column Beta --se_column SE --pvalue_column p_value"
+      COGS_PARAMETERS : &COGS_PARAMETERS__ "--snp_column 1000G_SNPname --non_effect_allele_column Baseline --effect_allele_column Effect --separator , --beta_column Overall_OR --pvalue_column Overall_pvalue"
+      CONVERGE_PARAMETERS : &CONVERGE_PARAMETERS__ "--snp_column RSID --non_effect_allele_column REF_ALLELE --effect_allele_column ALT_ALLELE --or_column OR.logistic --pvalue_column P.lmm --se_column SE"
+      Cytokine_PARAMETERS : &Cytokine_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column OtherAllele --effect_allele_column EffectAllele --beta_column Effect --se_column StdErr --pvalue_column P.value"
+      DIAGRAM_TRANS_ETHNIC_PARAMETERS : &DIAGRAM_TRANS_ETHNIC_PARAMETERS__ "--snp_column SNP --non_effect_allele_column OTHER_ALLELE --effect_allele_column RISK_ALLELE --or_column OR --pvalue_column P"
+      DUERR_PARAMETERS : &DUERR_PARAMETERS__ "--snp_column SNP_ID --non_effect_allele_column Allele1 --effect_allele_column Allele2 --or_column Odds_ratio --pvalue_column P-value --skip_until_header $'SNP_ID\tP-value\tChrID\tChrPosition\tSubmitted_SNP_ID\tss2rs\trs2genome\tAllele1\tAllele2\tpHWE_case\tpHWE_ctrl\tCallRate_case\tCallRate_ctrl\tOdds_ratio\tCI_low\tCI_high'"
+      EAGLE_PARAMETERS : &EAGLE_PARAMETERS__ "--snp_column rsID --non_effect_allele_column other_allele --effect_allele_column reference_allele --beta_column beta --pvalue_column p.value"
+      EGG_ALTERNATIVE_PARAMETERS : &EGG_ALTERNATIVE_PARAMETERS__ "--snp_column SNP --non_effect_allele_column OTHER_ALLELE --effect_allele_column EFFECT_ALLELE --beta_column EFFECT --pvalue_column PVAL"
+      EGG_ALTERNATIVE_PARAMETERS_2 : &EGG_ALTERNATIVE_PARAMETERS_2__ "--snp_column rsid --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column beta --pvalue_column p"
+      EGG_STANDARD_PARAMETERS : &EGG_STANDARD_PARAMETERS__ "--snp_column RSID --non_effect_allele_column NEA --effect_allele_column EA --beta_column BETA --pvalue_column P"
+      ENIGMA_CHARGE_PARAMETERS : &ENIGMA_CHARGE_PARAMETERS__ "--snp_column RSNUMBERS --non_effect_allele_column Allele2 --effect_allele_column Allele1 --freq_column Freq1 --beta_column Weight --pvalue_column P-value --zscore_column Zscore"
+      ENIGMA_PARAMETERS : &ENIGMA_PARAMETERS__ "--snp_column RSID --non_effect_allele_column Non_Effect_Allele --effect_allele_column Effect_Allele --freq_column Freq_EUR_1000Genomes --beta_column Effect_Beta --se_column StdErr --pvalue_column Pvalue"
+      GABRIEL_PARAMETERS : &GABRIEL_PARAMETERS__ "--snp_column rs --non_effect_allele_column Allele_1 --effect_allele_column Allele_2 --or_column OR_fix --pvalue_column P_fix"
+      GCAN_PARAMETERS : &GCAN_PARAMETERS__ "--snp_column SNP --non_effect_allele_column other_allele --effect_allele_column reference_allele --or_column OR --pvalue_column Pvalue"
+      GEFOS_2017_BMD_PARAMETERS : &GEFOS_2017_BMD_PARAMETERS__ "--snp_column SNP --non_effect_allele_column OA --effect_allele_column EA --freq_column EAF --beta_column beta_BMD --se_column SE_BMD --pvalue_column P_BMD"
+      GEFOS_2017_LM_PARAMETERS : &GEFOS_2017_LM_PARAMETERS__ "--snp_column SNP --non_effect_allele_column OA --effect_allele_column EA --freq_column EAF --beta_column beta_LM --se_column SE_LM --pvalue_column P_LM"
+      GEFOS_PARAMETERS : &GEFOS_PARAMETERS__ "--snp_column rs_number --non_effect_allele_column other_allele --effect_allele_column reference_allele --zscore_column z"
+      GIANT_2016_PARAMETERS : &GIANT_2016_PARAMETERS__ "--snp_column SNPNAME --non_effect_allele_column ALT --effect_allele_column REF --beta_column beta --se_column se --pvalue_column Pvalue"
+      GIANT_2017_Stratified_NonSMK_PARAMETERS : &GIANT_2017_Stratified_NonSMK_PARAMETERS__ "--snp_column rs_id --non_effect_allele_column Other_allele --effect_allele_column Effect_allele --beta_column Effect_NonSMK --se_column StdErr_NonSMK --pvalue_column P_value_NonSMK"
+      GIANT_2017_Stratified_SMK_PARAMETERS : &GIANT_2017_Stratified_SMK_PARAMETERS__ "--snp_column rs_id --non_effect_allele_column Other_allele --effect_allele_column Effect_allele --beta_column Effect_SMK --se_column StdErr_SMK --pvalue_column P_value_SMK"
+      GIANT_2017_adjSMK_PARAMETERS : &GIANT_2017_adjSMK_PARAMETERS__ "--snp_column rs_id --non_effect_allele_column allele_2 --effect_allele_column allele_1 --beta_column effect --se_column stderr --pvalue_column p_value"
+      GIANT_2017_physical_activity_PARAMETERS : &GIANT_2017_physical_activity_PARAMETERS__ "--snp_column rsid --non_effect_allele_column Other_allele --effect_allele_column Effect_allele --beta_column Effect --se_column Stderr --pvalue_column Pvalue"
+      GIANT_ALT_2_PARAMETERS : &GIANT_ALT_2_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column b --pvalue_column p"
+      GIANT_ALT_PARAMETERS : &GIANT_ALT_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column b --pvalue_column p  --skip_until_header $'MarkerName\tAllele1\tAllele2\tFreqAllele1HapMapCEU\tb\tse\tp\tN'"
+      GIANT_PARAMETERS : &GIANT_PARAMETERS__ "--snp_column SNP --non_effect_allele_column A2 --effect_allele_column A1 --beta_column b --pvalue_column p"
+      GIANT_WHR_PARAMETERS : &GIANT_WHR_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column b --pvalue_column p  --skip_until_header $'MarkerName\tChr\tPos\tAllele1\tAllele2\tFreqAllele1HapMapCEU\tb\tse\tp\tN'"
+      GLGC_PARAMETERS : &GLGC_PARAMETERS__ "--snp_column rsid --non_effect_allele_column A2 --effect_allele_column A1 --beta_column beta --pvalue_column P-value --se_column se"
+      GPC_PARAMETERS : &GPC_PARAMETERS__ "--snp_column SNPID --non_effect_allele_column A2 --effect_allele_column A1 --beta_column BETA --pvalue_column PVALUE"
+      GUGC_PARAMETERS : &GUGC_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column A2 --effect_allele_column A1 --beta_column beta --pvalue_column p_gc"
+      HRGene_PARAMETERS : &HRGene_PARAMETERS__ "--snp_column rsid --non_effect_allele_column OTHER_ALLELE --effect_allele_column EFFECT_ALLELE --beta_column beta --pvalue_column P_VALUE"
+      IGAP_PARAMETERS : &IGAP_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Non_Effect_allele --effect_allele_column Effect_allele --beta_column Beta --pvalue_column Pvalue"
+      IGROWTH_PARAMETERS : &IGROWTH_PARAMETERS__ "--se_column SE --beta_column BETA --pvalue_column P --effect_allele_column A2 --non_effect_allele_column A1"
+      IHGC_PARAMETERS : &IHGC_PARAMETERS__ "--snp_column rs_number --non_effect_allele_column other_allele --effect_allele_column reference_allele --beta_column beta --pvalue_column p-value"
+      ILAE_PARAMETERS : &ILAE_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Allele2 --effect_allele_column Allele1 --zscore_column Zscore --pvalue_column P-value"
+      IMMUNOBASE_PARAMETERS : &IMMUNOBASE_PARAMETERS__ "--snp_column Marker --non_effect_allele_column Maj_Allele --effect_allele_column Min_Allele --or_column OR_Min --pvalue_column PValue"
+      IPSCSG_PARAMETERS : &IPSCSG_PARAMETERS__ "--snp_column SNP --non_effect_allele_column allele_0 --effect_allele_column allele_1 --or_column or --se_column se --pvalue_column p --skip_until_header '#chr SNP pos allele_0 allele_1 freq_1 freq_1_cases freq_1_controls mmm_var_info_nonmissing or se p platform' "
+      ISGC_1_PARAMETERS : &ISGC_1_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column Effect --se_column StdErr --pvalue_column P-value"
+      ISGC_2_PARAMETERS : &ISGC_2_PARAMETERS__ "--snp_column SNP --non_effect_allele_column A2 --effect_allele_column A1 --freq_column HAPMAP_A1_FREQ --beta_column BETA_RANDOM --se_column SE_RANDOM --pvalue_column P_RANDOM"
+      ISGC_3_PARAMETERS : &ISGC_3_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column Effect --se_column StdErr --pvalue_column P.value"
+      Jones_et_al_2016_PARAMETERS : &Jones_et_al_2016_PARAMETERS__ "--snp_column SNP --non_effect_allele_column ALLELE0 --effect_allele_column ALLELE1 --beta_column BETA --pvalue_column P"
+      Kilpelainen_et_al_2016_PARAMETERS : &Kilpelainen_et_al_2016_PARAMETERS__ "--snp_column SNP --non_effect_allele_column Other_all --effect_allele_column Effect_all --beta_column Effect --pvalue_column P"
+      LuY_et_al_2016_PARAMETERS : &LuY_et_al_2016_PARAMETERS__ "--snp_column SNPID --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column Effect --pvalue_column P.value"
+      MAGIC_ISI_PARAMETERS : &MAGIC_ISI_PARAMETERS__ "--snp_column snp --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column effect --se_column stderr --pvalue_column pvalue"
+      MAGIC_MANNING_INTERACTION_EFFECTS_PARAMETERS : &MAGIC_MANNING_INTERACTION_EFFECTS_PARAMETERS__ "--snp_column Snp --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column InterEffects --pvalue_column InterP"
+      MAGIC_MANNING_INTERACTION_EFFECT_PARAMETERS : &MAGIC_MANNING_INTERACTION_EFFECT_PARAMETERS__ "--snp_column Snp --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column InterEffect --pvalue_column InterP"
+      MAGIC_MANNING_MAIN_EFFECT_PARAMETERS : &MAGIC_MANNING_MAIN_EFFECT_PARAMETERS__ "--snp_column Snp --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column MainEffects --pvalue_column MainP"
+      MAGIC_PARAMETERS : &MAGIC_PARAMETERS__ "--snp_column snp --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column effect --pvalue_column pvalue"
+      MAGIC_SCOTT_PARAMETERS : &MAGIC_SCOTT_PARAMETERS__ "--snp_column snp --non_effect_allele_column other_allele --effect_allele_column effect_allele --beta_column beta --pvalue_column pvalue"
+      MAGNETIC_PARAMETERS : &MAGNETIC_PARAMETERS__ "--snp_column ID --non_effect_allele_column NEA --effect_allele_column EA --beta_column beta --pvalue_column p-value"
+      PGC2_ADHD_PARAMETERS : &PGC2_ADHD_PARAMETERS__ "--snp_column snpid --non_effect_allele_column a2 --effect_allele_column a1 --zscore_column zscore"
+      PGC2_SCZ2_PARAMETERS : &PGC2_SCZ2_PARAMETERS__ "--snp_column snpid --non_effect_allele_column a2 --effect_allele_column a1 --or_column or --pvalue_column p"
+      PGC_PARAMETERS : &PGC_PARAMETERS__ "--snp_column snpid --non_effect_allele_column a2 --effect_allele_column a1 --or_column or --pvalue_column pval"
+      PGC_TAG_PARAMETERS : &PGC_TAG_PARAMETERS__ "--beta_column OR --pvalue_column P --non_effect_allele_column A2 --effect_allele_column A1"
+      PLINK_PARAMETERS : &PLINK_PARAMETERS__ "--or_column OR --pvalue_column P --effect_allele_column A1 --non_effect_allele_column A2"
+      Pilling_et_al_2017_PARAMETERS : &Pilling_et_al_2017_PARAMETERS__ "--snp_column SNP --non_effect_allele_column ALLELE0 --effect_allele_column ALLELE1 --beta_column BETA --se_column SE --pvalue_column P_BOLT_LMM_INF"
+      Pilling_fathers_age_death_PARAMETERS : &Pilling_fathers_age_death_PARAMETERS__ "--snp_column rsID --non_effect_allele_column A2 --effect_allele_column A1 --freq_column A1FREQ --beta_column BETA_fathers_age_death --se_column SE_fathers_age_death --pvalue_column P_fathers_age_death"
+      Pilling_mothers_age_death_PARAMETERS : &Pilling_mothers_age_death_PARAMETERS__ "--snp_column rsID --non_effect_allele_column A2 --effect_allele_column A1 --freq_column A1FREQ --beta_column BETA_mothers_age_death --se_column SE_mothers_age_death --pvalue_column P_mothers_age_death"
+      Pilling_parents_age_death_PARAMETERS : &Pilling_parents_age_death_PARAMETERS__ "--snp_column rsID --non_effect_allele_column A2 --effect_allele_column A1 --freq_column A1FREQ --beta_column BETA_parents_age_death --se_column SE_parents_age_death --pvalue_column P_parents_age_death"
+      Pilling_top_1_percent_PARAMETERS : &Pilling_top_1_percent_PARAMETERS__ "--snp_column rsID --non_effect_allele_column A2 --effect_allele_column A1 --freq_column A1FREQ --beta_column BETA_top_1_percent --pvalue_column P_top_1_percent --se_column SE_top_1_percent"
+      QIMR_GIS_PARAMETERS : &QIMR_GIS_PARAMETERS__ "--snp_column SNP --non_effect_allele_column A2 --effect_allele_column A1 --freq_column FREQ_A1 --beta_column EFFECT_A1 --se_column SE --pvalue_column P"
+      RA_PARAMETERS : &RA_PARAMETERS__ "--snp_column SNPID --non_effect_allele_column A2 --effect_allele_column A1 --or_column 'OR(A1)' --pvalue_column P-val"
+      ReproGen_Menarche_2014_PARAMETERS : &ReproGen_Menarche_2014_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column Other_Allele --effect_allele_column Effect_Allele --beta_column GWAS_Beta --pvalue_column GWAS_P"
+      ReproGen_Menarche_2017_PARAMETERS : &ReproGen_Menarche_2017_PARAMETERS__ "--snp_column Markername --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_column Effect --pvalue_column Pvalue"
+      ReproGen_Menopause_2015_PARAMETERS : &ReproGen_Menopause_2015_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column allele2 --effect_allele_column allele1 --beta_column effect --pvalue_column p"
+      SSGAC_2016_Other_PARAMETERS : &SSGAC_2016_Other_PARAMETERS__ "--snp_column MarkerName --non_effect_allele_column A2 --effect_allele_column A1 --beta_column Beta --se_column SE --pvalue_column Pval"
+      SSGAC_2016_Reproductive_Behavior_PARAMETERS : &SSGAC_2016_Reproductive_Behavior_PARAMETERS__ "--snp_column SNPID --non_effect_allele_column A2 --effect_allele_column A1 --zscore_column Zscore --pvalue_column Pvalue"
+      Wood_et_al_2017_PARAMETERS : &Wood_et_al_2017_PARAMETERS__ "--snp_column MARKERNAME --non_effect_allele_column A2 --effect_allele_column A1 --beta_column EFFECT_A1 --se_column STDERR --pvalue_column P"
+      dbGAP_PARAMETERS_1 : &dbGAP_PARAMETERS_1__ "--snp_column SNP_ID --non_effect_allele_column Allele1 --effect_allele_column Allele2 --or_column Odds_ratio --pvalue_column P-value --skip_until_header $'SNP_ID\tP-value\tChrID\tChrPosition\tSubmitted_SNP_ID\tss2rs\trs2genome\tAllele1\tAllele2\tpHWE_case\tpHWE_ctrl\tCallRate_case\tCallRate_ctrl\tOdds_ratio\tCI_low\tCI_high'"
+      dbGAP_PARAMETERS_2 : &dbGAP_PARAMETERS_2__ "--snp_column SNP_ID --non_effect_allele_column Allele1 --effect_allele_column Allele2 --or_column Odds_ratio --pvalue_column P-value --skip_until_header $'SNP_ID\tChrID\tChrPosition\tP-value\tRank\tpHWE_case\tpHWE_ctrl\tCallRate_case\tCallRate_ctrl\tOdds_ratio'"
+      dbGAP_PARAMETERS_3 : &dbGAP_PARAMETERS_3__ "--snp_column SNP_ID --non_effect_allele_column Allele1 --effect_allele_column Allele2 --or_column Odds_ratio --pvalue_column P-value --skip_until_header $'SNP_ID\tP-value\tChrID\tChrPosition\tSubmitted_SNP_ID\tss2rs\trs2genome\tAllele1\tAllele2\tpHWE_case\tpHWE_ctrl\tCallRate_case\tCallRate_ctrl\tOdds_ratio\tCI_low\tCI_high'"
+      iCOGS_AFR_overallBC_PARAMETERS : &iCOGS_AFR_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_african_eaf --beta_column icogs1_african_risk_beta --se_column icogs1_asian_risk_se --pvalue_column icogs1_asian_risk_P1df"
+      iCOGS_ASIAN_ERnegBC_PARAMETERS : &iCOGS_ASIAN_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_asian_eaf --beta_column icogs1_asian_erneg_beta --se_column icogs1_asian_erneg_se --pvalue_column icogs1_asian_erneg_P1df"
+      iCOGS_ASIAN_ERposBC_PARAMETERS : &iCOGS_ASIAN_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_asian_eaf --beta_column icogs1_asian_erpos_beta --se_column icogs1_asian_erpos_se --pvalue_column icogs1_asian_erpos_P1df"
+      iCOGS_ASIAN_gt_ERnegBC_PARAMETERS : &iCOGS_ASIAN_gt_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_asn_freq_controls --beta_column icogs_gt_asn_erneg_beta --se_column icogs_gt_asn_erneg_se --pvalue_column icogs_gt_asn_erneg_P1df"
+      iCOGS_ASIAN_gt_ERposBC_PARAMETERS : &iCOGS_ASIAN_gt_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_asn_freq_controls --beta_column icogs_gt_asn_erpos_beta --se_column icogs_gt_asn_erpos_se --pvalue_column icogs_gt_asn_erpos_P1df"
+      iCOGS_ASIAN_gt_overallBC_PARAMETERS : &iCOGS_ASIAN_gt_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_asn_freq_controls --beta_column icogs_gt_asn_beta --se_column icogs_gt_asn_se --pvalue_column icogs_gt_asn_P1df"
+      iCOGS_ASIAN_overallBC_PARAMETERS : &iCOGS_ASIAN_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_asian_eaf --beta_column icogs1_asian_risk_beta --se_column icogs1_asian_risk_se --pvalue_column icogs1_asian_risk_P1df"
+      iCOGS_EAST_ASIAN_ERnegBC_PARAMETERS : &iCOGS_EAST_ASIAN_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_asian_nosouth_eaf --beta_column icogs1_asian_nosouth_erneg_beta --se_column icogs1_asian_nosouth_erneg_se --pvalue_column icogs1_asian_nosouth_erneg_P1df"
+      iCOGS_EAST_ASIAN_ERposBC_PARAMETERS : &iCOGS_EAST_ASIAN_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_asian_nosouth_eaf --beta_column icogs1_asian_nosouth_erpos_beta --se_column icogs1_asian_nosouth_erpos_se --pvalue_column icogs1_asian_nosouth_erpos_P1df"
+      iCOGS_EAST_ASIAN_gt_ERnegBC_PARAMETERS : &iCOGS_EAST_ASIAN_gt_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_eas_freq_controls --beta_column icogs_gt_eas_erneg_beta --se_column icogs_gt_eas_erneg_se --pvalue_column icogs_gt_eas_erneg_P1df"
+      iCOGS_EAST_ASIAN_gt_ERposBC_PARAMETERS : &iCOGS_EAST_ASIAN_gt_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_eas_freq_controls --beta_column icogs_gt_eas_erpos_beta --se_column icogs_gt_eas_erpos_se --pvalue_column icogs_gt_eas_erpos_P1df"
+      iCOGS_EAST_ASIAN_gt_overallBC_PARAMETERS : &iCOGS_EAST_ASIAN_gt_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_eas_freq_controls --beta_column icogs_gt_eas_beta --se_column icogs_gt_eas_se --pvalue_column icogs_gt_eas_P1df"
+      iCOGS_EAST_ASIAN_overallBC_PARAMETERS : &iCOGS_EAST_ASIAN_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_asian_nosouth_eaf --beta_column icogs1_asian_nosouth_risk_beta --se_column icogs1_asian_nosouth_risk_se --pvalue_column icogs1_asian_nosouth_risk_P1df"
+      iCOGS_EUR_ERnegBC_PARAMETERS : &iCOGS_EUR_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_european_controls_eaf --beta_column icogs1_erneg_beta --se_column icogs1_erneg_se --pvalue_column icogs1_erneg_P1df"
+      iCOGS_EUR_ERposBC_PARAMETERS : &iCOGS_EUR_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_european_controls_eaf --beta_column icogs1_erpos_beta --se_column icogs1_erpos_se --pvalue_column icogs1_erpos_P1df"
+      iCOGS_EUR_gt_ERnegBC_PARAMETERS : &iCOGS_EUR_gt_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_gt_freq_controls_eaf --beta_column icogs1_gt_erneg_beta --se_column icogs1_gt_erneg_se --pvalue_column icogs1_gt_erneg_P1df"
+      iCOGS_EUR_gt_ERposBC_PARAMETERS : &iCOGS_EUR_gt_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_gt_freq_controls_eaf --beta_column icogs1_gt_erpos_beta --se_column icogs1_gt_erpos_se --pvalue_column icogs1_gt_erpos_P1df"
+      iCOGS_EUR_gt_overallBC_PARAMETERS : &iCOGS_EUR_gt_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_gt_freq_controls_eaf --beta_column icogs1_gt_beta --se_column icogs1_gt_se --pvalue_column icogs1_gt_P1df"
+      iCOGS_EUR_overallBC_PARAMETERS : &iCOGS_EUR_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs1_european_controls_eaf --beta_column icogs1_risk_beta --se_column icogs1_risk_se --pvalue_column icogs1_risk_P1df"
+      iCOGS_EUR_survival_ERnegBC_PARAMETERS : &iCOGS_EUR_survival_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_survival_eaf --beta_column icogs_survival_erneg_HR --se_column icogs_survival_erneg_se --pvalue_column icogs_survival_erneg_P1df"
+      iCOGS_EUR_survival_ERposBC_PARAMETERS : &iCOGS_EUR_survival_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_survival_eaf --beta_column icogs_survival_erpos_HR --se_column icogs_survival_erpos_se --pvalue_column icogs_survival_erpos_P1df"
+      iCOGS_EUR_survival_overallBC_PARAMETERS : &iCOGS_EUR_survival_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_survival_eaf --beta_column icogs_survival_HR --se_column icogs_survival_se --pvalue_column icogs_survival_P1df"
+      iCOGS_gt_AFR_ERnegBC_PARAMETERS : &iCOGS_gt_AFR_ERnegBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_afr_freq_controls --beta_column icogs_gt_afr_erneg_beta --se_column icogs_gt_afr_erneg_se --pvalue_column icogs_gt_afr_erneg_P1df"
+      iCOGS_gt_AFR_ERposBC_PARAMETERS : &iCOGS_gt_AFR_ERposBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_afr_freq_controls --beta_column icogs_gt_afr_erpos_beta --se_column icogs_gt_afr_erpos_se --pvalue_column icogs_gt_afr_erpos_P1df"
+      iCOGS_gt_AFR_overallBC_PARAMETERS : &iCOGS_gt_AFR_overallBC_PARAMETERS__ "--snp_column 1KG_Phase1_ID --non_effect_allele_column a0 --effect_allele_column a1 --freq_column icogs_gt_afr_freq_controls --beta_column icogs_gt_afr_beta --se_column icogs_gt_afr_se --pvalue_column icogs_gt_afr_P1df"
+
+arguments:
+  - !RulesMap
+    name: gwas_map
+    metadata_rules:
+      - !RulesMapGetKeyMetadata
+        path: gwas/tag
+    rules:
+      ADIPOGen_Adiponectin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ADIPOGen/.*txt
+        - !Scalar
+          value: *ADIPOGen_PARAMETERS__
+      ANGST_ANXIETY_CC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ANGST/anxiety.meta.full.cc.tbl.gz
+        - !Scalar
+          value: *ANGST_PARAMETERS__
+      ANGST_ANXIETY_FS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ANGST/anxiety.meta.full.fs.tbl.gz
+        - !Scalar
+          value: *ANGST_PARAMETERS__
+      AdvancedAMD_2015:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: AMD/Fritsche_2015_AdvancedAMD.*
+        - !Scalar
+          value: *AMD_PARAMETERS__
+      Astle_et_al_2016_Basophil_percentage_of_granulocytes:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/baso_p_gran_build37_170223_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Basophil_percentage_of_white_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/baso_p_build37_171996_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Eosinophil_counts:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/eo_build37_172275_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Eosinophil_percentage_of_granulocytes:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/eo_p_gran_build37_170536_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Eosinophil_percentage_of_white_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/eo_p_build37_172378_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Granulocyte_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/gran_build37_169822_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Granulocyte_percentage_of_myeloid_white_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/gran_p_myeloid_wbc_build37_169545_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Hematocrit:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/hct_build37_173039_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Hemoglobin_concentration:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/hgb_build37_172925_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_High_light_scatter_reticulocyte_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/hlr_build37_170761_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_High_light_scatter_reticulocyte_percentage_of_red_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/hlr_p_build37_170763_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Immature_fraction_of_reticulocytes:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/irf_build37_170548_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Lymphocyte_counts:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/lymph_build37_171643_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Lymphocyte_percentage_of_white_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/lymph_p_build37_171748_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Mean_corpuscular_hemoglobin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/mch_build37_172332_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Mean_corpuscular_hemoglobin_concentration:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/mchc_build37_172851_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Mean_corpuscular_volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/mcv_build37_172433_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Mean_platelet_volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/mpv_build37_164454_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Monocyte_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/mono_build37_170721_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Monocyte_percentage_of_white_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/mono_p_build37_170494_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Myeloid_white_cell_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/myeloid_wbc_build37_169219_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Neutrophil_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/neut_build37_170702_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Neutrophil_percentage_of_granulocytes:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/neut_p_gran_build37_170672_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Neutrophil_percentage_of_white_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/neut_p_build37_171542_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Platelet_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/plt_build37_166066_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Platelet_distribution_width:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/pdw_build37_164433_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Plateletcrit:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/pct_build37_164339_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Red_blood_cell_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/rbc_build37_172952_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Red_cell_distribution_width:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/rdw_build37_171529_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Reticulocyte_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/ret_build37_170641_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Reticulocyte_fraction_of_red_cells:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/ret_p_build37_170690_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Sum_basophil_neutrophil_counts:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/baso_neut_sum_build37_170143_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Sum_eosinophil_basophil_counts:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/eo_baso_sum_build37_171771_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_Sum_neutrophil_eosinophil_counts:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/neut_eo_sum_build37_170384_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_White_blood_cell_count:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/wbc_build37_172435_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      Astle_et_al_2016_White_blood_cell_count_basophil:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Astle_et_al_2016/baso_build37_171846_20161212.tsv.gz
+        - !Scalar
+          value: *Astle_et_al_2016_PARAMETERS__
+      BCAC_EAST_ASIAN_gt_ERnegBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_EAST_ASIAN_gt_ERnegBC_PARAMETERS__
+      BCAC_EAST_ASIAN_gt_ERposBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_EAST_ASIAN_gt_ERposBC_PARAMETERS__
+      BCAC_EAST_ASIAN_gt_overallBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_EAST_ASIAN_gt_overallBC_PARAMETERS__
+      BCAC_ER_negative_BreastCancer_AFR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_african.txt.gz
+        - !Scalar
+          value: *iCOGS_gt_AFR_ERnegBC_PARAMETERS__
+      BCAC_ER_negative_BreastCancer_ASIAN_genotyped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_ASIAN_gt_ERnegBC_PARAMETERS__
+      BCAC_ER_negative_BreastCancer_ASIAN_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_ASIAN_ERnegBC_PARAMETERS__
+      BCAC_ER_negative_BreastCancer_EAS_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_EAST_ASIAN_ERnegBC_PARAMETERS__
+      BCAC_ER_negative_BreastCancer_EUR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_ERnegBC_PARAMETERS__
+      BCAC_ER_positive_BreastCancer_AFR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_african.txt.gz
+        - !Scalar
+          value: *iCOGS_gt_AFR_ERposBC_PARAMETERS__
+      BCAC_ER_positive_BreastCancer_ASIAN_genotyped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_ASIAN_gt_ERposBC_PARAMETERS__
+      BCAC_ER_positive_BreastCancer_ASIAN_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_ASIAN_ERposBC_PARAMETERS__
+      BCAC_ER_positive_BreastCancer_EAS_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_EAST_ASIAN_ERposBC_PARAMETERS__
+      BCAC_ER_positive_BreastCancer_EUR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_ERposBC_PARAMETERS__
+      BCAC_EUR_gt_ERnegBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_gt_ERnegBC_PARAMETERS__
+      BCAC_EUR_gt_ERposBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_gt_ERposBC_PARAMETERS__
+      BCAC_EUR_gt_overallBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_gt_overallBC_PARAMETERS__
+      BCAC_EUR_survival_ERnegBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_survival_ERnegBC_PARAMETERS__
+      BCAC_EUR_survival_ERposBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_survival_ERposBC_PARAMETERS__
+      BCAC_EUR_survival_overallBC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_survival_overallBC_PARAMETERS__
+      BCAC_Overall_BreastCancer_AFR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_african.txt.gz
+        - !Scalar
+          value: *iCOGS_AFR_overallBC_PARAMETERS__
+      BCAC_Overall_BreastCancer_AFR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_african.txt.gz
+        - !Scalar
+          value: *iCOGS_gt_AFR_overallBC_PARAMETERS__
+      BCAC_Overall_BreastCancer_ASIAN_genotyped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_ASIAN_gt_overallBC_PARAMETERS__
+      BCAC_Overall_BreastCancer_ASIAN_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_ASIAN_overallBC_PARAMETERS__
+      BCAC_Overall_BreastCancer_EAS_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_asian.txt.gz
+        - !Scalar
+          value: *iCOGS_EAST_ASIAN_overallBC_PARAMETERS__
+      BCAC_Overall_BreastCancer_EUR_imputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: BCAC/icogs_bcac_public_results_euro.txt.gz
+        - !Scalar
+          value: *iCOGS_EUR_overallBC_PARAMETERS__
+      Baranzini_et_al_2009_MultipleSclerosis:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Baranzini_et_al_2009/.*dbGAP\.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      C4D_CAD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CARDIoGRAM/c4d_cad_discovery_metaanalysis/C4D_CAD_DISCOVERY_METAANALYSIS_UPDATE.TXT.gz
+        - !Scalar
+          value: "--column_map SNP id --column_map OTHER_ALLELE non_effect_allele --column_map REFERENCE_ALLELE effect_allele --column_map LOG_ODDS beta --column_map PVALUE pvalue"
+      CARDIoGRAM_C4D_CAD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CARDIoGRAM/cardiogramplusc4d_data/cardiogramplusc4d_data.txt.gz
+        - !Scalar
+          value: "--column_map SNP_ID id --column_map other_allele non_effect_allele --column_map reference_allele effect_allele --column_map 'log_odds_(stage2)' beta --column_map Pvalue_Stage2 pvalue"
+      CARDIoGRAM_C4D_CAD_ADDITIVE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CARDIoGRAM/cad.additive.Oct2015.pub/cad.add.160614.website.txt.gz
+        - !Scalar
+          value: *CARDIOGRAM_CAD_PARAMETERS__
+      CARDIoGRAM_C4D_CAD_RECESSIVE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CARDIoGRAM/cad.recessive.Oct2015.pub/cad.rec.090715.web.txt.gz
+        - !Scalar
+          value: *CARDIOGRAM_CAD_PARAMETERS__
+      CARDIoGRAM_C4D_MI_ADDITIVE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CARDIoGRAM/mi.additive.Oct2015.pub/mi.add.030315.website.txt.gz
+        - !Scalar
+          value: *CARDIOGRAM_CAD_PARAMETERS__
+      CARDIoGRAM_CAD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CARDIoGRAM/cardiogram_gwas_results/CARDIoGRAM_GWAS_RESULTS.txt.gz
+        - !Scalar
+          value: "--column_map SNP id --column_map other_allele non_effect_allele --column_map reference_allele effect_allele --column_map log_odds beta --column_map pvalue pvalue"
+      CIAC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CIAC/daner_cia_combo_eur-qc.ch.fl.gz
+        - !Scalar
+          value: *CIAC_PARAMETERS__
+      CKDGen_Chronic_Kidney_Disease:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Chronic_Kidney_Disease/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_CystatinC_Overall:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_CystatinC_Overall/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_MA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Microalbuminuria/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_UACR_DM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Urinary_Albumin_To_Creatinine_Ratio_DM/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_UACR_Overall:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Urinary_Albumin_To_Creatinine_Ratio_Overall/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_UACR_nonDM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Urinary_Albumin_To_Creatinine_Ratio_nonDM/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_eGFRcrea_DM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Creatinine_DM/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_eGFRcrea_Overall:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Creatinine_Overall/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_eGFRcrea_Overall_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Creatinine_Overall_AFR/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CKDGen_eGFRcrea_nonDM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CKDGen/CKDGen_Creatinine_nonDM/.*csv.gz
+        - !Scalar
+          value: *CKDGen_PARAMETERS__
+      CNCR_Insomnia_all:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CNCR/Insomnia/Hammerschlag_NatGenet2017_insomnia_sumstats-full_090617.txt.gz
+        - !Scalar
+          value: *CNCR_insomnia_PARAMETERS__
+      CNCR_Insomnia_females:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CNCR/Insomnia/Hammerschlag_NatGenet2017_insomnia_sumstats-females_090617.txt.gz
+        - !Scalar
+          value: *CNCR_insomnia_PARAMETERS__
+      CNCR_Insomnia_males:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CNCR/Insomnia/Hammerschlag_NatGenet2017_insomnia_sumstats-males_090617.txt.gz
+        - !Scalar
+          value: *CNCR_insomnia_PARAMETERS__
+      CNCR_Intelligence:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CNCR/Intelligence/sumstats.txt.gz
+        - !Scalar
+          value: *CNCR_intelligence_PARAMETERS__
+      COG_Neuroblastoma:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: COG/.*dbGAP.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      CONVERGE_MDD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: CONVERGE/converge.MDD.summary_stats.2Sep2015.tbl.gz
+        - !Scalar
+          value: *CONVERGE_PARAMETERS__
+      Cytokine_CTACK:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/CTACK.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_Eotaxin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/Eotaxin.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_FGFBasic:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/FGFBasic.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_GCSF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/GCSF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_GCSF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/GCSF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_GROa:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/GROa.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_HGF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/HGF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IFNg:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IFNg.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL10:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL10.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL12p70:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL12p70.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL13:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL13.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL16:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL16.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL17:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL17.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL18:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL18.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL1b:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL1b.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL1ra:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL1ra.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL2:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL2.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL2ra:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL2ra.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL4:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL4.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL5:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL5.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL6:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL6.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL7:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL7.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL8:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL8.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IL9:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IL9.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_IP10:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/IP10.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MCP1:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MCP1.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MCP3:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MCP3.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MCSF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MCSF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MIF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MIF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MIG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MIG.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MIP1a:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MIP1a.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_MIP1b:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/MIP1b.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_PDGFbb:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/PDGFbb.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_RANTES:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/RANTES.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_SCF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/SCF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_SCGFb:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/SCGFb.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_SDF1a:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/SDF1a.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_TNFa:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/TNFa.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_TNFb:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/TNFb.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_TRAIL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/TRAIL.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_VEGF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/VEGF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      Cytokine_bNGF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Cytokine/bNGF.data.gz
+        - !Scalar
+          value: *Cytokine_PARAMETERS__
+      DIAGRAM_T2D_TRANS_ETHNIC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: DIAGRAM/diagram.mega-meta.txt.gz
+        - !Scalar
+          value: *DIAGRAM_TRANS_ETHNIC_PARAMETERS__
+      Duerr_et_al_2006_InflammatoryBowelDisease:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Duerr_et_al_2006/.*dbGAP.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      EAGLE_ADHD_GC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EAGLE/ADHD/EAGLE_20151029_n10k_GC1_Psort.tbl.gz
+        - !Scalar
+          value: "--column_map MarkerName id --column_map Allele2 non_effect_allele --column_map Allele1 effect_allele --column_map Zscore zscore"
+      EAGLE_ADHD_noGC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EAGLE/ADHD/EAGLE_20151029_n10k_NOGC1_Psort.tbl.gz
+        - !Scalar
+          value: "--column_map MarkerName id --column_map Allele2 non_effect_allele --column_map Allele1 effect_allele --column_map Zscore zscore"
+      EAGLE_Aggression:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EAGLE/Aggression/pappa_150810_EAGLE_MA_aggression_METAL_RESULTS.txt
+        - !Scalar
+          value: "--column_map MarkerName id --column_map Allele2 non_effect_allele --column_map Allele1 effect_allele --column_map Zscore zscore"
+      EAGLE_Eczema:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EAGLE/EAGLE.*txt
+        - !Scalar
+          value: *EAGLE_PARAMETERS__
+      EAGLE_Internalizing:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EAGLE/Internalizing/meta3.INTsnplist_F.txt
+        - !Scalar
+          value: "--column_map SNP id --column_map A2 non_effect_allele --column_map A1 effect_allele --column_map meta.effect beta --column_map meta.se se"
+      EGG_BL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/EGG-GWAS-BL.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_BMI_HapMapImputed:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/EGG_BMI_HapMap_DISCOVERY.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_BW2:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/EGG_BW2_DISCOVERY.txt.gz
+        - !Scalar
+          value: *EGG_ALTERNATIVE_PARAMETERS__
+      EGG_BW3_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/BW3_EUR_summary_stats.txt.gz
+        - !Scalar
+          value: *EGG_ALTERNATIVE_PARAMETERS_2__
+      EGG_BW3_TransEthnic:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/BW3_Transethnic_summary_stats.txt.gz
+        - !Scalar
+          value: *EGG_ALTERNATIVE_PARAMETERS_2__
+      EGG_HC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/EGG_HC_DISCOVERY.txt.gz
+        - !Scalar
+          value: "--column_map SNP id --column_map NON_EFFECT_ALLELE non_effect_allele --column_map EFFECT_ALLELE effect_allele --column_map BETA beta --column_map P_Value pvalue"
+      EGG_Obesity:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/EGG_Obesity_Meta_Analysis_1.txt.gz
+        - !Scalar
+          value: *EGG_ALTERNATIVE_PARAMETERS__
+      EGG_Pubertal_growth_10F:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/pubertal/Pubertal_growth_10F.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_Pubertal_growth_12M:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/pubertal/Pubertal_growth_12M.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_Pubertal_growth_PGF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/pubertal/Pubertal_growth_PGF.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_Pubertal_growth_PGM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/pubertal/Pubertal_growth_PGM.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_Pubertal_growth_PTF:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/pubertal/Pubertal_growth_PTF.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_Pubertal_growth_PTM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/pubertal/Pubertal_growth_PTM.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_TANNER_females:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/tanner/EGG_TANNER_females.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      EGG_TANNER_males:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: EGG/tanner/EGG_TANNER_males.txt.gz
+        - !Scalar
+          value: *EGG_STANDARD_PARAMETERS__
+      ENIGMA_CHARGE_Hippocampal_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/CHARGE-ENIGMA-HV-METAANALYSIS-201311141.TBL.FINAL.gz
+        - !Scalar
+          value: *ENIGMA_CHARGE_PARAMETERS__
+      ENIGMA_CHARGE_Intracraneal_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/CHARGE-ENIGMA-ICV-METAANALYSIS-201311141.TBL.FINAL.gz
+        - !Scalar
+          value: *ENIGMA_CHARGE_PARAMETERS__
+      ENIGMA_Intracraneal_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_ICV_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanAccumbens_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanAccumbens_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanAmygdala_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanAmygdala_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanCaudate_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanCaudate_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanHippocampus_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanHippocampus_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanPallidum_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanPallidum_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanPutamen_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanPutamen_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      ENIGMA_MeanThalamus_Volume:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ENIGMA/ENIGMA2_MeanThalamus_Combined_GenomeControlled_Jan23.tbl.gz
+        - !Scalar
+          value: *ENIGMA_PARAMETERS__
+      GABRIEL_Asthma:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GABRIEL/.*txt
+        - !Scalar
+          value: *GABRIEL_PARAMETERS__
+      GCAN_AnorexiaNervosa:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GCAN/.*txt
+        - !Scalar
+          value: *GCAN_PARAMETERS__
+      GEFOS_FemoralNeck:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GEFOS/2015/fn2stu.MAF0_.005.pos_.out_.gz
+        - !Scalar
+          value: *GEFOS_PARAMETERS__
+      GEFOS_Forearm:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GEFOS/2015/fa2stu.MAF0_.005.pos_.out_.gz
+        - !Scalar
+          value: *GEFOS_PARAMETERS__
+      GEFOS_LumbarSpine:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GEFOS/2015/ls2stu.MAF0_.005.pos_.out_.gz
+        - !Scalar
+          value: *GEFOS_PARAMETERS__
+      GEFOS_Total_Body_Lean_Mass:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GEFOS/2017/bivariate_final.txt.gz
+        - !Scalar
+          value: *GEFOS_2017_LM_PARAMETERS__
+      GEFOS_Total_Body_Less_Head_Bone_Mineral_Density:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GEFOS/2017/bivariate_final.txt.gz
+        - !Scalar
+          value: *GEFOS_2017_BMD_PARAMETERS__
+      GERA_ALLERGIC_RHINITIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/ALLERGIC_RHINITIS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_ASTHMA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/ASTHMA.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_CANCER:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/CANCER.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_CARD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/CARD.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_DEPRESS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/DEPRESS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_DERMATOPHYTOSIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/DERMATOPHYTOSIS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_DIA2:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/DIA2.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_DYSLIPID:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/DYSLIPID.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_HEMORRHOIDS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/HEMORRHOIDS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_HERNIA_ABDOMINOPELVIC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/HERNIA_ABDOMINOPELVIC.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_HYPER:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/HYPER.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_INSOMNIA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/INSOMNIA.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_IRON_DEFICIENCY:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/IRON_DEFICIENCY.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_IRRITABLE_BOWEL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/IRRITABLE_BOWEL.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_MACDEGEN:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/MACDEGEN.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_OSTIOA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/OSTIOA.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_OSTIOP:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/OSTIOP.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_PEPTIC_ULCERS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/PEPTIC_ULCERS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_PSYCHIATRIC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/PSYCHIATRIC.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_PVD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/PVD.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_STRESS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/STRESS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GERA_VARICOSE_VEINS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GERA/VARICOSE_VEINS.gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      GIANT_2016_Height_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2016_Height/Height_AA_add_SV.txt.gz
+        - !Scalar
+          value: *GIANT_2016_PARAMETERS__
+      GIANT_2016_Height_AMER:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2016_Height/Height_HA_add_SV.txt.gz
+        - !Scalar
+          value: *GIANT_2016_PARAMETERS__
+      GIANT_2016_Height_All:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2016_Height/Height_All_add_SV.txt.gz
+        - !Scalar
+          value: *GIANT_2016_PARAMETERS__
+      GIANT_2016_Height_EAS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2016_Height/Height_EAS_add_SV.txt.gz
+        - !Scalar
+          value: *GIANT_2016_PARAMETERS__
+      GIANT_2016_Height_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2016_Height/Height_EA_add_SV.txt.gz
+        - !Scalar
+          value: *GIANT_2016_PARAMETERS__
+      GIANT_2016_Height_SA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2016_Height/Height_SA_add_SV.txt.gz
+        - !Scalar
+          value: *GIANT_2016_PARAMETERS__
+      GIANT_2017_BMI_Active_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.ACTIVE.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Active_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.ACTIVE.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Active_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.ACTIVE.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Active_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.ACTIVE.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Active_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.ACTIVE.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Active_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.ACTIVE.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/All_ancestries_SNP_gwas_mc_merge_nogc.tbl.uniq.gz
+        - !Scalar
+          value: *GIANT_PARAMETERS__
+      GIANT_2017_BMI_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/SNP_gwas_mc_merge_nogc.tbl.uniq.gz
+        - !Scalar
+          value: *GIANT_PARAMETERS__
+      GIANT_2017_BMI_Inactive_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.INACTIVE.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Inactive_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.INACTIVE.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Inactive_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.INACTIVE.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Inactive_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.INACTIVE.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Inactive_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.INACTIVE.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_Inactive_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.INACTIVE.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_MEN:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/Men_SNP_gwas_mc_merge_nogc.tbl.uniq.gz
+        - !Scalar
+          value: *GIANT_PARAMETERS__
+      GIANT_2017_BMI_NonSMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_NonSMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_NonSMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_NonSMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_NonSMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_NonSMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/BMI.StratifiedBySMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_BMI_SNPadjPA_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.SNPadjPA.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_SNPadjPA_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.SNPadjPA.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_SNPadjPA_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.SNPadjPA.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_SNPadjPA_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.SNPadjPA.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_SNPadjPA_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.SNPadjPA.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_SNPadjPA_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/BMI.SNPadjPA.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_BMI_SNPadjSMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/BMI.SNPadjSMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_BMI_SNPadjSMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/BMI.SNPadjSMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_BMI_SNPadjSMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/BMI.SNPadjSMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_BMI_SNPadjSMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/BMI.SNPadjSMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_BMI_SNPadjSMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/BMI.SNPadjSMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_BMI_SNPadjSMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/BMI.SNPadjSMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_BMI_WOMEN:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/Women_SNP_gwas_mc_merge_nogc.tbl.uniq.gz
+        - !Scalar
+          value: *GIANT_PARAMETERS__
+      GIANT_2017_WCadjBMI_NonSMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_NonSMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_NonSMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_NonSMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_NonSMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Women.AllAncestry.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_NonSMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Women.AllAncestry.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WCadjBMI.StratifiedBySMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: "--column_map rs_id id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Effect_SMK beta --column_map StdErr_SMK se --column_map P_value_SMK pvalue"
+      GIANT_2017_WCadjBMI_SNPadjSMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WCadjBMI.SNPadjSMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WCadjBMI_SNPadjSMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WCadjBMI.SNPadjSMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WCadjBMI_SNPadjSMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WCadjBMI.SNPadjSMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WCadjBMI_SNPadjSMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WCadjBMI.SNPadjSMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WCadjBMI_SNPadjSMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WCadjBMI.SNPadjSMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WCadjBMI_SNPadjSMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WCadjBMI.SNPadjSMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Active_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.ACTIVE.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Active_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.ACTIVE.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Active_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.ACTIVE.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Active_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.ACTIVE.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Active_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.ACTIVE.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Active_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.ACTIVE.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Inactive_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.INACTIVE.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Inactive_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.INACTIVE.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Inactive_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.INACTIVE.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Inactive_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.INACTIVE.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Inactive_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.INACTIVE.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_Inactive_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.INACTIVE.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_NonSMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_NonSMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_NonSMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_NonSMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_NonSMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_NonSMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Stratified_Model/WHRadjBMI.StratifiedBySMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_Stratified_SMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjPA_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.SNPadjPA.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjPA_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.SNPadjPA.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjPA_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.SNPadjPA.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjPA_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.SNPadjPA.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjPA_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.SNPadjPA.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjPA_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WHRadjBMI.SNPadjPA.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjSMK_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WHRadjBMI.SNPadjSMK.CombinedSexes.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjSMK_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WHRadjBMI.SNPadjSMK.CombinedSexes.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjSMK_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WHRadjBMI.SNPadjSMK.Men.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjSMK_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WHRadjBMI.SNPadjSMK.Men.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjSMK_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WHRadjBMI.SNPadjSMK.Women.AllAncestry.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WHRadjBMI_SNPadjSMK_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_adjSMK/WHRadjBMI.SNPadjSMK.Women.EuropeanOnly.txt
+        - !Scalar
+          value: *GIANT_2017_adjSMK_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Active_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.ACTIVE.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Active_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.ACTIVE.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Active_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.ACTIVE.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Active_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.ACTIVE.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Active_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.ACTIVE.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Active_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.ACTIVE.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Inactive_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.INACTIVE.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Inactive_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.INACTIVE.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Inactive_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.INACTIVE.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Inactive_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.INACTIVE.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Inactive_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.INACTIVE.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_Inactive_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.INACTIVE.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_SNPadjPA_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.SNPadjPA.ALL.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_SNPadjPA_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.SNPadjPA.ALL.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_SNPadjPA_Men_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.SNPadjPA.MEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_SNPadjPA_Men_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.SNPadjPA.MEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_SNPadjPA_Women_AllAncestry:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.SNPadjPA.WOMEN.AllAncestry.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_2017_WaistAdjBMI_SNPadjPA_Women_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/2017_Gene_Physical_Activity_Interaction/WAISTadjBMI.SNPadjPA.WOMEN.European.txt.gz
+        - !Scalar
+          value: *GIANT_2017_physical_activity_PARAMETERS__
+      GIANT_HEIGHT:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HEIGHT/GIANT_HEIGHT_Wood_et_al_2014_publicrelease_HapMapCeuFreq.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_2_PARAMETERS__
+      GIANT_HIP_Combined_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HIP/GIANT_2015_HIP_COMBINED_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_HIP_Combined_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HIP/GIANT_2015_HIP_COMBINED_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_HIP_Females_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HIP/GIANT_2015_HIP_FEMALES_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_HIP_Females_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HIP/GIANT_2015_HIP_FEMALES_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_HIP_Males_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HIP/GIANT_2015_HIP_MALES_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_HIP_Males_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/HIP/GIANT_2015_HIP_MALES_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WC_Combined_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WC/GIANT_2015_WC_COMBINED_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WC_Combined_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WC/GIANT_2015_WC_COMBINED_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WC_Females_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WC/GIANT_2015_WC_FEMALES_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WC_Females_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WC/GIANT_2015_WC_FEMALES_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WC_Males_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WC/GIANT_2015_WC_MALES_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WC_Males_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WC/GIANT_2015_WC_MALES_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_ALT_PARAMETERS__
+      GIANT_WHR_Combined_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WHR/GIANT_2015_WHR_COMBINED_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_WHR_PARAMETERS__
+      GIANT_WHR_Combined_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WHR/GIANT_2015_WHR_COMBINED_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_WHR_PARAMETERS__
+      GIANT_WHR_Females_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WHR/GIANT_2015_WHR_FEMALES_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_WHR_PARAMETERS__
+      GIANT_WHR_Females_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WHR/GIANT_2015_WHR_FEMALES_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_WHR_PARAMETERS__
+      GIANT_WHR_Males_All_Ancestries:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WHR/GIANT_2015_WHR_MALES_AllAncestries.txt.gz
+        - !Scalar
+          value: *GIANT_WHR_PARAMETERS__
+      GIANT_WHR_Males_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GIANT/WHR/GIANT_2015_WHR_MALES_EUR.txt.gz
+        - !Scalar
+          value: *GIANT_WHR_PARAMETERS__
+      GLGC_Mc_HDL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GLGC/jointGwasMc_HDL.txt.*
+        - !Scalar
+          value: *GLGC_PARAMETERS__
+      GLGC_Mc_LDL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GLGC/jointGwasMc_LDL.txt.*
+        - !Scalar
+          value: *GLGC_PARAMETERS__
+      GLGC_Mc_TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GLGC/jointGwasMc_TG*
+        - !Scalar
+          value: *GLGC_PARAMETERS__
+      GPC-NEO-AGREEABLENESS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GPC/GPC-1.NEO-AGREEABLENESS.full.txt.gz
+        - !Scalar
+          value: *GPC_PARAMETERS__
+      GPC-NEO-CONSCIENTIOUSNESS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GPC/GPC-1.NEO-CONSCIENTIOUSNESS.full.txt.gz
+        - !Scalar
+          value: *GPC_PARAMETERS__
+      GPC-NEO-EXTRAVERSION:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GPC/GPC-1.NEO-EXTRAVERSION.full.txt.gz
+        - !Scalar
+          value: *GPC_PARAMETERS__
+      GPC-NEO-NEUROTICISM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GPC/GPC-1.NEO-NEUROTICISM.full.txt.gz
+        - !Scalar
+          value: *GPC_PARAMETERS__
+      GPC-NEO-OPENNESS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GPC/GPC-1.NEO-OPENNESS.full.txt.gz
+        - !Scalar
+          value: *GPC_PARAMETERS__
+      GUGC_Gout:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GUGC/Gout/.*txt
+        - !Scalar
+          value: *GUGC_PARAMETERS__
+      GUGC_UA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: GUGC/UA/.*txt
+        - !Scalar
+          value: *GUGC_PARAMETERS__
+      HRGene_HeartRate:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: HRGene/.*txt
+        - !Scalar
+          value: *HRGene_PARAMETERS__
+      Hom_et_al_2008_SystemicLupusErythematosus:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Hom_et_al_2008/.*dbGAP\.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      Hunter_et_al_2007_BreastCancer:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Hunter_et_al_2007/.*dbGAP\.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      IBD.EUR.Crohns_Disease:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IBD/EUR.CD.gwas.assoc.*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      IBD.EUR.Inflammatory_Bowel_Disease:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IBD/EUR.IBD.gwas.assoc.*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      IBD.EUR.Ulcerative_Colitis:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IBD/EUR.UC.gwas.assoc.*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      IGAP:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IGAP/IGAP_stage_1.txt.gz
+        - !Scalar
+          value: *IGAP_PARAMETERS__
+      IGROWTH:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IGROWTH/1000GP.*gz
+        - !Scalar
+          value: *IGROWTH_PARAMETERS__
+      IHGC_Any_Migraine:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IHGC/Any_Migraine/.*txt
+        - !Scalar
+          value: *IHGC_PARAMETERS__
+      IHGC_Migraine_with_Aura:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IHGC/Migraine_with_Aura/.*txt
+        - !Scalar
+          value: *IHGC_PARAMETERS__
+      IHGC_Migraine_without_Aura:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IHGC/Migraine_without_Aura/.*txt
+        - !Scalar
+          value: *IHGC_PARAMETERS__
+      ILAE_All_epilepsies:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ILAE/All_epilepsies/.*txt.gz
+        - !Scalar
+          value: *ILAE_PARAMETERS__
+      ILAE_Focal_epilepsy:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ILAE/Focal_epilepsy/.*txt.gz
+        - !Scalar
+          value: *ILAE_PARAMETERS__
+      ILAE_Genetic_generalised_epilepsy:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ILAE/Genetic_generalised_epilepsy/.*txt.gz
+        - !Scalar
+          value: *ILAE_PARAMETERS__
+      IMMUNOBASE_Celiac_disease_hg19:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IMMUNOBASE/cel_hg19/.*txt
+        - !Scalar
+          value: *IMMUNOBASE_PARAMETERS__
+      IMMUNOBASE_Multiple_sclerosis_hg19:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IMMUNOBASE/ms_hg19/.*txt
+        - !Scalar
+          value: *IMMUNOBASE_PARAMETERS__
+      IMMUNOBASE_Systemic_lupus_erythematosus_hg19:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IMMUNOBASE/sle_hg19/.*txt
+        - !Scalar
+          value: *IMMUNOBASE_PARAMETERS__
+      IPSCSG_Primary_sclerosing_cholangitis:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: IPSCSG/ipscsg2016.result.combined.full.with_header.txt
+        - !Scalar
+          value: *IPSCSG_PARAMETERS__
+      ISGC_Malik_2016_METASTROKE_CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Malik_2016/metastroke.ce.chr.bp
+        - !Scalar
+          value: *ISGC_3_PARAMETERS__
+      ISGC_Malik_2016_METASTROKE_LVD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Malik_2016/metastroke.lvd.chr.bp
+        - !Scalar
+          value: *ISGC_3_PARAMETERS__
+      ISGC_Malik_2016_METASTROKE_SVD:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Malik_2016/metastroke.svd.chr.bp
+        - !Scalar
+          value: *ISGC_3_PARAMETERS__
+      ISGC_Malik_2016_METASTROKE_all_strokes:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Malik_2016/metastroke.all.chr.bp
+        - !Scalar
+          value: *ISGC_3_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cardioembolic_stroke_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScCEmajor.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cardioembolic_stroke_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScCEmajor.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cardioembolic_stroke_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScCEmajor.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cardioembolic_stroke_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScCEmajor.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScCRYPTCE.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_EUR
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_HIS
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/ISGC_SiGN_2015_CCSc_cryptogenic_and_CE_minor_all_ethnicities
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_incomplete_and_inconclusive_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScINCUNC.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_incomplete_and_inconclusive_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScINCUNC.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_incomplete_and_inconclusive_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScINCUNC.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_incomplete_and_inconclusive_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScINCUNC.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_large_artery_atherosclerosis_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScLAA.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_large_artery_atherosclerosis_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScLAA.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_large_artery_atherosclerosis_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScLAA.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_large_artery_atherosclerosis_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScLAA.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_small_artery_occlusion_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScSAO.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_small_artery_occlusion_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScSAO.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_small_artery_occlusion_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScSAO.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_small_artery_occlusion_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScSAO.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_undetermined_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScUNDETER.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_undetermined_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScUNDETER.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_undetermined_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScUNDETER.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSc_undetermined_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCScUNDETER.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cardioembolic_stroke_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCEmajincl.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cardioembolic_stroke_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCEmajincl.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cardioembolic_stroke_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCEmajincl.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cardioembolic_stroke_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCEmajincl.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cryptogenic_inclusive_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cryptogenic_inclusive_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cryptogenic_inclusive_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_cryptogenic_inclusive_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_large_artery_atherosclerosis_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_large_artery_atherosclerosis_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_large_artery_atherosclerosis_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_large_artery_atherosclerosis_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpCryptoincl.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_small_artery_occlusion_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpSAOmajincl.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_small_artery_occlusion_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpSAOmajincl.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_small_artery_occlusion_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpSAOmajincl.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_CCSp_small_artery_occlusion_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_CCS/stroke.meta_analysis.CCSpSAOmajincl.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_cardioembolic_stroke_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastCE.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_cardioembolic_stroke_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastCE.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_cardioembolic_stroke_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastCE.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_cardioembolic_stroke_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastCE.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_large_artery_atherosclerosis_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastLAA.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_large_artery_atherosclerosis_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastLAA.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_large_artery_atherosclerosis_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastLAA.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_large_artery_atherosclerosis_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastLAA.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_small_artery_occlusion_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastSAO.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_small_artery_occlusion_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastSAO.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_small_artery_occlusion_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastSAO.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_small_artery_occlusion_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastSAO.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_undetermined_stroke_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastUNDETER.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_undetermined_stroke_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastUNDETER.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_undetermined_stroke_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastUNDETER.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_TOAST_undetermined_stroke_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_toast/stroke.meta_analysis.toastUNDETER.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_all_strokes_AFR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_all_stroke/stroke.meta_analysis.allstroke.AFR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_all_strokes_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_all_stroke/stroke.meta_analysis.allstroke.EUR.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_all_strokes_HIS:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_all_stroke/stroke.meta_analysis.allstroke.HIS.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_SiGN_2015_all_strokes_all_ethnicities:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/SiGN_2015_all_stroke/stroke.meta_analysis.allstroke.all.out
+        - !Scalar
+          value: *ISGC_2_PARAMETERS__
+      ISGC_Traylor_2012_Cardioembolic_stroke:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Traylor_2012/METAANALYSIS1_CE.TBL
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGC_Traylor_2012_Ischaemic_stroke:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Traylor_2012/METAANALYSIS1_IS.TBL
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGC_Traylor_2012_Left_ventricular_dysfunction_related_stroke:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Traylor_2012/METAANALYSIS1_LVD.TBL
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGC_Traylor_2012_Small_vessel_disease_related_stroke:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Traylor_2012/METAANALYSIS1_SVD.TBL
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGC_Woo_2014_All_intracerebral_hemorrhages:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Woo_2014/ICH_GWAS_phase1_finalresults_allICH
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGC_Woo_2014_Deep_intracerebral_hemorrhages:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Woo_2014/ICH_GWAS_phase1_finalresults_deepICH
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGC_Woo_2014_Lobar_intracerebral_hemorrhages:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGC/Woo_2014/ICH_GWAS_phase1_finalresults_lobarICH
+        - !Scalar
+          value: *ISGC_1_PARAMETERS__
+      ISGS_IschemicStroke:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ISGS/.*dbGAP\.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      Jones_et_al_2016_Chronotype:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Jones_et_al_2016/Chronotype/.*txt.gz
+        - !Scalar
+          value: *Jones_et_al_2016_PARAMETERS__
+      Jones_et_al_2016_SleepDuration:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Jones_et_al_2016/SleepDuration/.*txt.gz
+        - !Scalar
+          value: *Jones_et_al_2016_PARAMETERS__
+      Kilpelainen_et_al_2016_Leptin_AdjBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Kilpelainen_et_al_2016/Leptin_Adjusted_by_BMI/.*txt
+        - !Scalar
+          value: *Kilpelainen_et_al_2016_PARAMETERS__
+      Kilpelainen_et_al_2016_Leptin_NotAdjBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Kilpelainen_et_al_2016/Leptin_Not_Adjusted_by_BMI/.*txt
+        - !Scalar
+          value: *Kilpelainen_et_al_2016_PARAMETERS__
+      LiH_et_al_2008_Alzheimer:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: LiH_et_al_2008/.*dbGAP\.txt
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      LuY_et_al_2016_BodyFat:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: LuY_et_al_2016/.*txt
+        - !Scalar
+          value: *ANGST_PARAMETERS__
+      MAGIC_2hrGlucose_AdjustedForBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_2hrGlucose.*
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_FastingGlucose:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/dupuis/MAGIC_FastingGlucose.*
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_HbA1C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_HbA1C.*
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_AUCins:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_AUCins_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_AUCins_AUCgluc:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_AUCins_AUCgluc_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_CIR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_CIR_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_CIR_ISI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_CIR_ISI_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_DI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_DI_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_ISI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_ISI_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_Incr30:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_Incr30_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_Ins30:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_Ins30_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_INSULIN_SECRETION_HMrel27_Ins30_BMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_InsulinSecretion_data_release_May2014/MAGIC_INSULIN_SECRETION_Ins30_BMI_for_release_HMrel27.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_ISI_AdjAgeSex:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/ISI_2017/MAGIC_ISI_Model_1_AgeSexOnly.txt
+        - !Scalar
+          value: *MAGIC_ISI_PARAMETERS__
+      MAGIC_ISI_AdjAgeSexBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/ISI_2017/MAGIC_ISI_Model_2_AgeSexBMI.txt
+        - !Scalar
+          value: *MAGIC_ISI_PARAMETERS__
+      MAGIC_ISI_JMA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/ISI_2017/MAGIC_ISI_Model_3_JMA.txt
+        - !Scalar
+          value: *MAGIC_ISI_PARAMETERS__
+      MAGIC_LN_FastingProinsulin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_ln_fastingProinsulin.txt.gz
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_Manning_et_al_FastingGlucose_Interaction:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Manning_et_al/MAGIC_Manning_et_al_FastingGlucose_Interaction.*
+        - !Scalar
+          value: *MAGIC_MANNING_INTERACTION_EFFECTS_PARAMETERS__
+      MAGIC_Manning_et_al_FastingGlucose_MainEffect:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Manning_et_al/MAGIC_Manning_et_al_FastingGlucose_MainEffect.*
+        - !Scalar
+          value: *MAGIC_MANNING_MAIN_EFFECT_PARAMETERS__
+      MAGIC_Manning_et_al_lnFastingInsulin_Interaction:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Manning_et_al/MAGIC_Manning_et_al_lnFastingInsulin_Interaction.*
+        - !Scalar
+          value: *MAGIC_MANNING_INTERACTION_EFFECT_PARAMETERS__
+      MAGIC_Manning_et_al_lnFastingInsulin_MainEffect:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Manning_et_al/MAGIC_Manning_et_al_lnFastingInsulin_MainEffect.*
+        - !Scalar
+          value: *MAGIC_MANNING_MAIN_EFFECT_PARAMETERS__
+      MAGIC_Scott_et_al_2hGlu:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Metabochip_Public_data_release_25Jan/MAGIC_Scott_et_al_2hGlu_Jan2013.txt.gz
+        - !Scalar
+          value: *MAGIC_SCOTT_PARAMETERS__
+      MAGIC_Scott_et_al_FG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Metabochip_Public_data_release_25Jan/MAGIC_Scott_et_al_FG_Jan2013.txt.gz
+        - !Scalar
+          value: *MAGIC_SCOTT_PARAMETERS__
+      MAGIC_Scott_et_al_FI_Jan2013:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Metabochip_Public_data_release_25Jan/MAGIC_Scott_et_al_FI_Jan2013.txt.gz
+        - !Scalar
+          value: *MAGIC_SCOTT_PARAMETERS__
+      MAGIC_Scott_et_al_FI_adjBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/MAGIC_Metabochip_Public_data_release_25Jan/MAGIC_Scott_et_al_FI_adjBMI_Jan2013.txt.gz
+        - !Scalar
+          value: *MAGIC_SCOTT_PARAMETERS__
+      MAGIC_ln_FastingInsulin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/dupuis/MAGIC_ln_FastingInsulin.*
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_ln_HOMA-B:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/dupuis/MAGIC_ln_HOMA-B.*
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGIC_ln_HOMA-IR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGIC/dupuis/MAGIC_ln_HOMA-IR.*
+        - !Scalar
+          value: *MAGIC_PARAMETERS__
+      MAGNETIC_AcAce:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/AcAce/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Ace:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Ace/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Ala:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Ala/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Alb:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Alb/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_ApoA1:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/ApoA1/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_ApoB:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/ApoB/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Bis.DB.ratio:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Bis.DB.ratio/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Bis.FA.ratio:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Bis.FA.ratio/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_CH2.DB.ratio:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/CH2.DB.ratio/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_CH2.in.FA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/CH2.in.FA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Cit:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Cit/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Crea:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Crea/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_DB.in.FA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/DB.in.FA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_DHA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/DHA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Est.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Est.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_FALen:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/FALen/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_FAw3:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/FAw3/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_FAw6:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/FAw6/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_FAw79S:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/FAw79S/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Free.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Free.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Glc:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Glc/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Gln:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Gln/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Glol:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Glol/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Gly:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Gly/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Gp:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Gp/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_HDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_HDL.D:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/HDL.D/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_His:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/His/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_IDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_IDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_IDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_IDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_IDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_IDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/IDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Ile:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Ile/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.HDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.HDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.HDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.HDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.HDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.HDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.HDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.LDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.LDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.LDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.LDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.LDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.LDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.LDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_L.VLDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/L.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_LA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/LA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_LDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_LDL.D:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/LDL.D/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Lac:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Lac/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Leu:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Leu/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.HDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.HDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.HDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.HDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.HDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.HDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.HDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.LDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.LDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.LDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.LDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.LDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.LDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_M.VLDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/M.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_MUFA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/MUFA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_PC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/PC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Phe:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Phe/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Pyr:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Pyr/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.HDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.HDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.HDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.HDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.LDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.LDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.LDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.LDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.LDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.LDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.VLDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.VLDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.VLDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.VLDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.VLDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_S.VLDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/S.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_SM:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/SM/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Serum.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Serum.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Serum.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Serum.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Tot.FA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Tot.FA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_TotPG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/TotPG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Tyr:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Tyr/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Urea:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Urea/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_VLDL.D:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/VLDL.D/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_Val:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/Val/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.C:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.C/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.CE:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.CE/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.FC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.FC/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.HDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.HDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.VLDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.VLDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.VLDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XL.VLDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XL.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XS.VLDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XS.VLDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XS.VLDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XS.VLDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XS.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XXL.VLDL.L:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.L/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XXL.VLDL.P:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.P/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XXL.VLDL.PL:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.PL/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_XXL.VLDL.TG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/XXL.VLDL.TG/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_bOHBut:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/bOHBut/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      MAGNETIC_otPUFA:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: MAGNETIC/otPUFA/.*txt.gz
+        - !Scalar
+          value: *MAGNETIC_PARAMETERS__
+      Olfson_et_al_2012_AlcoholDependency:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Olfson_et_al_2012/.*txt.gz
+        - !Scalar
+          value: *DUERR_PARAMETERS__
+      Pilling_et_al_2016_fathers_age_death:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Pilling_et_al_2016/.*txt
+        - !Scalar
+          value: *Pilling_fathers_age_death_PARAMETERS__
+      Pilling_et_al_2016_mothers_age_death:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Pilling_et_al_2016/.*txt
+        - !Scalar
+          value: *Pilling_mothers_age_death_PARAMETERS__
+      Pilling_et_al_2016_parents_age_death:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Pilling_et_al_2016/.*txt
+        - !Scalar
+          value: *Pilling_parents_age_death_PARAMETERS__
+      Pilling_et_al_2016_top_1_percent:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Pilling_et_al_2016/.*txt
+        - !Scalar
+          value: *Pilling_top_1_percent_PARAMETERS__
+      Pilling_et_al_2017_Red_blood_cells_width_distribution:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Pilling_et_al_2017/UKB_150K.Pilling_2017.RDW_GWAS.txt.gz
+        - !Scalar
+          value: *Pilling_et_al_2017_PARAMETERS__
+      QIMR_GIS_Log10Ferritin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/GIS/Log10Ferritin_Benyamin_NatCom_2014.txt
+        - !Scalar
+          value: *QIMR_GIS_PARAMETERS__
+      QIMR_GIS_Serum_iron:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/GIS/Iron_Benyamin_NatCom_2014.txt
+        - !Scalar
+          value: *QIMR_GIS_PARAMETERS__
+      QIMR_GIS_Transferrin:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/GIS/Transferrin_Benyamin_NatCom_2014.txt
+        - !Scalar
+          value: *QIMR_GIS_PARAMETERS__
+      QIMR_GIS_Transferrin_saturation:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/GIS/Saturation_Benyamin_NatCom_2014.txt
+        - !Scalar
+          value: *QIMR_GIS_PARAMETERS__
+      QIMR_HMG_Cu_in_blood:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/HMG/Cu_autosomes.txt
+        - !Scalar
+          value: "--column_map SNP id --column_map A2 non_effect_allele --column_map A1 effect_allele --column_map Effect beta --column_map SE se --column_map p-value pvalue"
+      QIMR_HMG_Se_ALSPAC_in_blood:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/HMG/Se_ALSPAC_autosomes.txt
+        - !Scalar
+          value: "--column_map SNP id --column_map OTHER_ALLELE non_effect_allele --column_map EFFECT_ALLELE effect_allele --column_map BETA beta --column_map SE se --column_map p-value pvalue"
+      QIMR_HMG_Se_QIMR_in_blood:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/HMG/Se_QIMR_autosomes.txt
+        - !Scalar
+          value: "--column_map SNP id --column_map A2 non_effect_allele --column_map A1 effect_allele --column_map Effect beta --column_map SE se --column_map p-value pvalue"
+      QIMR_HMG_Zn_in_blood:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: QIMR/HMG/Zn_autosomes.txt
+        - !Scalar
+          value: "--column_map SNP id --column_map A2 non_effect_allele --column_map A1 effect_allele --column_map Effect beta --column_map SE se --column_map p-value pvalue"
+      RA_GWASmeta2_20090505:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: RA/RA_GWASmeta2_20090505-results.txt.*
+        - !Scalar
+          value: "--column_map meta_OR or --column_map meta_2tP pvalue --column_map major_al non_effect_allele --column_map minor_al effect_allele --column_map SNP id --column_map meta_z zscore"
+      RA_OKADA_ASIAN:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: RA_OKADA/RA_GWASmeta_Asian_v2.*
+        - !Scalar
+          value: *RA_PARAMETERS__
+      RA_OKADA_EUR:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: RA_OKADA/RA_GWASmeta_European_v2.*
+        - !Scalar
+          value: *RA_PARAMETERS__
+      RA_OKADA_TRANS_ETHNIC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: RA_OKADA/RA_GWASmeta_TransEthnic_v2.*
+        - !Scalar
+          value: *RA_PARAMETERS__
+      ReproGen_Menarche:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ReproGen/Menarche_2014/.*txt
+        - !Scalar
+          value: *ReproGen_Menarche_2014_PARAMETERS__
+      ReproGen_Menarche_2017_1kG:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ReproGen/Menarche_2017/Menarche_1KG_NatGen2017_WebsiteUpload.txt
+        - !Scalar
+          value: *ReproGen_Menarche_2017_PARAMETERS__
+      ReproGen_Menopause:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: ReproGen/Menopause_2015/.*txt
+        - !Scalar
+          value: *ReproGen_Menopause_2015_PARAMETERS__
+      SSGAC_Age_At_First_Birth_Female:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/ReproductiveBehavior_2016/AgeFirstBirth_Female.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Reproductive_Behavior_PARAMETERS__
+      SSGAC_Age_At_First_Birth_Male:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/ReproductiveBehavior_2016/AgeFirstBirth_Male.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Reproductive_Behavior_PARAMETERS__
+      SSGAC_Age_At_First_Birth_Pooled:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/ReproductiveBehavior_2016/AgeFirstBirth_Pooled.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Reproductive_Behavior_PARAMETERS__
+      SSGAC_CHIC:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/CHIC_Summary_Benyamin2014.txt.gz
+        - !Scalar
+          value: "--column_map SNP id --column_map A2 non_effect_allele --column_map A1 effect_allele --column_map EFFECT_A1 beta --column_map P pvalue"
+      SSGAC_College:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/SSGAC_College_Rietveld2013_publicrelease.txt.gz
+        - !Scalar
+          value: "--column_map MarkerName id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map OR or --column_map Pvalue pvalue"
+      SSGAC_Depressive_Symptoms:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/SWB_Neuroticisim_and_DS_2016/DS_Full.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Education_Years:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/SSGAC_EduYears_Rietveld2013_publicrelease.txt.gz
+        - !Scalar
+          value: "--column_map MarkerName id --column_map Other_Allele non_effect_allele --column_map Effect_Allele effect_allele --column_map Beta beta --column_map Pvalue pvalue"
+      SSGAC_Education_Years_Discovery_5000snps:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/EducationalAttainment_2016/EduYears_Discovery_5000.txt
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Education_Years_Female:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/EducationalAttainment_2016/EduYears_Main_Women.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Education_Years_Male:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/EducationalAttainment_2016/EduYears_Main_Men.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Education_Years_Pooled:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/EducationalAttainment_2016/EduYears_Main.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Education_Years_Pooled_5000snps:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/EducationalAttainment_2016/EduYears_Pooled_5000.txt
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Neuroticism:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/SWB_Neuroticisim_and_DS_2016/Neuroticism_Full.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Number_Children_Ever_Born_Female:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/ReproductiveBehavior_2016/NumberChildrenEverBorn_Female.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Reproductive_Behavior_PARAMETERS__
+      SSGAC_Number_Children_Ever_Born_Male:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/ReproductiveBehavior_2016/NumberChildrenEverBorn_Male.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Reproductive_Behavior_PARAMETERS__
+      SSGAC_Number_Children_Ever_Born_Pooled:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/ReproductiveBehavior_2016/NumberChildrenEverBorn_Pooled.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Reproductive_Behavior_PARAMETERS__
+      SSGAC_Subjective_Well_Being:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/SWB_Neuroticisim_and_DS_2016/SWB_Full.txt.gz
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SSGAC_Subjective_Well_Being_10000snps:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SSGAC/SWB_Neuroticisim_and_DS_2016/SWB_10K.txt
+        - !Scalar
+          value: *SSGAC_2016_Other_PARAMETERS__
+      SimonSanchez_et_al_2009_Parkinson:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: SimonSanchez_et_al_2009/dbGAP.*txt
+        - !Scalar
+          value: "--column_map SNP_ID id --column_map Allele1 non_effect_allele --column_map Allele2 effect_allele --column_map Odds_ratio or --column_map P-value pvalue"
+      Wood_et_al_2017_Acute_insuline_response:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_AIR.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Acute_insuline_response_adjSI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_AIR_adj_SI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Acute_insuline_response_adj_BMI_and_SI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_AIR_adj_BMI_and_SI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Disposition_index:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_DI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Disposition_index_adjBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_DI_adj_BMI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Insulin_secretion_rate:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_ISR.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Insulin_secretion_rate_adjBMI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_ISR_adj_BMI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Peak_insuline_response:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_PEAK.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Peak_insuline_response_adjSI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_PEAK_adj_SI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      Wood_et_al_2017_Peak_insuline_response_adj_BMI_and_SI:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: Wood_et_al_2017/Wood_et_al_2017_PEAK_adj_BMI_and_SI.txt.gz
+        - !Scalar
+          value: *Wood_et_al_2017_PARAMETERS__
+      pgc.adhd:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/ADHD/.*gz
+        - !Scalar
+          value: *PGC2_ADHD_PARAMETERS__
+      pgc.aut.euro:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/AUT/.*gz
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      pgc.bip.clump.2012-04:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/BIP/pgc.bip.clump.2012-04*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.bip.full.2012-04:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/BIP/pgc.bip.full.2012-04*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.cross.ADD4.2013-05:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/CROSS/pgc.cross.ADD4.2013-05.*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.cross.AUT8.2013-05:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/CROSS/pgc.cross.AUT8.2013-05.*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.cross.BIP11.2013-05:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/CROSS/pgc.cross.BIP11.2013-05.*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.cross.MDD9.2013-05:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/CROSS/pgc.cross.MDD9.2013-05.*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.cross.SCZ17.2013-05:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/CROSS/pgc.cross.SCZ17.2013-05.*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.cross.full.2013-03:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/CROSS/pgc.cross.full.2013-03.*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.mdd.clump.2012-04:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/MDD/pgc.mdd.clump.2012-04*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.mdd.full.2012-04:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/MDD/pgc.mdd.full.2012-04*
+        - !Scalar
+          value: *PGC_PARAMETERS__
+      pgc.scz2:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/SCZ2/scz2.snp.results.*
+        - !Scalar
+          value: *PGC2_SCZ2_PARAMETERS__
+      pgc_poly_add_scz.clumped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/SCORING/poly_add_scz.clumped*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      pgc_poly_aut_bip.clumped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/SCORING/poly_aut_bip.clumped*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      pgc_poly_bip_scz.clumped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/SCORING/poly_bip_scz.clumped*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      pgc_poly_mdd_scz.clumped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/SCORING/poly_mdd_scz.clumped*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      pgc_poly_scz_bip.clumped:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: PGC/SCORING/poly_scz_bip.clumped*
+        - !Scalar
+          value: *PLINK_PARAMETERS__
+      tag.cpd.tbl:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: TAG/tag.cpd.tbl.*
+        - !Scalar
+          value: *PGC_TAG_PARAMETERS__
+      tag.evrsmk.tbl:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: TAG/tag.evrsmk.tbl.*
+        - !Scalar
+          value: *PGC_TAG_PARAMETERS__
+      tag.former.tbl:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: TAG/tag.former.tbl.*
+        - !Scalar
+          value: *PGC_TAG_PARAMETERS__
+      tag.logonset.tbl:
+        - !Scalar
+          prefix: "--gwas_file"
+          value: TAG/tag.logonset.tbl.*
+        - !Scalar
+          value: *PGC_TAG_PARAMETERS__
