@@ -1,0 +1,4 @@
+---
+spec:
+  '6': { memory: 10gb, walltime: "48:00:00" }
+  __default: { memory: 4gb, walltime: "04:00:00" }

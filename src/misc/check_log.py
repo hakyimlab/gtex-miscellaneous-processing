@@ -29,8 +29,8 @@ def run(args):
     helpers.ensure_requisite_folders(args.output)
     r.to_csv(args.output, sep="\t", index=False)
 
-    if args.resubmit:
-        helpers.resubmit(r)
+    if args.resubmit or args.resubmit_log_only:
+        helpers.resubmit(r, args.resubmit_log_only)
 
 if __name__ == "__main__":
     import argparse
@@ -44,6 +44,7 @@ if __name__ == "__main__":
     parser.add_argument("-output", help="Path where the output will be saved", default="job_log.txt")
     parser.add_argument("-parsimony", help="Log verbosity level. 1 is everything being logged. 10 is only high level messages, above 10 will hardly log anything", default = 10, type=int)
     parser.add_argument("--resubmit", help="wether to submit missing jobs", action="store_true")
+    parser.add_argument("--resubmit_log_only", help="wether to submit missing jobs", action="store_true")
     #parser.add_argument("--serialize_local", help="If resubmitting job, just run locally", action="store_true", default=False)
     #parser.add_argument("--log_file", help="On top of everything else, save to a file")
 

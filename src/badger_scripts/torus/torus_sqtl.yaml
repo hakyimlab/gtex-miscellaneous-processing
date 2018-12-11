@@ -4,8 +4,8 @@ definitions:
   template: torus.jinja
 
   default_arguments:
-    job_memory: "9q0gb"
-    job_walltime: "96:00:00"
+    job_memory: "100gb"
+    job_walltime: "48:00:00"
     logs_folder: logs_torus_sqtl
 
   submission:

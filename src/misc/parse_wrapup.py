@@ -10,7 +10,7 @@ def _to_sec(s):
     return sum(x * int(t) for x, t in zip([3600, 60, 1], s.split(":")))
 
 def run(args):
-    r = re.compile(args.logs_regexp)
+    r = re.compile(args.name_subfield_regexp)
     subfield_names = [x[0] for x in args.name_subfield]
     subfield_position = [int(x[1]) for x in args.name_subfield]
     subfield_regexp = re.compile(args.name_subfield_regexp)

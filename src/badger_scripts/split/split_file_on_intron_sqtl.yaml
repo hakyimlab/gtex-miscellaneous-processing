@@ -1,0 +1,52 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/split_file_on_genes.py"
+  template: split_file_on_genes.jinja
+
+
+  default_arguments:
+    job_memory: "2gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs
+    n_cpu: 1
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    intron_annotation: &INTRON_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/intron_annotation.txt.gz
+    sqtl_folder: &SQTL_FOLDER_K /gpfs/data/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results ] || mkdir -p results'
+
+
+arguments:
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *INTRON_ANNOTATION_K }
+  - !Scalar { name: splits, prefix: "-splits", value: "80" }
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "8" }
+
+  - !FilesInFolder
+    name: input
+    prefix: -input
+    sort: true
+    folder: *SQTL_FOLDER_K
+    regexp_filter: "(.*).allpairs.txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name } ]
+
+  - !ArgumentFromMetadata
+    name: output_format
+    prefix: "-output_format"
+    prepend: "results"
+    format_rule: "{tissue}__{{}}_{{}}.tyxt.gz"
+    sources: [ {path: tissue/name, destination: tissue } ]
+
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}__eqtl_split"
+    sources: [ {path: tissue/name, destination: tissue} ]

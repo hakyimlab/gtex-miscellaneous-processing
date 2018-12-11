@@ -1,10 +1,11 @@
 library(readr)
 library(dplyr)
 
-
-I <- "gtex_v8_eur_filtered_frequency.txt.gz"
-O <- "gtex_v8_eur_selected_variants.txt"
-F <- 0.01
+args = commandArgs(trailingOnly=TRUE)
+I <- args[1]
+O <- args[2]
+A <- args[3]
+F <- as.double(args[4])
 
 metadatize_ <- function(d) {
     message("Building metadata")
@@ -12,21 +13,26 @@ metadatize_ <- function(d) {
     d %>% mutate(chromosome = gsub(r_, "\\1", variant)) %>%
         mutate(position = as.integer(gsub(r_, "\\2", variant))) %>%
         mutate(non_effect_allele = gsub(r_, "\\3", variant)) %>%
-        mutate(effect_allele = gsub(r_, "\\4", variant))
+        mutate(effect_allele = gsub(r_, "\\4", variant)) %>%
+        rename(id=variant)
 }
 
 order_ <- function(d) {
     d %>% mutate(chr = as.integer(gsub("chr","", chromosome))) %>%
         arrange(chr, position) %>%
-        select(-chr)
+        select(chromosome, position, id, allele_0, allele_1, allele_1_frequency, rsid)
 }
 
-message("loading")
-
+message("loading input")
 d <- read_tsv(I)
 message("Loaded ", nrow(d), " entries")
 
 d <- d %>% metadatize_()
+
+message("Loading snp annotation")
+a <- read_tsv(A, col_types=cols_only(variant_id="c", rs_id_dbSNP150_GRCh38p7="c")) %>% rename(variant_id=id,  rs_id_dbSNP150_GRCh38p7=rsid)
+message("Loaded")
+d <- d %>% inner_join(a, by="id")
 
 d <- d %>% filter((F<frequency) & (frequency<(1-F)))
 message("Kept ", nrow(d), " variants after MAF filter")

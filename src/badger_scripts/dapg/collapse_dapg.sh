@@ -2,7 +2,7 @@
 #PBS -M mundoconspam@gmail.com
 #PBS -m a
 #PBS -S /bin/bash
-#PBS -l walltime=24:00:00
+#PBS -l walltime=4:00:00
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=4gb
 #PBS -o logs/${PBS_JOBNAME}.o${PBS_JOBID}.log
@@ -13,10 +13,12 @@ module load python/3.5.3
 
 cd $PBS_O_WORKDIR
 
-python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/collapse_folder_files.py \
+python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/collapse_folder_files.py \
 -rule "(.*)_chr*" \
--input_folder /scratch/abarbeira3/v8_process/dapg/results/dapg_maf0.01_w1000000 \
+-input_folder /scratch/abarbeira3/v8_process/dapg/sqtl/results/dapg_maf0.01_w1000000 \
 -output_folder results/collapsed_dapg_maf0.01_w1000000 \
 --reentrant \
---move \
 -parsimony 8
+
+--exclude Muscle_Skeletal_chr6_9 \
+#--move \

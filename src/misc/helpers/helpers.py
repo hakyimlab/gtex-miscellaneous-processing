@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 import re
+import numpy
 
 import subprocess
 import time
@@ -33,9 +34,12 @@ def check_present(path, token):
                 break
     return present
 
-def resubmit(r):
+def resubmit(r, resubmit_log_only=False):
     r = r[r.complete == False].drop_duplicates()
     for t in r.itertuples():
+        if resubmit_log_only and not (type(t.log_path) == str and len(t.log_path) > 1):
+            continue
+
         if t.complete == False:
             logging.info("Resubmitting %s", t.job_name)
             subprocess.call(["qsub", t.job_path])

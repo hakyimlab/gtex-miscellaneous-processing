@@ -1,0 +1,50 @@
+---
+definitions:
+  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/slice_gwas_by_region.py
+
+  template: slice_gwas_by_region.jinja
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "3:00:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
+    region_file: &REGION_FILE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
+    results_folder: &RESULTS_FOLDER results
+
+  pre_command:
+  - '[ -d results ] || mkdir -p results'
+
+arguments:
+  - !FilesInFolder
+    name: gwas_file
+    prefix: -gwas_file
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "imputed_(.*).txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: gwas/tag
+
+  - !Scalar {name: region_file, prefix: "-region_file", value: *REGION_FILE }
+
+  - !Scalar {name: parsimony, prefix: "-parsimony", value: 8 }
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "sliced_{study}.txt.gz"
+    sources: [ { path: gwas/tag, destination: study } ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "sliced_{study}"
+    sources: [ { path: gwas/tag, destination: study } ]

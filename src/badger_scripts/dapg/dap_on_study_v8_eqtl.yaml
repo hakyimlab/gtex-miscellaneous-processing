@@ -88,7 +88,7 @@ arguments:
     name: intermediate_folder
     prefix: "-intermediate_folder"
     prepend: "scratch_dapg"
-    format_rule: "{tissue}_{chromosome}"
+    format_rule: "{tissue}_chr{chromosome}"
     sources: [
       {path: tissue/name, destination: tissue},
       {path: job/chromosome, destination: chromosome}

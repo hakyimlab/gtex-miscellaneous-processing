@@ -3,6 +3,7 @@ __author__ = "alvaro barbeira"
 
 import gzip
 import numpy
+import sys
 
 def run(input_file, output_file):
     print("Opening {}".format(input_file))
@@ -22,4 +23,4 @@ def run(input_file, output_file):
 
 if __name__ == "__main__":
     #run("gtex_v8_afr_shapeit2_phased_maf01.txt.gz", "gtex_v8_afr_shapeit2_phased_maf01_snps.txt.gz")
-    run("gtex_v8_eur_filtered.txt.gz", "gtex_v8_eur_filtered_frequency.txt.gz")
+    run(sys.argv[1], sys.argv[2])

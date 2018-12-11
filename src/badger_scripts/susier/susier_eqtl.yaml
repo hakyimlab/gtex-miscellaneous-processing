@@ -6,7 +6,7 @@ definitions:
   copy_to_item: true
 
   default_arguments:
-    job_memory: "16gb"
+    job_memory: "32gb"
     job_walltime: "72:00:00"
     logs_folder: logs
     n_cpu: 1

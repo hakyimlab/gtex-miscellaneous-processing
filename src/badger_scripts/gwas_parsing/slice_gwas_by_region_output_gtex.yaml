@@ -1,23 +1,23 @@
 ---
 definitions:
-  command: python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/slice_gwas_by_region.py
+  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/slice_gwas_by_region.py
 
   template: slice_gwas_by_region.jinja
   default_arguments:
     job_memory: "32gb"
-    job_walltime: "3:00:00"
-    logs_folder: logs
+    job_walltime: "4:00:00"
+    logs_folder: logs_gtex_format
 
   submission:
     !PBSQueue
-      jobs_folder: jobs
+      jobs_folder: jobs_gtex_format
       job_name_key: job_name
       #fake_submission: true
 
   constants:
-    gwas_folder: &GWAS_FOLDER /group/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38
-    region_file: &REGION_FILE /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
-    results_folder: &RESULTS_FOLDER results
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
+    region_file: &REGION_FILE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
+    results_folder: &RESULTS_FOLDER results_gtex_format
 
   pre_command:
   - '[ -d results ] || mkdir -p results'
@@ -34,6 +34,8 @@ arguments:
         path: gwas/tag
 
   - !Scalar {name: region_file, prefix: "-region_file", value: *REGION_FILE }
+
+  - !Scalar {name: output_format, prefix: "--output_format", value: "gtex_eqtl" }
 
   - !Scalar {name: parsimony, prefix: "-parsimony", value: 8 }
 
