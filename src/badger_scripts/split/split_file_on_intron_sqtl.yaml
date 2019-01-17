@@ -18,8 +18,8 @@ definitions:
 
   constants:
     intron_annotation: &INTRON_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/intron_annotation.txt.gz
-    sqtl_folder: &SQTL_FOLDER_K /gpfs/data/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations
-
+    sqtl_folder: &SQTL_FOLDER_K /gpfs/data/gtex-group/v8/63881/gtex/exchange/GTEx_phs000424/exchange/analysis_releases/GTEx_Analysis_2017-06-05_v8/sqtl/GTEx_Analysis_v8_sQTL_all_associations
+    results_folder: &RESULTS_FOLDER_K results
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
   - '[ -d results ] || mkdir -p results'
@@ -35,18 +35,18 @@ arguments:
     prefix: -input
     sort: true
     folder: *SQTL_FOLDER_K
-    regexp_filter: "(.*).allpairs.txt.gz"
+    regexp_filter: "(.*).v8.sqtl_allpairs.txt.gz"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name } ]
 
   - !ArgumentFromMetadata
     name: output_format
     prefix: "-output_format"
-    prepend: "results"
-    format_rule: "{tissue}__{{}}_{{}}.tyxt.gz"
+    prepend: *RESULTS_FOLDER_K
+    format_rule: "{tissue}__{{}}_{{}}.txt.gz"
     sources: [ {path: tissue/name, destination: tissue } ]
 
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{tissue}__eqtl_split"
+    format_rule: "{tissue}__sqtl_split"
     sources: [ {path: tissue/name, destination: tissue} ]

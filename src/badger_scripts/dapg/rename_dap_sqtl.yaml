@@ -1,0 +1,51 @@
+---
+definitions:
+  command:  ''
+
+  template: rename_dap_for_enloc.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_rename
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_rename
+      job_name_key: job_name
+      fake_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER results/collapsed_dapg_maf0.01_w1000000
+    input_folder: &OUTPUT_FOLDER results/enloc_ready_maf0.01_w1000000
+
+  pre_command:
+  - '[ -d results/enloc_ready_maf0.01_w1000000 ] || mkdir -p results/enloc_ready_maf0.01_w1000000'
+
+arguments:
+  - !FilesInFolder
+    name: input_folder
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*)"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue
+
+  - !Scalar { name: stem, value: '"intron{}"' }
+
+  - !ArgumentFromMetadata
+    name: output_folder
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{tissue}"
+    sources: [ {path: tissue, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: output_key_list
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{tissue}_key_list.txt.gz"
+    sources: [ {path: tissue, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "rename_{tissue}"
+    sources: [ { path: tissue, destination: tissue } ]

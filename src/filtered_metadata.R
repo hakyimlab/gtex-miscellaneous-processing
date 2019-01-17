@@ -6,6 +6,10 @@ I <- args[1]
 O <- args[2]
 A <- args[3]
 F <- as.double(args[4])
+# I <- "gtex_v8_all_frequency.txt.gz"
+# O <- "gtex_v8_all_selected_variants.txt"
+# A <- "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz"
+# F <- 0.01
 
 metadatize_ <- function(d) {
     message("Building metadata")
@@ -30,7 +34,9 @@ message("Loaded ", nrow(d), " entries")
 d <- d %>% metadatize_()
 
 message("Loading snp annotation")
-a <- read_tsv(A, col_types=cols_only(variant_id="c", rs_id_dbSNP150_GRCh38p7="c")) %>% rename(variant_id=id,  rs_id_dbSNP150_GRCh38p7=rsid)
+a <- read_tsv(A, col_types=cols_only(variant_id="c", rs_id_dbSNP150_GRCh38p7="c")) %>% 
+    rename(id=variant_id,  rsid=rs_id_dbSNP150_GRCh38p7) %>%
+    mutate(rsid= ifelse(rsid==".", NA, rsid))
 message("Loaded")
 d <- d %>% inner_join(a, by="id")
 

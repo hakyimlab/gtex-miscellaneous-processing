@@ -1,0 +1,66 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/run_torus.py"
+  template: torus.jinja
+
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "16:00:00"
+    logs_folder: logs_torus
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    variants_metadata: &VARIANTS_METADATA_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    gene_annotation: &GENE_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/gencode.v26.annotation.gtf.gz
+    torus: &TORUS_K /gpfs/data/im-lab/nas40t2/abarbeira/software/dap/torus_src/torus
+    gwas_folder: &GWAS_FOLDER_K /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
+    frequency: &FREQUENCY 0.01
+    format_rule: &FORMAT_RULE_K "gwasv8_torus_maf0.01_{tissue}"
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '([ -d results/torus_prior ] || mkdir -p results/torus_prior) && ([ -d torus_scratch ] || mkdir -p torus_scratch)'
+
+
+arguments:
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *GENE_ANNOTATION_K }
+
+  - !Scalar { name: snp_annotation, prefix: -snp_annotation_from_parquet_metadata, value: *VARIANTS_METADATA_K }
+
+  - !Scalar { name: frequency_filter, prefix: -frequency_filter, value: *FREQUENCY }
+
+  - !Scalar { name: torus_command, prefix: "-torus_command", value: *TORUS_K }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "8" }
+
+  - !FilesInFolder
+    name: eqtl
+    prefix: -eqtl
+    sort: true
+    folder: *EQTL_FOLDER_K
+    regexp_filter: "(.*).allpairs.txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name } ]
+
+  - !ArgumentFromMetadata
+    name: intermediate_folder
+    prefix: "-intermediate_folder"
+    prepend: "torus_scratch"
+    format_rule: "{tissue}"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: output_folder
+    prefix: "-output_folder"
+    prepend: "results/torus_prior"
+    format_rule: "{tissue}"
+    sources: [ {path: tissue/name, destination: tissue } ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: *FORMAT_RULE_K
+    sources: [ {path: tissue/name, destination: tissue} ]

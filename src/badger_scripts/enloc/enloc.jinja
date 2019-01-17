@@ -10,7 +10,7 @@
 #PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
 #PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
 
-#cd $PBS_O_WORKDIR
+cd $PBS_O_WORKDIR
 
 module load gcc/6.2.0
 module load gsl/2.3
@@ -31,8 +31,13 @@ printf "trait\t{{ gwas_name }}\n" >> $1
 printf "use_openmp\t0\n" >> $1
 }
 
-mkdir {{ output_folder }}
+[ -d {{ output_folder }} ] || mkdir -p {{ output_folder }}
 
 {% raw %}create_config{% endraw %} {{ output_folder }}/enloc.params
 
-# perl {{ bin }}/enloc {{ output_folder }}/enloc.params
+perl {{ bin }}/enloc {{ output_folder }}/enloc.params
+mv {{ output_folder }}/{{ gwas_name}}.enloc.rst {{ output_folder }}/../{{output_key}}.enloc.rst
+mv {{ output_folder }}/{{ gwas_name}}.enrich.est {{ output_folder }}/../{{output_key}}.enrich.est
+rm -rf {{ output_folder }}
+
+>&2 echo "Finished job."

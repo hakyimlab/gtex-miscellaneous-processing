@@ -156,7 +156,7 @@ definitions:
 
       GIANT_2016_PARAMETERS : &GIANT_2016_PARAMETERS_K
         -output_column_map SNPNAME variant_id -output_column_map REF non_effect_allele -output_column_map ALT effect_allele
-        -output_column_map BETA effect_size -output_column_map se standard_error -output_column_map Pvalue pvalue
+        -output_column_map beta effect_size -output_column_map se standard_error -output_column_map Pvalue pvalue
 
       GIANT_2017_Stratified_NonSMK_PARAMETERS : &GIANT_2017_Stratified_NonSMK_PARAMETERS_K
         -output_column_map rs_id variant_id -output_column_map Other_allele non_effect_allele -output_column_map Effect_allele effect_allele
@@ -266,6 +266,7 @@ definitions:
         -output_column_map Effect effect_size -output_column_map StdErr standard_error -output_column_map P-value pvalue
 
       ISGC_2_PARAMETERS : &ISGC_2_PARAMETERS_K
+        -separator ANY_WHITESPACE
         -output_column_map SNP variant_id -output_column_map A2 non_effect_allele -output_column_map A1 effect_allele
         -output_column_map BETA_RANDOM effect_size -output_column_map SE_RANDOM standard_error -output_column_map P_RANDOM pvalue
         -output_column_map HAPMAP_A1_FREQ frequency
@@ -436,8 +437,8 @@ definitions:
         -skip_until_header $'SNP_ID\tP-value\tChrID\tChrPosition\tSubmitted_SNP_ID\tss2rs\trs2genome\tAllele1\tAllele2\tpHWE_case\tpHWE_ctrl\tCallRate_case\tCallRate_ctrl\tOdds_ratio\tCI_low\tCI_high'
 
       iCOGS_AFR_overallBC_PARAMETERS : &iCOGS_AFR_overallBC_PARAMETERS_K
-        -output_column_map 1KG_Phase1_ID variant_id -output_column_map a0 non_effect_allele -output_column_map a1 effect_allele
-        -output_column_map icogs1_african_risk_beta effect_size -output_column_map icogs1_asian_risk_se standard_error -output_column_map icogs1_asian_risk_P1df pvalue
+        -output_column_map phase1_1kg_id variant_id -output_column_map a0 non_effect_allele -output_column_map a1 effect_allele
+        -output_column_map bcac_icogs1_african_risk_beta effect_size -output_column_map bcac_icogs1_african_risk_se standard_error -output_column_map bcac_icogs1_african_risk_P1df pvalue
         -output_column_map icogs1_african_eaf frequency
 
       iCOGS_ASIAN_ERnegBC_PARAMETERS : &iCOGS_ASIAN_ERnegBC_PARAMETERS_K
@@ -1164,7 +1165,7 @@ arguments:
           value: BCAC/icogs_bcac_public_results_african.txt.gz
         - !Scalar
           value: *iCOGS_AFR_overallBC_PARAMETERS_K
-      BCAC_Overall_BreastCancer_AFR_imputed:
+      BCAC_Overall_BreastCancer_AFR_genotyped:
         - !Scalar
           prepend: *GWAS_FOLDER
           prefix: "-gwas_file"
@@ -2190,6 +2191,10 @@ arguments:
         - !Scalar
           value: *PLINK_PARAMETERS_K
       GIANT_2016_Height_AFR:
+#        - !MetadataOperation
+#          metadata_rules:
+#            - !SaveToMetadata { key: "gwas/fill_from_snp_info", value: "hg19" }
+#            - !SaveToMetadata { key: "gwas/liftover_from", value: "hg19" }
         - !Scalar
           prepend: *GWAS_FOLDER
           prefix: "-gwas_file"

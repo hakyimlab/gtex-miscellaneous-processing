@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/slice_gwas_by_region.py
+  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/slice_gwas_by_region.py
 
   template: slice_gwas_by_region.jinja
   default_arguments:
@@ -46,5 +46,5 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "sliced_{study}"
+    format_rule: "{study}_sliced"
     sources: [ { path: gwas/tag, destination: study } ]

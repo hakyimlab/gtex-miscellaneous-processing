@@ -1,0 +1,45 @@
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -S /bin/bash
+#PBS -l walltime={{job_walltime}}
+#PBS -l mem={{job_memory}}
+#PBS -l nodes=1:ppn=1
+
+#PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
+#PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
+
+module load gcc/6.2.0
+module load python/3.5.3
+
+
+{% raw %}cd $PBS_O_WORKDIR {% endraw %}
+
+python3 -c '
+import sys
+import os
+import shutil
+import pandas
+
+I = sys.argv[1]
+S = sys.argv[2]
+O = sys.argv[3]
+L = sys.argv[4]
+files = sorted(os.listdir(I))
+if not os.path.exists(O):
+  os.makedirs(O)
+
+r = []
+for i,f in enumerate(files):
+  if "_" not in f:
+    continue
+  name = f.split(".dap.txt")[0]
+  key = S.format(i+1)
+  r.append((key, name))
+  i = os.path.join(I, f)
+  o = os.path.join(O, key+".dap.txt")
+  shutil.copy2(i, o)
+
+r = pandas.DataFrame(r, columns=["key", "name"])
+r.to_csv(L, index=False, sep="\t", compression="gzip")
+' {{ input_folder }} {{ stem }} {{ output_folder }} {{ output_key_list }}
+#done
