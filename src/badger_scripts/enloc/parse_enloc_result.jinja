@@ -1,0 +1,43 @@
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -S /bin/bash
+#PBS -l walltime={{job_walltime}}
+#PBS -l mem={{job_memory}}
+#PBS -l nodes=1:ppn=1
+
+#PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
+#PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
+
+module load gcc/6.2.0
+module load python/3.5.3
+
+
+{% raw %}cd $PBS_O_WORKDIR {% endraw %}
+
+python3 -c '
+import sys
+import os
+import gzip
+
+I = sys.argv[1]
+O = sys.argv[2]
+K = sys.argv[3]
+
+print("Loading key")
+key={}
+with gzip.open(K) as f:
+  f.readline()
+  for l in f:
+    comps = l.decode().strip().split()
+    key[comps[0]] = comps[1]
+
+print("Processing file")
+with open(I) as _i:
+  with gzip.open(O, "w") as _o:
+    _o.write("gwas_locus\tmolecular_qtl_trait\tlocus_gwas_pip\tlocus_rcp\tlead_coloc_SNP\tlead_snp_scp\n".encode())
+    for l in _i:
+        comps = l.strip().split()
+        comps[1] = key[comps[1]]
+        _l = "{}\n".format("\t".join(comps))
+        _o.write(_l.encode())
+' {{ input }} {{ output }} {{ key }}

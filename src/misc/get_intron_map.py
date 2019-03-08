@@ -4,7 +4,7 @@ import os
 import gzip
 import sys
 I="/gpfs/data/gtex-group/v8/63881/gtex/exchange/GTEx_phs000424/exchange/analysis_releases/GTEx_Analysis_2017-06-05_v8/sqtl/GTEx_Analysis_v8_sQTL_all_associations"
-O="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map{}.txt.gz"
+O="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map/intron_gene_map{}.txt.gz"
 names = sorted([x for x in os.listdir(I) if "allpairs" in x])
 if len(sys.argv) > 1:
     names=[names[int(sys.argv[1]) -1 ]]
@@ -16,8 +16,9 @@ paths = map(lambda x: os.path.join(I,x), names)
 
 mapped=set()
 
+print("starting")
 with gzip.open(O, "w") as o_:
-    o_.write("intron_id\tgene_id\n".encode())
+    o_.write("intron_id\tgene_id\tchromosome\tstart\tend\n".encode())
     for p in paths:
         print(p)
         with gzip.open(p) as f:
@@ -26,8 +27,13 @@ with gzip.open(O, "w") as o_:
                 c = line.decode().split()[0]
                 comps = c.split(":")
                 intron = "intron_{}_{}_{}".format(comps[0].replace("chr",""), comps[1], comps[2])
-                if intron in mapped:
+                key="{}_{}".format(intron, comps[4])
+                if key in mapped:
                     continue
-                mapped.add(intron)
-                l = "{}\t{}\n".format(intron, comps[4]).encode()
+
+                mapped.add(key)
+                print("{}:{}".format(len(mapped), intron))
+
+                l = "{}\t{}\t{}\t{}\t{}\n".format(intron, comps[4], comps[0].replace("chr",""), comps[1], comps[2]).encode()
                 o_.write(l)
+print("done")

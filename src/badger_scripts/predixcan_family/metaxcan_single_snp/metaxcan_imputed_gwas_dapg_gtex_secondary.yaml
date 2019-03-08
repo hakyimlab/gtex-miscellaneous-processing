@@ -18,7 +18,7 @@ definitions:
 
   constants:
     model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/rbonazzola/GTEx/v8/models/1_snp_models/dap-g/ranked_by_beta/models
-    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38/
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
     results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_dapg_gtex_secondary
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
@@ -42,7 +42,7 @@ arguments:
 
   - !Scalar {name: single_snp_model, prefix: "--single_snp_model" }
 
-  - !Scalar {value: "--snp_column gtex_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+  - !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
 
   - !FilesInFolder
     name: model

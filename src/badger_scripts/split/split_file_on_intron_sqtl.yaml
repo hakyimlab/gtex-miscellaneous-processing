@@ -6,7 +6,7 @@ definitions:
 
   default_arguments:
     job_memory: "2gb"
-    job_walltime: "4:00:00"
+    job_walltime: "24:00:00"
     logs_folder: logs
     n_cpu: 1
 
@@ -29,6 +29,7 @@ arguments:
   - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *INTRON_ANNOTATION_K }
   - !Scalar { name: splits, prefix: "-splits", value: "80" }
   - !Scalar { name: parsimony, prefix: "-parsimony", value: "8" }
+  - !Scalar { name: key_conversion, prefix: "--key_conversion", value: "INTRON" }
 
   - !FilesInFolder
     name: input
@@ -49,4 +50,4 @@ arguments:
   - !ArgumentFromMetadata
     name: "job_name"
     format_rule: "{tissue}__sqtl_split"
-    sources: [ {path: tissue/name, destination: tissue} ]
+    sources: [ {path: tissue/name, destination: tissue} ]uploa

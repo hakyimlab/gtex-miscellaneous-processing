@@ -3,14 +3,16 @@ definitions:
   command: "#perl bin/enloc"
   template: enloc.jinja
 
+  copy_to_item: true
+
   default_arguments:
     job_memory: "32gb"
     job_walltime: "124:00:00"
-    logs_folder: logs_enloc
+    logs_folder: logs_enloc_b
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_enloc
+      jobs_folder: jobs_enloc_b
       job_name_key: job_name
       #fake_submission: true
 
@@ -26,8 +28,15 @@ definitions:
   pre_command:
   - '[ -d results ] || mkdir -p results'
 
+sub_configuration:
+  -
+    how: before_arguments
+    path: enloc_sqtl_tissue_spec.yaml
+
 arguments:
   - !Scalar { name: bin, value: *BIN_K }
+
+  - !Scalar { name: FOLDER, value: *OUTPUT_FOLDER_K }
 
   - !FilesInFolder
     name: gwas_path
@@ -44,6 +53,14 @@ arguments:
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
   #- !Whitelist { list_from_file: *WHITE_LIST, in_metadata_path: "tissue/name" }
+
+  - !ArgumentFromMetadata
+    {name: job_memory, sub_key: memory, options_from_metadata_path: __configuration/enloc_sqtl_tissue_info,
+    sources: [ {path: tissue/name} ]}
+
+  - !ArgumentFromMetadata
+    {name: job_walltime, sub_key: walltime, options_from_metadata_path: __configuration/enloc_sqtl_tissue_info,
+    sources: [ {path: tissue/name} ]}
 
   - !ArgumentFromMetadata
     name: output_key

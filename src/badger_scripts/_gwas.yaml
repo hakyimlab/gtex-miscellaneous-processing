@@ -3741,7 +3741,7 @@ arguments:
       ReproGen_Menarche_2017_1kG:
         - !Scalar
           prefix: "--gwas_file"
-          value: ReproGen/Menarche_2017/Menarche_1KG_NatGen2017_WebsiteUpload.txt
+          value: ReproGen/Menarche_2017/Menarche_1KG_NatGen2017_Website#PBS -o logs_u/${PBS_JOBNAME}.o${PBS_JOBID}.logUpload.txt
         - !Scalar
           value: *ReproGen_Menarche_2017_PARAMETERS__
       ReproGen_Menopause:

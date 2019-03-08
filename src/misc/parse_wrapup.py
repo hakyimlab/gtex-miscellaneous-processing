@@ -15,7 +15,7 @@ def run(args):
     subfield_position = [int(x[1]) for x in args.name_subfield]
     subfield_regexp = re.compile(args.name_subfield_regexp)
 
-    p = re.compile("Resources Used:\s+cput=(.*),vmem=(.*),walltime=(.*),mem=(.*)kb,energy_used=(.*)")
+    p = re.compile("Resources Used:\s+cput=(.*),vmem=(.*)kb,walltime=(.*),mem=(.*)kb,energy_used=(.*)")
 
     files = [x for x in os.listdir(args.logs_folder) if r.search(x)]
     r = []
@@ -37,15 +37,16 @@ def run(args):
             for line in f:
                 s = p.search(line)
                 if s:
-                    mem = int(s.group(4))/1024
+                    mem  = int(s.group(4))/1024
+                    vmem = int(s.group(2))/1024
                     walltime= _to_sec(s.group(3))
                     cputime = _to_sec(s.group(1))
-                    r_ = (file, mem,walltime,cputime)
+                    r_ = (file, mem, vmem, walltime,cputime)
                     if values:
                         r_ += values
                     r.append(r_)
 
-    r = pandas.DataFrame(r, columns=["name", "memory", "walltime", "cputime"] + subfield_names)
+    r = pandas.DataFrame(r, columns=["name", "memory", "v_memory", "walltime", "cputime"] + subfield_names)
     r.to_csv(args.output, sep="\t", index=False)
 
 if __name__ == "__main__":

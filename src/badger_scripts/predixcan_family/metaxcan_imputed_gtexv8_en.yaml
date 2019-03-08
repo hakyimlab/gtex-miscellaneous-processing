@@ -54,7 +54,7 @@ arguments:
   - !Scalar {name: extra, value: "--additional_output"}
 
   # note that the models were done with rsids, and the covariance files list rsids
-  #- !Scalar {value: "--snp_column gtex_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+  #- !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
   #- !Scalar {name: model_db_snp_key, prefix: "--model_db_snp_key", value: "varID" }
   #- !Scalar {name: keep_non_rsid, prefix: "--keep_non_rsid" }
 

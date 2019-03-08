@@ -1,0 +1,52 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/predixcan_model_from_twas_builder.py"
+  template: predixcan_model_from_twas_builder.jinja
+
+  copy_to_item: true
+
+  default_arguments:
+    job_memory: "8gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      fake_submission: true
+
+  constants:
+    twas_builder: &TWAS_BUILDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/twas_builder
+    snp_annotation: &SNP_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
+    gene_annotation: &GENE_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/gencode.v26.annotation.gtf.gz
+    output_folder: &OUTPUT resuls/models
+
+  pre_command:
+  - '[ -d results/models ] || mkdir -p results/models'
+
+arguments:
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+  - !Scalar { name: snp_annotation, prefix: "-snp_annotation", value: *SNP_ANNOTATION_K }
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *GENE_ANNOTATION_K }
+
+  - !FilesInFolder
+    name: input
+    prefix: "-input"
+    sort: true
+    folder: *TWAS_BUILDER_K
+    regexp_filter: "(.*).twb.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: "results/model"
+    format_rule: "{tissue}.db"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_twas_builder_model"
+    sources: [ {path: tissue/name, destination: tissue}]

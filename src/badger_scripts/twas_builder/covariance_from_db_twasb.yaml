@@ -1,0 +1,53 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/covariance_for_model.py"
+  template: covariance_from_db.jinja
+
+  copy_to_item: true
+
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "72:00:00"
+    logs_folder: logs_ld
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_ld
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    parquet_genotype: &PARQUET_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_maf0.01_biallelic
+    parquet_pattern: &PARQUET_PATTERN_K '"gtex_v8_itm.chr(\d+).variants.parquet"'
+    twas_builder: &TWAS_BUILDER_K /gpfs/data/im-lab/nas40t2/abarbeira/data/xqwen/twas_builder/dbs/BTWAS_DB_EGENE
+    output_folder: &OUTPUT results/covariances
+
+  pre_command:
+  - '[ -d results/covariances ] || mkdir -p results/covariances'
+
+arguments:
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+  - !Scalar { name: parquet_folder, prefix: "-parquet_genotype_folder", value: *PARQUET_FOLDER_K }
+  - !Scalar { name: parquet_pattern, prefix: "-parquet_genotype_pattern", value: *PARQUET_PATTERN_K }
+
+  - !FilesInFolder
+    name: model
+    prefix: "-model_db"
+    sort: true
+    folder: *TWAS_BUILDER_K
+    regexp_filter: "(.*).btwas.db"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT
+    format_rule: "{tissue}.txt.gz"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_twas_builder_covariance"
+    sources: [ {path: tissue/name, destination: tissue}]
+

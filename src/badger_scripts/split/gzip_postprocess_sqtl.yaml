@@ -1,0 +1,46 @@
+---
+definitions:
+  command: ""
+  template: gzip_postprocess.jinja
+
+
+  default_arguments:
+    job_memory: "2gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_pp
+    n_cpu: 1
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_pp
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    output_folder: &OUTPUT_FOLDER_K /scratch/abarbeira3/v8_process/sqtl_split/results_pp
+    input_folder: &INPUT_FOLDER_K /scratch/abarbeira3/v8_process/sqtl_split/results
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d /scratch/abarbeira3/v8_process/sqtl_split/results_pp ] || mkdir -p /scratch/abarbeira3/v8_process/sqtl_split/results_pp'
+
+
+arguments:
+
+  - !FilesInFolder
+    name: input
+    sort: true
+    folder: *INPUT_FOLDER_K
+    regexp_filter: "(.*).txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: name } ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prepend: *OUTPUT_FOLDER_K
+    format_rule: "{name}.txt.gz"
+    sources: [ {path: name, destination: name } ]
+
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{name}__pp"
+    sources: [ {path: name, destination: name} ]

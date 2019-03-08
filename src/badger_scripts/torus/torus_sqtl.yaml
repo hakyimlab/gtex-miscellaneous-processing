@@ -28,7 +28,7 @@ definitions:
 
 
 arguments:
-  - !Scalar { name: eqtl_mode, prefix: "-eqtl_mode", value: "SQTL" }
+  #- !Scalar { name: eqtl_mode, prefix: "-eqtl_mode", value: "SQTL" }
 
   - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *GENE_ANNOTATION_K }
 

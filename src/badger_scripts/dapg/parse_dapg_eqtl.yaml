@@ -1,0 +1,59 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/parse_dapg.py"
+  template: parse_dapg.jinja
+
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_parse_dapg_eqtl
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_dapg_eqtl
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    dapg_folder: &DAPG_FOLDER /scratch/abarbeira3/data/3rd/dapg/eqtl_u/
+    input_pattern: &INPUT_PATTERN '"(.*).fm.rst"'
+    whitelist: &WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_c.txt
+    output_folder: &OUTPUT_FOLDER results/parsed_dapg
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '([ -d results/parsed_dapg ] || mkdir -p results/parsed_dapg)'
+
+
+arguments:
+  - !FilesInFolder
+    name: input
+    prefix: "input"
+    sort: true
+    folder: *DAPG_FOLDER
+    regexp_filter: "(.*)"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  #- !Whitelist { list_from_file: *WHITE_LIST, in_metadata_path: "tissue/name" }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "8" }
+
+  - !Scalar { name: input_pattern, prefix: -input_pattern, value: *INPUT_PATTERN}
+
+  - !ArgumentFromMetadata
+    name: input_folder
+    prefix: "-input_folder"
+    prepend: *DAPG_FOLDER
+    format_rule: "{tissue}/fm_rst"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: output_prefix
+    prefix: "-output_prefix"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{tissue}"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_parse_gtexv8_dapg_eqtl"
+    sources: [ {path: tissue/name, destination: tissue} ]

@@ -1,0 +1,54 @@
+---
+definitions:
+  command:  ''
+
+  template: parse_enloc_result.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_parse
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse
+      job_name_key: job_name
+      fake_submission: true
+      #crude_submission: true
+
+  constants:
+    key_folder: &KEY_FOLDER /scratch/abarbeira3/v8_process/dapg/sqtl/results/enloc_ready_maf0.01_w1000000_list/
+    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/enloc/sqtl/results
+    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted
+
+  pre_command:
+  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted'
+
+arguments:
+  - !FilesInFolder
+    name: input
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*).enloc.rst"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: trait_tissue
+      - !ExtractFromValueWithRegexpMetadata
+        regexp: ".*__PM__(.*).enloc.rst"
+        path: tissue
+
+  - !ArgumentFromMetadata
+    name: key
+    prepend: *KEY_FOLDER
+    format_rule: "{tissue}_key_list.txt.gz"
+    sources: [ {path: tissue, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait_tissue}.enloc.rst.gz"
+    sources: [ {path: trait_tissue, destination: trait_tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "parse_enloc_{trait_tissue}"
+    sources: [ { path: trait_tissue, destination: trait_tissue } ]

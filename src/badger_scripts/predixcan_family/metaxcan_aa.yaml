@@ -18,8 +18,8 @@ definitions:
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/formatted_gwas_hg38_1.2
-    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/predictdb_pipeline_skdas/model_training/results
-    covariance_folder: &COVARIANCE_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/predictdb_pipeline_skdas/model_training/results
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/african_american_cohort_skdas/predictdb_pipeline_skdas/model_training/results/
+    covariance_folder: &COVARIANCE_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/african_american_cohort_skdas/predictdb_pipeline_skdas/model_training/results/
     results_folder: &RESULTS_FOLDER results/sp_aa
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
@@ -59,7 +59,7 @@ arguments:
   - !Scalar {name: extra, value: "--additional_output"}
 
   # note that the models were done with rsids, and the covariance files list rsids
-  #- !Scalar {value: "--snp_column gtex_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+  #- !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
   #- !Scalar {name: model_db_snp_key, prefix: "--model_db_snp_key", value: "varID" }
   #- !Scalar {name: keep_non_rsid, prefix: "--keep_non_rsid" }
 

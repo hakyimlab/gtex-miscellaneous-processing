@@ -1,0 +1,100 @@
+---
+enloc_sqtl_tissue_info:
+  Adipose_Subcutaneous:
+    { walltime: "25:00:00", memory: "15gb" }
+  Adipose_Visceral_Omentum:
+    { walltime: "26:00:00", memory: "16gb" }
+  Adrenal_Gland:
+    { walltime: "26:00:00", memory: "18gb" }
+  Artery_Aorta:
+    { walltime: "26:00:00", memory: "16gb" }
+  Artery_Coronary:
+    { walltime: "27:00:00", memory: "20gb" }
+  Artery_Tibial:
+    { walltime: "25:00:00", memory: "14gb" }
+  Brain_Amygdala:
+    { walltime: "23:00:00", memory: "29gb" }
+  Brain_Anterior_cingulate_cortex_BA24:
+    { walltime: "22:00:00", memory: "23gb" }
+  Brain_Caudate_basal_ganglia:
+    { walltime: "25:00:00", memory: "20gb" }
+  Brain_Cerebellar_Hemisphere:
+    { walltime: "29:00:00", memory: "22gb" }
+  Brain_Cerebellum:
+    { walltime: "28:00:00", memory: "20gb" }
+  Brain_Cortex:
+    { walltime: "23:00:00", memory: "19gb" }
+  Brain_Frontal_Cortex_BA9:
+    { walltime: "23:00:00", memory: "22gb" }
+  Brain_Hippocampus:
+    { walltime: "23:00:00", memory: "23gb" }
+  Brain_Hypothalamus:
+    { walltime: "24:00:00", memory: "23gb" }
+  Brain_Nucleus_accumbens_basal_ganglia:
+    { walltime: "23:00:00", memory: "22gb" }
+  Brain_Putamen_basal_ganglia:
+    { walltime: "23:00:00", memory: "21gb" }
+  Brain_Spinal_cord_cervical_c-1:
+    { walltime: "25:00:00", memory: "27gb" }
+  Brain_Substantia_nigra:
+    { walltime: "24:00:00", memory: "33gb" }
+  Breast_Mammary_Tissue:
+    { walltime: "23:00:00", memory: "17gb" }
+  Cells_Cultured_fibroblasts:
+    { walltime: "21:00:00", memory: "15gb" }
+  Cells_EBV-transformed_lymphocytes:
+    { walltime: "23:00:00", memory: "23gb" }
+  Colon_Sigmoid:
+    { walltime: "24:00:00", memory: "17gb" }
+  Colon_Transverse:
+    { walltime: "22:00:00", memory: "17gb" }
+  Esophagus_Gastroesophageal_Junction:
+    { walltime: "23:00:00", memory: "17gb" }
+  Esophagus_Mucosa:
+    { walltime: "21:00:00", memory: "14gb" }
+  Esophagus_Muscularis:
+    { walltime: "21:00:00", memory: "14gb" }
+  Heart_Atrial_Appendage:
+    { walltime: "22:00:00", memory: "15gb" }
+  Heart_Left_Ventricle:
+    { walltime: "19:00:00", memory: "13gb" }
+  Kidney_Cortex:
+    { walltime: "23:00:00", memory: "25gb" }
+  Liver:
+    { walltime: "20:00:00", memory: "17gb" }
+  Lung:
+    { walltime: "23:00:00", memory: "15gb" }
+  Minor_Salivary_Gland:
+    { walltime: "27:00:00", memory: "27gb" }
+  Muscle_Skeletal:
+    { walltime: "18:00:00", memory: "12gb" }
+  Nerve_Tibial:
+    { walltime: "24:00:00", memory: "17gb" }
+  Ovary:
+    { walltime: "26:00:00", memory: "23gb" }
+  Pancreas:
+    { walltime: "20:00:00", memory: "14gb" }
+  Pituitary:
+    { walltime: "25:00:00", memory: "19gb" }
+  Prostate:
+    { walltime: "24:00:00", memory: "21gb" }
+  Skin_Not_Sun_Exposed_Suprapubic:
+    { walltime: "22:00:00", memory: "15gb" }
+  Skin_Sun_Exposed_Lower_leg:
+    { walltime: "23:00:00", memory: "15gb" }
+  Small_Intestine_Terminal_Ileum:
+    { walltime: "26:00:00", memory: "25gb" }
+  Spleen:
+    { walltime: "24:00:00", memory: "17gb" }
+  Stomach:
+    { walltime: "22:00:00", memory: "16gb" }
+  Testis:
+    { walltime: "33:00:00", memory: "29gb" }
+  Thyroid:
+    { walltime: "23:00:00", memory: "17gb" }
+  Uterus:
+    { walltime: "26:00:00", memory: "29gb" }
+  Vagina:
+    { walltime: "27:00:00", memory: "31gb" }
+  Whole_Blood:
+    { walltime: "12:00:00", memory: "10gb" }
