@@ -1,0 +1,38 @@
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -S /bin/bash
+#PBS -l walltime={{job_walltime}}
+#PBS -l mem={{job_memory}}
+#PBS -l nodes=1:ppn=1
+
+#PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
+#PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
+
+{% raw %}cd $PBS_O_WORKDIR {% endraw %}
+
+#python3 -c '
+#import sys
+#import os
+#import gzip
+#import re
+#
+#I = sys.argv[1]
+#O = sys.argv[2]
+#
+#r = re.compile("(.+/)?(ENSG.*)")
+#print("Processing file")
+#with gzip.open(I) as _i:
+#  header = _i.readline()
+#  with gzip.open(O, "w") as _o:
+#    _o.write(header)
+#    for l in _i:
+#        line = l.decode()
+#        line = r.sub("\\2",line).encode()
+#        _o.write(line)
+#print("Done")
+#' {{ input }} {{ output }}
+
+#module load gcc/6.2.0
+#module load python/3.5.3
+
+zcat {{ input }} | sed 's/\(.*\)?\(ENSG*\)/\2/' | gzip > {{ output }}

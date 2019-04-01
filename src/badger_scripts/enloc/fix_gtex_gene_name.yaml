@@ -1,0 +1,44 @@
+---
+definitions:
+  command:  ''
+
+  template: fix_gtex_gene_name.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "00:05:00"
+    logs_folder: logs_parse
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse
+      job_name_key: job_name
+      #fake_submission: true
+      crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /scratch/abarbeira3/data/3rd/enloc
+    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/data/3rd/enloc_fixed
+
+  pre_command:
+  - '[ -d /scratch/abarbeira3/data/3rd/enloc_fixed ] || mkdir -p /scratch/abarbeira3/data/3rd/enloc_fixed'
+
+arguments:
+  - !FilesInFolder
+    name: input
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*)_output.txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: trait_tissue
+
+  - !ArgumentFromMetadata
+    name: output
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait_tissue}_output.txt.gz"
+    sources: [ {path: trait_tissue, destination: trait_tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "parse_enloc_{trait_tissue}"
+    sources: [ { path: trait_tissue, destination: trait_tissue } ]

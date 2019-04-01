@@ -18,15 +18,16 @@ definitions:
 
   constants:
     dap_g: &DAP_G_K /gpfs/data/im-lab/nas40t2/abarbeira/software/dap/dap_src/dap-g
-    intron_annotation: &INTRON_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/intron_annotation.txt.gz
+    intron_annotation: &INTRON_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map_gtex/annotation_intron_gene_map_gtex.txt.gz
     output_folder: &OUTPUT resuls/dapg
     scratch_folder: &SCRATCH resuls/dapg
-    torus_root: &TORUS /scratch/abarbeira3/v8_process/torus/sqtl/results/torus_prior
-    splicing_root: &SPLICING /scratch/abarbeira3/data/model_training_to_parquet/splicing
+    torus_root: &TORUS /scratch/abarbeira3/v8_process/sqtl/torus/results/torus_prior
+     #/scratch/abarbeira3/v8_process/torus/sqtl/results/torus_prior
+    splicing_root: &SPLICING /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/splicing
     sub_batches: &SUB_BATCHES 40
 
-    genotype_pattern: &GENOTYPE_PATTERN "/scratch/abarbeira3/data/model_training_to_parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
-    genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/data/model_training_to_parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
+    genotype_pattern: &GENOTYPE_PATTERN "/scratch/abarbeira3/data/parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/data/parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
     #genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
     whitelist: &WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_b.txt
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
@@ -108,7 +109,8 @@ arguments:
     regexp_filter: "(.*).splicing.parquet"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
-  - !Whitelist { list_from_file: *WHITE_LIST, in_metadata_path: "tissue/name" }
+  - !Whitelist { name: "only_wb", from_list: ["Testis"], in_metadata_path: "tissue/name"}
+  #- !Whitelist { list_from_file: *WHITE_LIST, in_metadata_path: "tissue/name" }
 
   - !ArgumentFromMetadata
     name: priors_folder

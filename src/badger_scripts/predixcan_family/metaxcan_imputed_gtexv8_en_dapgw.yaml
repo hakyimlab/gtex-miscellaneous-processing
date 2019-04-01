@@ -7,22 +7,22 @@ definitions:
   default_arguments:
     job_memory: "2gb"
     job_walltime: "0:30:00"
-    logs_folder: logs_en_v8
+    logs_folder: logs_en_v8_dapgw
     n_cpu: "1"
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_en_v8
+      jobs_folder: jobs_en_v8_dapgw
       job_name_key: job_name
       #fake_submission: true
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models/
-    results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_en
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models/elastic_net_models_dapgw
+    results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_en_dapgw
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '[ -d results/sp_imputed_gwas_gtexv8_en ] || mkdir -p results/sp_imputed_gwas_gtexv8_en'
+  - '[ -d results/sp_imputed_gwas_gtexv8_en_dapgw ] || mkdir -p results/sp_imputed_gwas_gtexv8_en_dapgw'
 
 
 arguments:
@@ -39,14 +39,14 @@ arguments:
     prefix: --model_db_path
     sort: true
     folder: *MODEL_FOLDER
-    regexp_filter: "gtex_v8_(.*)_itm_signif.db"
+    regexp_filter: "dapgw_(.*).db"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: model/name } ]
 
   - !ArgumentFromMetadata
     name: covariance
     prefix: --covariance
     prepend: *MODEL_FOLDER
-    format_rule: "gtex_v8_{model_name}_itm_signif.txt.gz"
+    format_rule: "dapgw_{model_name}.txt.gz"
     sources: [ { path: model/name, destination: model_name} ]
 
   - !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}

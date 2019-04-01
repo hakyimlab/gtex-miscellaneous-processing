@@ -1,0 +1,50 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/post_process_model_training.py"
+
+  template: post_process_model.jinja
+
+  default_arguments:
+    job_memory: "16gb"
+    job_walltime: "24:00:00"
+    logs_folder: logs_pp
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_pp
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/results
+    tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
+
+    output_folder: &OUTPUT_FOLDER_K models
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d models ] || mkdir -p models'
+
+
+arguments:
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+
+  - !Range { name: tissue, file_list: *TISSUES_K,
+      metadata_rules: [ !SaveValueInMetadata { path: tissue/name } ]
+   }
+
+  - !ArgumentFromMetadata
+    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "dapgw_{tissue}",
+    sources: [ {path: tissue/name, destination: tissue} ]}
+
+  - !ArgumentFromMetadata
+    {name: input_prefix, prefix: "-output_prefix", prepend: *OUTPUT_FOLDER_K, format_rule: "dapgw_{tissue}",
+    sources: [ {path: tissue/name, destination: tissue} ]}
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_postprocess"
+    sources:
+    -
+      path: tissue/name
+      destination: tissue

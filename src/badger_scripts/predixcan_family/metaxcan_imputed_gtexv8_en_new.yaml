@@ -18,7 +18,7 @@ definitions:
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models/
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models_2/
     results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_en
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
@@ -39,14 +39,14 @@ arguments:
     prefix: --model_db_path
     sort: true
     folder: *MODEL_FOLDER
-    regexp_filter: "gtex_v8_(.*)_itm_signif.db"
+    regexp_filter: "(.*).db"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: model/name } ]
 
   - !ArgumentFromMetadata
     name: covariance
     prefix: --covariance
     prepend: *MODEL_FOLDER
-    format_rule: "gtex_v8_{model_name}_itm_signif.txt.gz"
+    format_rule: "{model_name}.txt.gz"
     sources: [ { path: model/name, destination: model_name} ]
 
   - !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}

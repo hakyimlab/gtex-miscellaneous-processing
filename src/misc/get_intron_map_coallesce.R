@@ -1,7 +1,7 @@
 library(dplyr)
 library(readr)
 
-FOLDER <- "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map"
+FOLDER <- "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map_gtex"
 names <- list.files(FOLDER)
 names <- names[grepl("intron_gene_map_",names)]
 logic <- data.frame(name = names, stringsAsFactors=FALSE) %>%

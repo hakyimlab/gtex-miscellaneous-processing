@@ -1,0 +1,53 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/regress_out_covariates.py"
+
+  template: regress.jinja
+
+  default_arguments:
+    job_memory: "16gb"
+    job_walltime: "24:00:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    data: &DATA_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/expression
+    covariate: &COVARIATE_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/covariates
+    output_folder: &OUTPUT_FOLDER_K results/regressed
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/regressed ] || mkdir -p results/regressed'
+
+
+arguments:
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+
+  - !FilesInFolder
+    name: data
+    prefix: "-data"
+    sort: true
+    folder: *DATA_K
+    regexp_filter: "(.*).expression.parquet"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue/name
+
+  - !ArgumentFromMetadata { name: covariate, prefix: "-covariate", prepend: *COVARIATE_FOLDER_K,
+      format_rule: "{tissue}.covariate.parquet", sources: [ {path: tissue/name, destination: tissue} ] }
+
+  - !ArgumentFromMetadata { name: output, prefix: "-output", prepend: *OUTPUT_FOLDER_K,
+      format_rule: "{tissue}.residual.expression.parquet", sources: [ {path: tissue/name, destination: tissue} ] }
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_regress"
+    sources:
+    -
+      path: tissue/name
+      destination: tissue

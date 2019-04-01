@@ -2,51 +2,48 @@
 definitions:
   command: "python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/SMulTiXcan.py"
 
-  template: smultixcan.jinja
+  template: smultixcan_mp.jinja
   default_arguments:
     job_memory: "10gb"
     job_walltime: "48:00:00"
-    logs_folder: logs_smp
+    logs_folder: logs_sm
     n_cpu: 1
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_smp
+      jobs_folder: jobs_sm
       job_name_key: job_name
-      #fake_submission: true
+      fake_submission: true
 
   constants:
-    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
+    metaxcan_results_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/milton/spredixcan_gtex_v8_on_neale2018
+    metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"(.*)-gtex_v8-(.*)-2018_10.csv"'
+    metaxcan_filter_pattern: &METAXCAN_FILTER_PATTERN '"{trait}-gtex_v8-(.*)-2018_10.csv"'
+
     models_folder: &MODELS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models
     models_name_pattern: &MODELS_NAME_PATTERN '"gtex_v8_(.*)_itm_signif.db"'
-    metaxcan_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan/results/sp_imputed_gwas_gtexv8_en
-    metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"spredixcan_igwas_gtexenv8_(.*)__PM__(.*).csv"'
-    metaxcan_filter_pattern: &METAXCAN_FILTER_PATTERN '"spredixcan_igwas_gtexenv8_{study}__PM__(.*).csv"'
+    snp_list: &SNP_LIST /gpfs/data/im-lab/milton/gtex_v8/gtex_v8-snps_intersection_with_ukb_neale2018.csv
+
     snp_covariance: &SNP_COVARIANCE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/covariance_builder/results/gtex_v8_snp_covariance.txt.gz
     cutoff_condition_number: &CUTOFF_CONDITION_NUMBER "30"
-    whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/kosher_whitelist.txt
+    whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/mp_wl.txt
 
-    results_folder: &RESULTS_FOLDER results/smp_v8
+    results_folder: &RESULTS_FOLDER results/sm
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '[ -d results/smp_v8 ] || mkdir -p results/smp_v8'
+  - '[ -d results/sm ] || mkdir -p results/sm'
 
 arguments:
-#  - !Range { name: study, file_list: *WHITELIST,
-#      metadata_rules: [ !SaveValueInMetadata { path: gwas/tag } ]
-#   }
-
   - !FilesInFolder
-    name: gwas_file
-    prefix: --gwas_file
+    name: tar
     sort: true
-    folder: *GWAS_FOLDER
-    regexp_filter: "imputed_(.*).txt.gz"
-    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: gwas/tag } ]
+    folder: *METAXCAN_FOLDER
+    regexp_filter: "(.*)-gtex_v8-2018_10.tar.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: trait } ]
 
-  - !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "gwas/tag" }
+  - !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "trait" }
 
-  - !Scalar { value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+  - !Scalar { name: cleared_snps, prefix: "--cleared_snps", value: *SNP_LIST }
 
   - !Scalar { name: models_folder, prefix: "--models_folder", value: *MODELS_FOLDER }
 
@@ -54,19 +51,25 @@ arguments:
 
   - !Scalar { name: snp_covariance, prefix: "--snp_covariance", value: *SNP_COVARIANCE }
 
-  - !Scalar { name: metaxcan_folder, prefix: "--metaxcan_folder", value: *METAXCAN_FOLDER }
-
   - !Scalar { name: metaxcan_file_name_parse_pattern, prefix: "--metaxcan_file_name_parse_pattern", value: *METAXCAN_FILE_NAME_PARSE_PATTERN }
 
   - !Scalar { name: cutoff_condition_number, prefix: "--cutoff_condition_number", value: *CUTOFF_CONDITION_NUMBER,
     metadata_rules: [ !SaveValueInMetadata { path: run/condition_number } ]
    }
 
+  - !ArgumentFromMetadata { name: trait, format_rule: "{trait}", sources: [ {path: trait, destination: trait} ] }
+
   - !ArgumentFromMetadata
     name: metaxcan_filter
     prefix: "--metaxcan_filter"
     format_rule: *METAXCAN_FILTER_PATTERN
-    sources: [ {path: gwas/tag, destination: study} ]
+    sources: [ {path: trait, destination: trait} ]
+
+  - !ArgumentFromMetadata
+    name: metaxcan_folder
+    prefix: "--metaxcan_folder"
+    format_rule: "{trait}"
+    sources: [ {path: trait, destination: trait} ]
 
   - !Scalar { name: verbosity, prefix: "--verbosity", value: "7" }
 
@@ -75,12 +78,12 @@ arguments:
     name: output
     prefix: "--output"
     prepend: *RESULTS_FOLDER
-    format_rule: "smultixcan_imputed_gwas_gtexelv8_{study}_ccn{condition_number}.txt"
-    sources: [ {path: gwas/tag, destination: study},
+    format_rule: "smultixcan_{trait}_ccn{condition_number}.txt"
+    sources: [ {path: trait, destination: trait},
                {path: run/condition_number, destination: condition_number }]
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "smultixcan_imputed_gwas_gtexelv8_{study}_ccn{condition_number}"
-    sources: [ {path: gwas/tag, destination: study},
+    format_rule: "smultixcan_{trait}_ccn{condition_number}"
+    sources: [ {path: trait, destination: trait},
                {path: run/condition_number, destination: condition_number }]

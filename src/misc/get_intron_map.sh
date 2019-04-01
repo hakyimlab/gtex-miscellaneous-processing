@@ -3,7 +3,7 @@
 #PBS -M mundoconspam@gmail.com
 #PBS -m a
 #PBS -S /bin/bash
-#PBS -l walltime=72:00:00
+#PBS -l walltime=04:00:00
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=2gb
 #PBS -o logs/${PBS_JOBNAME}.o${PBS_JOBID}.log
