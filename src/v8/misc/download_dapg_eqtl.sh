@@ -15,12 +15,14 @@ cd $PBS_O_WORKDIR
 # Meant to be run at destination folder
 
 module load gcc/6.2.0
-module load miniconda2
+module load python/2.7.13
 
-source activate numa_gc
+#source activate numa_gc
 mkdir -p dapg/eqtl
 gsutil cp gs://gtex-exchange/dapg/results_by_tissue/* dapg/eqtl
 
+cd dapg
+mkdir eqtl_u
 for filename in eqtl/*.tar.gz; do
     k="${filename%_dapg_files.tar.gz}"
     k="${k#*/}"

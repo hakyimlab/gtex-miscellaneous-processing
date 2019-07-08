@@ -7,11 +7,11 @@ definitions:
     job_memory: "4gb"
     job_walltime: "04:00:00"
     n_cpu: 1
-    logs_folder: logs
+    logs_folder: logs_ols
 
   submission:
     !PBSQueue
-      jobs_folder: jobs
+      jobs_folder: jobs_ols
       job_name_key: job_name
       #fake_submission: true
 
@@ -22,16 +22,18 @@ definitions:
     features_pattern: &FEATURES_PATTERN_K "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
     features_annotation: &FEATURES_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
     features_whitelist: &FEATURES_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz
-    features_weight_folder: &FEATURES_WEIGHT_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/parsed_dapg
 
-    sub_batches: &SUB_BATCHES_K 80
+    #WATCHOUT! GTEx runs, using all samples
+    features_weight_folder: &FEATURES_WEIGHT_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/parsed_dapg_gtexruns
 
-    output_folder: &OUTPUT results
+    sub_batches: &SUB_BATCHES_K 15
+
+    output_folder: &OUTPUT results_ols
 
     whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/wb_white_list.txt
 
   pre_command:
-  - '([ -d results] || mkdir -p results)'
+  - '([ -d results_ols] || mkdir -p results_ols)'
 
 arguments:
 
@@ -45,21 +47,44 @@ arguments:
     regexp_filter: "(.*).residual.expression.parquet"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
-  - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+  #- !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !Scalar { name: data_annotation, prefix: "-data_annotation", value: *DATA_ANNOTATION_K }
 
+  - !Scalar { name: dont_prune, prefix: "--dont_prune" }
+
 ########################################################################################################################
 
+  - !ArgumentFromMetadata { name: features, prefix: "-features", format_rule: *FEATURES_PATTERN_K,
+    sources: [ {path: "job/chromosome", destination: chromosome}] }
+
+  - !Scalar { name: features_annotation, prefix: "-features_annotation", value: *FEATURES_ANNOTATION_K }
+
   - !ArgumentFromMetadata
-    name: run_tag
-    format_rule: "chr{chromosome}_sb{sub_batch}_{sub_batches}"
-    sources: [ {path: job/chromosome, destination: chromosome}, {path: job/sub_batches, destination: sub_batches}, {path: job/sub_batch, destination: sub_batch} ]
+    name: features_weights
+    prefix: --features_weights
+    prepend: *FEATURES_WEIGHT_FOLDER_K
+    format_rule: "{tissue}.variants_pip.txt.gz PIP 0.01"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !Scalar { name: output_rsids, prefix: "--output_rsids" }
+
+  - !Scalar { name: mode, prefix: "--mode", value: "ols" }
+
+  - !Scalar { name: window, prefix: "-window", value: "1000000",
+    metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
 
 ########################################################################################################################
 
   - !Range { name: chromosome, prefix: "--chromosome", start: 1, end: 23,
     metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ] }
+
+  - !ArgumentFromMetadata { name: features, prefix: "-features", format_rule: *FEATURES_PATTERN_K,
+    sources: [ {path: "job/chromosome", destination: chromosome}] }
+
+########################################################################################################################
 
   - !Scalar { name: sub_batches, prefix: "--sub_batches", value: *SUB_BATCHES_K,
    metadata_rules: [ !SaveValueInMetadata {path: "job/sub_batches"} ]}
@@ -71,28 +96,13 @@ arguments:
     end: *SUB_BATCHES_K
     metadata_rules: [ !SaveValueInMetadata {path: "job/sub_batch"} ]
 
-########################################################################################################################
-
-  - !ArgumentFromMetadata { name: features, prefix: "-features", format_rule: *FEATURES_PATTERN_K,
-    sources: [ {path: "job/chromosome", destination: chromosome}] }
-
-  - !Scalar { name: features_annotation, prefix: "-features_annotation", value: *FEATURES_ANNOTATION_K }
-
-  #- !Scalar { name: rsid_whitelist, prefix: "--rsid_whitelist", value: *FEATURES_WHITELIST_K}
-
   - !ArgumentFromMetadata
-    name: features_weights
-    prefix: --features_weights
-    prepend: *FEATURES_WEIGHT_FOLDER_K
-    format_rule: "{tissue}.variants_pip.txt.gz PIP 0.01"
-    sources: [ {path: tissue/name, destination: tissue} ]
+    name: run_tag
+    prefix: "--run_tag"
+    format_rule: "chr{chromosome}_sb{sub_batch}_{sub_batches}"
+    sources: [ {path: job/chromosome, destination: chromosome}, {path: job/sub_batches, destination: sub_batches}, {path: job/sub_batch, destination: sub_batch} ]
 
-  #- !Scalar { name: output_rsids, prefix: "--output_rsids" }
-
-  - !Scalar { name: window, prefix: "-window", value: "1000000",
-    metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }
-
-  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+########################################################################################################################
 
   - !ArgumentFromMetadata
     name: output_prefix

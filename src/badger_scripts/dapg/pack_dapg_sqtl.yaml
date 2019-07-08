@@ -16,15 +16,17 @@ definitions:
 
   constants:
     input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/dapg/sqtl/results/enloc_ready_maf0.01_w1000000
-    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/v8_process/dapg/sqtl/results/enloc_ready_maf0.01_w1000000
+    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/v8_process/dapg/sqtl/results/packed/enloc_ready_maf0.01_w1000000
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
+
+  pre_command:
+  - '([ -d /scratch/abarbeira3/v8_process/dapg/sqtl/results/packed/enloc_ready_maf0.01_w1000000 ] || mkdir -p /scratch/abarbeira3/v8_process/dapg/sqtl/results/packed/enloc_ready_maf0.01_w1000000)'
 
 arguments:
 
   - !Range { name: tissue, file_list: *TISSUES_K,
       metadata_rules: [ !SaveValueInMetadata { path: tissue/name } ]
    }
-
 
   - !ArgumentFromMetadata
     name: folder

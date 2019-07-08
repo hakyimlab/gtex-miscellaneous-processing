@@ -1,0 +1,4 @@
+this is the script containing william's formula to convert enrichment estimates to priors. I would need the average SNP-level eqtl posteriors that I've calculated like this:
+```
+tis=Whole_Blood; awk '{ total += $2 } END { print total/NR }' ${tis}/eqtl.pip > ${tis}/eqtl.avg.pip
+```

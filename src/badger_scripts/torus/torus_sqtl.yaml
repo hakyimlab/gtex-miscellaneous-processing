@@ -1,7 +1,4 @@
 ---
-########################################################################################################################
-# This file assumes a seup using GTEx sqtl name conventions
-########################################################################################################################
 definitions:
   command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/run_torus.py"
   template: torus.jinja

@@ -1,0 +1,62 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/models_from_gene_snp.py"
+  template: models_from_gene_snps.jinja
+
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "04:00:00"
+    n_cpu: 1
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+    features_annotation: &FEATURES_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    features_whitelist: &FEATURES_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz
+    spec_folder: &SPEC_FOLDER_K /scratch/abarbeira3/data/3rd/results/parsed_dapg/
+
+    output_folder: &OUTPUT results
+
+  pre_command:
+  - '([ -d results] || mkdir -p results)'
+
+arguments:
+
+########################################################################################################################
+
+  - !FilesInFolder { name: tissue, sort: true, folder: *SPEC_FOLDER_K,
+      regexp_filter: "(.*).variants_pip.txt.gz",
+      metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ] }
+
+  - !ArgumentFromMetadata
+    name: spec
+    prefix: -spec
+    prepend: *SPEC_FOLDER_K
+    format_rule: "{tissue}.variants_pip.txt.gz PIP 0.01"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *DATA_ANNOTATION_K }
+
+  - !Scalar { name: features_annotation, prefix: "-features_annotation", value: *FEATURES_ANNOTATION_K }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+
+########################################################################################################################
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT
+    format_rule: "gene_snps_{tissue}.db"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: job_name
+    format_rule: "gene_snp_{tissue}"
+    sources: [ {path: tissue/name, destination: tissue} ]

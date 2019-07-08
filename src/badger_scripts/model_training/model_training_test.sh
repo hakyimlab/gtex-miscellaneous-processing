@@ -16,9 +16,11 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools
 --sub_batch 0 \
 --sub_batches 20 \
 -parsimony 8 \
---MAX_M 3 \
 --run_tag K \
+--mode ols \
 -output_prefix kk/kk
+
+#--MAX_M 3 \
 
 #--rsid_whitelist /gpfs/data/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz \
 

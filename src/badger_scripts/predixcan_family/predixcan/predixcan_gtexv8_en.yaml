@@ -1,0 +1,54 @@
+---
+definitions:
+  #a modified predixcan that creates output folder if non-existing is needed
+  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/PrediXcan/Software/PrediXcan.py
+
+  template: predixcan.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_en
+    n_cpu: "1"
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_en
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    dosage_folder: &DOSAGE_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur/dosage
+    samples: &SAMPLES /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur/dosage/samples.txt
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models/elastic_net_models/
+    results_folder: &RESULTS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur/predixcan/en
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur/predixcan/en ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur/predixcan/en'
+
+
+arguments:
+  - !Scalar { name: dosages, prefix: --dosages, value: *DOSAGE_FOLDER }
+
+  - !Scalar { name: samples, prefix: --samples, value: *SAMPLES }
+
+  - !Scalar { name: predict, prefix: --predict }
+
+  - !FilesInFolder
+    name: weights
+    prefix: --weights
+    sort: true
+    folder: *MODEL_FOLDER
+    regexp_filter: "gtex_v8_(.*)_itm_signif.db"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: tissue } ]
+
+  - !ArgumentFromMetadata
+    name: output_prefix
+    prefix: "--output_prefix"
+    prepend: *RESULTS_FOLDER
+    format_rule: "{tissue}"
+    sources: [ { path: tissue, destination: tissue } ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "predixcan_{tissue}"
+    sources: [ { path: tissue, destination: tissue } ]

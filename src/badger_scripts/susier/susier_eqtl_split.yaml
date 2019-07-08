@@ -21,9 +21,9 @@ definitions:
     splits: &SPLITS_K 10
 
     individuals_folder: &INDIVIDUALS_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/individuals
-    genotype_folder: &GENOTYPE_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic
-    genotype_pattern: &GENOTYPE_PATTERN_K '"gtex_v8_eur_itm.(chr\d+).variants.parquet"'
-    variants_metadata: &VARIANTS_METADATA_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_folder: &GENOTYPE_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_maf0.01_biallelic
+    genotype_pattern: &GENOTYPE_PATTERN_K '"gtex_v8_itm.(chr\d+).variants.parquet"'
+    variants_metadata: &VARIANTS_METADATA_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_maf0.01_biallelic/gtex_v8_itm.variants_metadata.parquet
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_c.txt
     eqtl_folder: &EQTL_FOLDER_K /scratch/abarbeira3/v8_process/eqtl_split/results
 

@@ -12,12 +12,14 @@ definitions:
     !PBSQueue
       jobs_folder: jobs_enloc
       job_name_key: job_name
-      fake_submission: true
+      #fake_submission: true
 
   constants:
     bin: &BIN_K /scratch/abarbeira3/v8_process/enloc/bin
-    dapg_runs: &DAPG_RUNS_K /scratch/abarbeira3/v8_process/dapg/results/collapsed_dapg_maf0.01_w1000000
+    dapg_runs: &DAPG_RUNS_K /scratch/abarbeira3/v8_process/dapg/eqtl/results/collapsed_dapg_maf0.01_w1000000
     gwas: &SLICED_GWAS_K /scratch/abarbeira3/v8_process/slice/results/
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/wb_white_list.txt
+    trait_whitelist: &TRAIT_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/undeflated_gwas.txt
     output_folder: &OUTPUT_FOLDER_K results
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
@@ -34,12 +36,16 @@ arguments:
     regexp_filter: "sliced_(.*).txt.gz"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: gwas/tag} ]
 
+  - !Whitelist { name: "undeflated", list_from_file:  *TRAIT_WHITELIST_K, in_metadata_path: "gwas/tag" }
+
   - !FilesInFolder
     name: tissue_folder
     sort: true
     folder: *DAPG_RUNS_K
     regexp_filter: "(.*)"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !ArgumentFromMetadata
     name: output_folder
