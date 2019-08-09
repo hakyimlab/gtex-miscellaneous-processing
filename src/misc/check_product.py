@@ -2,12 +2,14 @@ __author__ = "alvaro barbeira"
 import os
 import re
 import pandas
-
+import logging
 from helpers import helpers
 
 ########################################################################################################################
 
 def run(args):
+    logging.info("Deprecated, superceded by check_log.py")
+    return
     job_re = re.compile(args.jobs_pattern)
     job_names, job_paths = helpers.parse_with_regexp(args.jobs_folder, job_re)
 

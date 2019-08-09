@@ -15,6 +15,7 @@ source activate pyr
 conda install -c r r -y
 conda install -c r rpy2 -y
 conda install -c conda-forge pyarrow -y
+conda install -c bioconda bioconductor-biomart r-argparse -y
 
 conda install scipy numpy pandas -y
 

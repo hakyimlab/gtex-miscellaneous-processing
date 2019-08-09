@@ -17,7 +17,7 @@ definitions:
 
   constants:
     input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/rbonazzola/GTEx/v8/enloc
-    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/data/3rd/enloc_fixed
+    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/enloc_eqtl_fixed
 
   pre_command:
   - '[ -d /scratch/abarbeira3/data/3rd/enloc_fixed ] || mkdir -p /scratch/abarbeira3/data/3rd/enloc_fixed'

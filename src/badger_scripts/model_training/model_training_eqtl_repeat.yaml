@@ -1,0 +1,126 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/model_training.py"
+  template: model_training.jinja
+
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "04:00:00"
+    n_cpu: 1
+    logs_folder: logs_en_r
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_en_r
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+    data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
+
+    features_pattern: &FEATURES_PATTERN_K "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    features_annotation: &FEATURES_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    features_whitelist: &FEATURES_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz
+
+    # CHANGE THIS TO PARSED EUR!!!!!
+    features_weight_folder: &FEATURES_WEIGHT_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/parsed_dapg_gtexruns
+
+    nested_cv_folds: &NESTED_CV_FOLDS_K 10
+
+    sub_batches: &SUB_BATCHES_K 240
+
+    output_folder: &OUTPUT results_en_r
+
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/wbl_white_list.txt
+
+  pre_command:
+  - '([ -d results_en_r] || mkdir -p results_en_r)'
+
+arguments:
+
+########################################################################################################################
+
+  - !FilesInFolder
+    name: data
+    prefix: "-data"
+    sort: true
+    folder: *DATA_FOLDER_K
+    regexp_filter: "(.*).residual.expression.parquet"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+
+  - !Scalar { name: data_annotation, prefix: "-data_annotation", value: *DATA_ANNOTATION_K }
+
+########################################################################################################################
+
+  - !Scalar { name: nested_cv_folds, prefix: "--nested_cv_folds", value: *NESTED_CV_FOLDS_K }
+
+  - !Scalar { name: repeat, prefix: "--repeat", value: 15 }
+
+  - !Scalar { name: rsid_whitelist, prefix: "--rsid_whitelist", value: *FEATURES_WHITELIST_K }
+
+  - !ArgumentFromMetadata { name: features, prefix: "-features", format_rule: *FEATURES_PATTERN_K,
+    sources: [ {path: "job/chromosome", destination: chromosome}] }
+
+  - !Scalar { name: features_annotation, prefix: "-features_annotation", value: *FEATURES_ANNOTATION_K }
+
+  - !Scalar { name: output_rsids, prefix: "--output_rsids" }
+
+  - !Scalar { name: window, prefix: "-window", value: "1000000",
+    metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+
+########################################################################################################################
+
+  - !Range { name: chromosome, prefix: "--chromosome", start: 1, end: 23,
+    metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ] }
+
+  - !ArgumentFromMetadata { name: features, prefix: "-features", format_rule: *FEATURES_PATTERN_K,
+    sources: [ {path: "job/chromosome", destination: chromosome}] }
+
+########################################################################################################################
+
+  - !Scalar { name: sub_batches, prefix: "--sub_batches", value: *SUB_BATCHES_K,
+   metadata_rules: [ !SaveValueInMetadata {path: "job/sub_batches"} ]}
+
+  - !Range
+    name: sub_batch
+    prefix: "--sub_batch"
+    start: 0
+    end: *SUB_BATCHES_K
+    metadata_rules: [ !SaveValueInMetadata {path: "job/sub_batch"} ]
+
+  - !ArgumentFromMetadata
+    name: run_tag
+    prefix: "--run_tag"
+    format_rule: "chr{chromosome}_sb{sub_batch}_{sub_batches}"
+    sources: [ {path: job/chromosome, destination: chromosome}, {path: job/sub_batches, destination: sub_batches}, {path: job/sub_batch, destination: sub_batch} ]
+
+########################################################################################################################
+
+  - !ArgumentFromMetadata
+    name: output_prefix
+    prefix: "-output_prefix"
+    prepend: *OUTPUT
+    format_rule: "en_r_{tissue}_w{window}_chr{chromosome}_sb{sub_batch}_{sub_batches}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: parameters/window, destination: window},
+      {path: job/chromosome, destination: chromosome},
+      {path: job/sub_batches, destination: sub_batches},
+      {path: job/sub_batch, destination: sub_batch},
+    ]
+
+  - !ArgumentFromMetadata
+    name: job_name
+    format_rule: "en_r_{tissue}_w{window}_chr{chromosome}_sb{sub_batch}_{sub_batches}_model_training"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: parameters/window, destination: window},
+      {path: job/chromosome, destination: chromosome},
+      {path: job/sub_batches, destination: sub_batches},
+      {path: job/sub_batch, destination: sub_batch},
+    ]

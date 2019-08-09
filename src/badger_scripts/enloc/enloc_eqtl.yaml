@@ -3,9 +3,11 @@ definitions:
   command: "#perl bin/enloc"
   template: enloc.jinja
 
+  copy_to_item: true
+
   default_arguments:
-    job_memory: "16gb"
-    job_walltime: "48:00:00"
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
     logs_folder: logs_enloc
 
   submission:
@@ -26,8 +28,24 @@ definitions:
   pre_command:
   - '[ -d results ] || mkdir -p results'
 
+sub_configuration:
+  -
+    how: before_arguments
+    path: enloc_eqtl_tissue_spec.yaml
+
 arguments:
   - !Scalar { name: bin, value: *BIN_K }
+
+  - !Scalar { name: FOLDER, value: *OUTPUT_FOLDER_K }
+
+  - !FilesInFolder
+    name: tissue_folder
+    sort: true
+    folder: *DAPG_RUNS_K
+    regexp_filter: "(.*)"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  #- !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !FilesInFolder
     name: gwas_path
@@ -38,23 +56,17 @@ arguments:
 
   - !Whitelist { name: "undeflated", list_from_file:  *TRAIT_WHITELIST_K, in_metadata_path: "gwas/tag" }
 
-  - !FilesInFolder
-    name: tissue_folder
-    sort: true
-    folder: *DAPG_RUNS_K
-    regexp_filter: "(.*)"
-    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
-
-  - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+########################################################################################################################
 
   - !ArgumentFromMetadata
-    name: output_folder
-    prepend: *OUTPUT_FOLDER_K
-    format_rule: "{gwas}__PM__{tissue}"
-    sources: [
-      {path: tissue/name, destination: tissue},
-      {path: gwas/tag, destination: gwas}
-    ]
+    {name: job_memory, sub_key: memory, options_from_metadata_path: __configuration/enloc_eqtl_tissue_info,
+    sources: [ {path: tissue/name} ]}
+
+  - !ArgumentFromMetadata
+    {name: job_walltime, sub_key: walltime, options_from_metadata_path: __configuration/enloc_eqtl_tissue_info,
+    sources: [ {path: tissue/name} ]}
+
+########################################################################################################################
 
   - !ArgumentFromMetadata
     name: gwas_name
@@ -62,8 +74,23 @@ arguments:
     sources: [ {path: gwas/tag, destination: gwas} ]
 
   - !ArgumentFromMetadata
+    name: output_key
+    format_rule: "{gwas}__PM__{tissue}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: gwas/tag, destination: gwas}
+    ]
+    metadata_rules: [ !SaveValueInMetadata {path: "output_key"} ]
+
+  - !ArgumentFromMetadata
+    name: output_folder
+    prepend: *OUTPUT_FOLDER_K
+    format_rule: "{output_key}"
+    sources: [ {path: output_key, destination: output_key} ]
+
+  - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "gtexv8_dapg_{gwas}__PM__{tissue}"
+    format_rule: "{gwas}__PM__{tissue}_enloc_eqtl_gtexv8"
     sources:
     sources: [
       {path: tissue/name, destination: tissue},

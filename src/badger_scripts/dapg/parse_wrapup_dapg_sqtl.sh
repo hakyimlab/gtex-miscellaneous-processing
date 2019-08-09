@@ -7,6 +7,6 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 -logs_folder /scratch/abarbeira3/v8_process/dapg/sqtl/logs_dap/ \
 -output dap_ms_wrapup.txt \
 -name_subfield_regexp "(.*)_chr(.*)_(.*)_gtexv8_dapg_sqtl\.o(\d+)\.cri(.*)" \
--name_subfield trait 1 \
+-name_subfield tissue 1 \
 -name_subfield chromosome 2 \
 -name_subfield sub_job 3

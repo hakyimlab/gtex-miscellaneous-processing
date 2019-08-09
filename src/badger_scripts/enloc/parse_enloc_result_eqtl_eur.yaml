@@ -16,14 +16,16 @@ definitions:
       #crude_submission: true
 
   constants:
-    key_folder: &KEY_FOLDER /scratch/abarbeira3/v8_process/dapg/sqtl/results/enloc_ready_maf0.01_w1000000_list/
-    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/enloc/sqtl/results
-    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted
+    key: &KEY_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_key_name.txt.gz
+    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/enloc/eqtl/results
+    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur
 
   pre_command:
-  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted'
+  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur'
 
 arguments:
+  - !Scalar { name: key, value: *KEY_K}
+
   - !FilesInFolder
     name: input
     sort: true
@@ -35,12 +37,6 @@ arguments:
       - !ExtractFromValueWithRegexpMetadata
         regexp: ".*__PM__(.*).enloc.rst"
         path: tissue
-
-  - !ArgumentFromMetadata
-    name: key
-    prepend: *KEY_FOLDER
-    format_rule: "{tissue}_key_list.txt.gz"
-    sources: [ {path: tissue, destination: tissue} ]
 
   - !ArgumentFromMetadata
     name: output

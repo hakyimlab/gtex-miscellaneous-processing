@@ -3,6 +3,8 @@ definitions:
   command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/dap_on_study.py"
   template: dap_on_study.jinja
 
+  copy_to_item: true
+
   default_arguments:
     job_memory: "20gb"
     job_walltime: "72:00:00"
@@ -12,14 +14,14 @@ definitions:
     !PBSQueue
       jobs_folder: jobs
       job_name_key: job_name
-      fake_submission: true
+      #fake_submission: true
 
   constants:
     dap_g: &DAP_G_K /gpfs/data/im-lab/nas40t2/abarbeira/software/dap/dap_src/dap-g
     grid: &GRID_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dap_grid.txt
     gene_annotation: &GENE_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
 
-    sub_batches: &SUB_BATCHES 40
+    sub_batches: &SUB_BATCHES 80
 
     output_folder: &OUTPUT resuls/dapg
     scratch_folder: &SCRATCH scratch_dapg
@@ -32,11 +34,16 @@ definitions:
     genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/data/parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
     #genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
 
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/wb_white_list.txt
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/rolling_white_list.txt
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
   - '([ -d results/dapg ] || mkdir -p results/dapg) && ([ -d scratch_dapg ] || mkdir -p scratch_dapg)'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: dap_job_spec_eqtl.yaml
 
 arguments:
 ########################################################################################################################
@@ -48,6 +55,7 @@ arguments:
     regexp_filter: "(.*).expression.parquet"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
+  #Whole blood was done separately and we dont want it ran again
   - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !ArgumentFromMetadata
@@ -76,11 +84,6 @@ arguments:
   - !Scalar { name: options, prefix: -options, value: "ld_control 0.75" }
 
   - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *GENE_ANNOTATION_K }
-
-#  - !Scalar
-#    name: genotype
-#    prefix: "-parquet_genotype"
-#    value: *GENOTYPE
 
   - !Range { name: chromosome, prefix: "-chromosome", start: 1, end: 23,
     metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ] }
@@ -117,6 +120,18 @@ arguments:
       {path: job/sub_batch, destination: sub_batch}
     ]
     metadata_rules: [ !SaveValueInMetadata {path: "job/key"} ]
+
+  - !ArgumentFromMetadata
+    name: job_memory
+    options_from_metadata_path: __configuration/spec
+    sub_key: memory
+    sources: [ {path: job/key} ]
+
+  - !ArgumentFromMetadata
+    name: job_walltime
+    options_from_metadata_path: __configuration/spec
+    sub_key: walltime
+    sources: [ {path: job/key} ]
 
 
 ########################################################################################################################

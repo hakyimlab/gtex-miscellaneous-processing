@@ -4,7 +4,7 @@ import os
 import gzip
 import sys
 I="/gpfs/data/gtex-group/v8/63881/gtex/exchange/GTEx_phs000424/exchange/analysis_releases/GTEx_Analysis_2017-06-05_v8/sqtl/GTEx_Analysis_v8_sQTL_all_associations"
-O="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map_gtex/intron_gene_map{}.txt.gz"
+O="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_gene_map/intron_gene_map{}.txt.gz"
 names = sorted([x for x in os.listdir(I) if "allpairs" in x])
 
 O_ = os.path.split(O)[0]
@@ -15,7 +15,7 @@ def intron_name_from_line(line):
     c = line.decode().split()[0]
     comps = c.split(":")
     name = "intron_{}_{}_{}".format(comps[0].replace("chr",""), comps[1], comps[2])
-    key = "{}_{}".format(intron, comps[4])
+    key = "{}_{}".format(name, comps[4])
     return key, comps, name
 
 def gtex_name(line):
@@ -23,8 +23,7 @@ def gtex_name(line):
     comps = c.split(":")
     return c, comps, c
 
-_name = gtex_name
-
+_name = intron_name_from_line
 
 ########################################################################################################################
 if len(sys.argv) > 1:

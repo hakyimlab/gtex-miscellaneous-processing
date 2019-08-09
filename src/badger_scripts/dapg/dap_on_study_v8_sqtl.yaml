@@ -37,7 +37,7 @@ definitions:
 sub_configuration:
   -
     how: before_arguments
-    path: dap_sqtl_job_spec.yaml
+    path: dap_job_spec_sqtl.yaml
 
 arguments:
   - !Scalar { name: dap_command, prefix: "-dap_command", value: *DAP_G_K }

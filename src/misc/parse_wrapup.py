@@ -10,33 +10,21 @@ def _to_sec(s):
     return sum(x * int(t) for x, t in zip([3600, 60, 1], s.split(":")))
 
 def run(args):
-    r = re.compile(args.name_subfield_regexp)
-    subfield_names = [x[0] for x in args.name_subfield]
-    subfield_position = [int(x[1]) for x in args.name_subfield]
-    subfield_regexp = re.compile(args.name_subfield_regexp)
-
+    r, subfield_names, subfield_position, subfield_regexp = helpers.name_parse_prepare(args.name_subfield_regexp, args.name_subfield)
     p = re.compile("Resources Used:\s+cput=(.*),vmem=(.*)kb,walltime=(.*),mem=(.*)kb,energy_used=(.*)")
 
     files = [x for x in os.listdir(args.logs_folder) if r.search(x)]
     r = []
-
     for i, file in enumerate(files):
         path = os.path.join(args.logs_folder, file)
         logging.log(9, "%s", file)
 
-        if subfield_position:
-            values=[]
-            s_ = subfield_regexp.search(file)
-            for position in subfield_position:
-                values.append(s_.group(position))
-            values = tuple(values)
-        else:
-            values = None
-
         with open(path) as f:
             for line in f:
                 s = p.search(line)
+
                 if s:
+                    values = helpers.name_parse(file, subfield_regexp, subfield_position)
                     mem  = int(s.group(4))/1024
                     vmem = int(s.group(2))/1024
                     walltime= _to_sec(s.group(3))

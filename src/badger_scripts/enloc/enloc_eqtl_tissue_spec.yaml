@@ -1,0 +1,148 @@
+enloc_eqtl_tissue_info:
+  Adipose_Subcutaneous:
+    memory: 6gb
+    walltime: '72:00:00'
+  Adipose_Visceral_Omentum:
+    memory: 6gb
+    walltime: '72:00:00'
+  Adrenal_Gland:
+    memory: 8gb
+    walltime: '72:00:00'
+  Artery_Aorta:
+    memory: 6gb
+    walltime: '72:00:00'
+  Artery_Coronary:
+    memory: 8gb
+    walltime: '72:00:00'
+  Artery_Tibial:
+    memory: 6gb
+    walltime: '72:00:00'
+  Brain_Amygdala:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Anterior_cingulate_cortex_BA24:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Caudate_basal_ganglia:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Cerebellar_Hemisphere:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Cerebellum:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Cortex:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Frontal_Cortex_BA9:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Hippocampus:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Hypothalamus:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Nucleus_accumbens_basal_ganglia:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Putamen_basal_ganglia:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Spinal_cord_cervical_c-1:
+    memory: 8gb
+    walltime: '72:00:00'
+  Brain_Substantia_nigra:
+    memory: 8gb
+    walltime: '72:00:00'
+  Breast_Mammary_Tissue:
+    memory: 6gb
+    walltime: '72:00:00'
+  Cells_Cultured_fibroblasts:
+    memory: 6gb
+    walltime: '72:00:00'
+  Cells_EBV-transformed_lymphocytes:
+    memory: 6gb
+    walltime: '72:00:00'
+  Colon_Sigmoid:
+    memory: 8gb
+    walltime: '72:00:00'
+  Colon_Transverse:
+    memory: 6gb
+    walltime: '72:00:00'
+  Esophagus_Gastroesophageal_Junction:
+    memory: 6gb
+    walltime: '72:00:00'
+  Esophagus_Mucosa:
+    memory: 6gb
+    walltime: '72:00:00'
+  Esophagus_Muscularis:
+    memory: 6gb
+    walltime: '72:00:00'
+  Heart_Atrial_Appendage:
+    memory: 6gb
+    walltime: '72:00:00'
+  Heart_Left_Ventricle:
+    memory: 6gb
+    walltime: '72:00:00'
+  Kidney_Cortex:
+    memory: 16gb
+    walltime: '72:00:00'
+  Liver:
+    memory: 8gb
+    walltime: '72:00:00'
+  Lung:
+    memory: 6gb
+    walltime: '72:00:00'
+  Minor_Salivary_Gland:
+    memory: 8gb
+    walltime: '72:00:00'
+  Muscle_Skeletal:
+    memory: 6gb
+    walltime: '72:00:00'
+  Nerve_Tibial:
+    memory: 6gb
+    walltime: '72:00:00'
+  Ovary:
+    memory: 8gb
+    walltime: '72:00:00'
+  Pancreas:
+    memory: 6gb
+    walltime: '72:00:00'
+  Pituitary:
+    memory: 8gb
+    walltime: '72:00:00'
+  Prostate:
+    memory: 8gb
+    walltime: '72:00:00'
+  Skin_Not_Sun_Exposed_Suprapubic:
+    memory: 6gb
+    walltime: '72:00:00'
+  Skin_Sun_Exposed_Lower_leg:
+    memory: 6gb
+    walltime: '72:00:00'
+  Small_Intestine_Terminal_Ileum:
+    memory: 8gb
+    walltime: '72:00:00'
+  Spleen:
+    memory: 8gb
+    walltime: '72:00:00'
+  Stomach:
+    memory: 6gb
+    walltime: '72:00:00'
+  Testis:
+    memory: 8gb
+    walltime: '72:00:00'
+  Thyroid:
+    memory: 6gb
+    walltime: '72:00:00'
+  Uterus:
+    memory: 8gb
+    walltime: '72:00:00'
+  Vagina:
+    memory: 8gb
+    walltime: '72:00:00'
+  Whole_Blood:
+    memory: 4gb
+    walltime: '72:00:00'

@@ -236,7 +236,7 @@ spec:
   "6_33": { memory: "4gb", walltime: "4:00:00" }
   "6_34": { memory: "4gb", walltime: "4:00:00" }
   "6_35": { memory: "4gb", walltime: "4:00:00" }
-  "6_36": { memory: "4gb", walltime: "4:00:00" }
+  "6_99999999999999999999": { memory: "4gb", walltime: "4:00:00" }
   "6_37": { memory: "4gb", walltime: "4:00:00" }
   "6_38": { memory: "4gb", walltime: "4:00:00" }
   "6_39": { memory: "4gb", walltime: "4:00:00" }
