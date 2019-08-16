@@ -17,7 +17,7 @@ definitions:
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    models_folder: &MODELS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models_splicing
+    models_folder: &MODELS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models/elastic_net_models_splicing
     models_name_pattern: &MODELS_NAME_PATTERN '"gtex_splicing_v8_eur_(.*)_signif.db"'
     metaxcan_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan/results/sp_imputed_gwas_gtexv8_en_splicing
     metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"spredixcan_igwas_gtexenv8_splicing_(.*)__PM__(.*).csv"'
@@ -44,7 +44,8 @@ arguments:
     regexp_filter: "imputed_(.*).txt.gz"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: gwas/tag } ]
 
-  - !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "gwas/tag" }
+  #- !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "gwas/tag" }
+  #- !Whitelist { name: "BCAC", from_list:  [ "BCAC_ER_negative_BreastCancer_EUR" ], in_metadata_path: "gwas/tag" }
 
   - !Scalar { value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
 

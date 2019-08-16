@@ -34,7 +34,7 @@ with gzip.open(K) as f:
 print("Processing file")
 with open(I) as _i:
   with gzip.open(O, "w") as _o:
-    _o.write("gwas_locus\tmolecular_qtl_trait\tlocus_gwas_pip\tlocus_rcp\tlead_coloc_SNP\tlead_snp_scp\n".encode())
+    _o.write("gwas_locus\tmolecular_qtl_trait\tlocus_gwas_pip\tlocus_rcp\tlead_coloc_SNP\tlead_snp_rcp\n".encode())
     for l in _i:
         comps = l.strip().split()
         comps[1] = key[comps[1]]

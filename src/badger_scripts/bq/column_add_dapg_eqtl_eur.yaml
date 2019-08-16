@@ -1,0 +1,67 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_parse_dapg
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_dapg
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/parsed_dapg_eur
+    output_folder: &OUTPUT_FOLDER dapg_eur
+
+  pre_command:
+  - '''
+[ -d dapg_eur/clusters ] || mkdir -p dapg_eur/clusters
+[ -d dapg_eur/cluster_correlations ] || mkdir -p dapg_eur/cluster_correlations
+[ -d dapg_eur/models ] || mkdir -p dapg_eur/models
+[ -d dapg_eur/model_summary ] || mkdir -p dapg_eur/model_summary
+'''
+
+arguments:
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'tissue' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*).txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue_stat
+      - !ExtractFromValueWithRegexpMetadata
+        regexp: ".*/(.*)\\..*.txt.gz"
+        path: tissue
+      - !ExtractFromValueWithRegexpMetadata
+        regexp: ".*/.*\\.(.*).txt.gz"
+        path: stat
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{tissue}"
+    sources: [ {path: tissue, destination: tissue}]
+
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{stat}/{tissue}.txt"
+    sources: [ {path: tissue, destination: tissue}, {path: stat, destination: stat} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "parse_dapg_{tissue_stat}"
+    sources: [ { path: tissue_stat, destination: tissue_stat } ]

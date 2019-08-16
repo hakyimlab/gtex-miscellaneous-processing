@@ -1,0 +1,64 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_parse
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur
+    output_folder: &OUTPUT_FOLDER enloc_eur
+
+  pre_command:
+  - '[ -d enloc_eur ] || mkdir -p enloc_eur'
+
+arguments:
+
+  #- !Scalar { name: pattern, prefix: "-pattern", value: '"(.*)__PM__(.*).enloc.rst.gz"' }
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype tissue' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*).enloc.rst.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: trait_tissue
+      - !ExtractFromValueWithRegexpMetadata
+        regexp: ".*__PM__(.*).enloc.rst"
+        path: tissue
+      - !ExtractFromValueWithRegexpMetadata
+        regexp: ".*/(.*)__PM__.*.enloc.rst"
+        path: trait
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{trait} {tissue}"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
+
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait_tissue}.enloc.txt"
+    sources: [ {path: trait_tissue, destination: trait_tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "parse_enloc_{trait_tissue}"
+    sources: [ { path: trait_tissue, destination: trait_tissue } ]

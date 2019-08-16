@@ -12,3 +12,12 @@ d <- read_tsv(I) %>%
 gz1 <- gzfile(O, "w")
 write.table(d, gz1, row.names = FALSE, sep="\t", quote=FALSE)
 close(gz1)
+
+
+d <- read_tsv(I) %>% filter(!is.na(chr), !is.na(start), !is.na(stop)) %>%
+    mutate(region = sprintf("region_%s_%d_%d", chr, start, stop)) %>%
+    rename(chromosome = chr, start_location=start, end_location=stop) %>%
+    select(region, chromosome, start_location, end_location)
+
+
+write.table(d, "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.txt", row.names = FALSE, sep="\t", quote=FALSE)

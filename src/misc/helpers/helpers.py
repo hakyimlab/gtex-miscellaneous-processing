@@ -35,7 +35,10 @@ def check_present(path, token):
     return present
 
 def clean_target(target):
-    for path in glob.glob(target):
+    paths = glob.glob(target)
+    if not paths:
+        logging.info("Found nothing applicable to clean")
+    for path in paths:
         try:
             if os.path.isdir(path):
                 logging.info("Cleaning folder: %s", path)

@@ -44,7 +44,7 @@ arguments:
     regexp_filter: "imputed_(.*).txt.gz"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: gwas/tag } ]
 
-  - !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "gwas/tag" }
+  #- !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "gwas/tag" }
   #- !Whitelist { from_list:["GLGC_Mc_HDL", "GLGC_Mc_LDL", "GLGC_Mc_TG"], in_metadata_path: "gwas/tag" }
 
   - !Scalar { value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}

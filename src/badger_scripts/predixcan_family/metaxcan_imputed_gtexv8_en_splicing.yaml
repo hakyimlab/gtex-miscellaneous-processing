@@ -18,7 +18,7 @@ definitions:
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models_splicing
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models/elastic_net_models_splicing
     results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_en_splicing
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
@@ -33,6 +33,8 @@ arguments:
     folder: *GWAS_FOLDER
     regexp_filter: "imputed_(.*).txt.gz"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: gwas/tag } ]
+
+  #- !Whitelist { name: "BCAC", from_list:  [ "BCAC_ER_negative_BreastCancer_EUR" ], in_metadata_path: "gwas/tag" }
 
   - !FilesInFolder
     name: model
