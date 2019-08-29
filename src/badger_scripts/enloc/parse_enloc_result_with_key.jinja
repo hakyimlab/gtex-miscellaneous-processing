@@ -37,6 +37,8 @@ with open(I) as _i:
     _o.write("gwas_locus\tmolecular_qtl_trait\tlocus_gwas_pip\tlocus_rcp\tlead_coloc_SNP\tlead_snp_rcp\n".encode())
     for l in _i:
         comps = l.strip().split()
+        if len(comps) == 5 and len(comps[4]) > 1 and comps[4][0:2] == "-1":
+            comps.insert(4,"NA")
         comps[1] = key[comps[1]]
         _l = "{}\n".format("\t".join(comps))
         _o.write(_l.encode())

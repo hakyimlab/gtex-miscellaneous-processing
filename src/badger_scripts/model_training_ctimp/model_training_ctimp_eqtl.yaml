@@ -23,7 +23,7 @@ definitions:
     #Unfortunately we need full path because of how CTIMP script works
     intermediate_folder: &INTERMEDIATE_FOLDER_K /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch
 
-    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
     data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
     data_name_pattern: &DATA_NAME_PATTERN_K '"(.*).residual.expression.parquet"'
 
@@ -37,15 +37,15 @@ definitions:
 
     output_folder: &OUTPUT results
 
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/working_white_list.txt
+    #whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/working_white_list.txt
 
   pre_command:
   - '([ -d results] || mkdir -p results); (-d /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch || mkdir -p /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch)'
 
-#sub_configuration:
-#  -
-#    how: before_arguments
-#    path: ctimp_eqtl_spec.yaml
+sub_configuration:
+  -
+    how: before_arguments
+    path: ctimp_eqtl_spec.yaml
 
 arguments:
 
@@ -62,7 +62,7 @@ arguments:
 
   - !Scalar { name: data_annotation, prefix: -data_annotation, value: *DATA_ANNOTATION_K }
 
-  #- !Scalar { name: rsid_whitelist, prefix: --rsid_whitelist, value: *RSID_WHITELIST_K }
+  - !Scalar { name: rsid_whitelist, prefix: --rsid_whitelist, value: *RSID_WHITELIST_K }
 
 ########################################################################################################################
 
@@ -95,22 +95,22 @@ arguments:
 
 ########################################################################################################################
 #
-#  - !ArgumentFromMetadata
-#    name: key
-#    format_rule: "{chr}_{sb}"
-#    sources: [
-#      {path: job/chromosome, destination: chr},
-#      {path: job/sub_batch, destination: sb}
-#    ]
-#    metadata_rules: [ !SaveValueInMetadata {path: "job/key"} ]
+  - !ArgumentFromMetadata
+    name: key
+    format_rule: "{chr}_{sb}"
+    sources: [
+      {path: job/chromosome, destination: chr},
+      {path: job/sub_batch, destination: sb}
+    ]
+    metadata_rules: [ !SaveValueInMetadata {path: "job/key"} ]
 #
-#  - !ArgumentFromMetadata
-#    {name: job_memory, sub_key: memory, options_from_metadata_path: __configuration/ctimp_info,
-#    sources: [ {path: job/key} ]}
+  - !ArgumentFromMetadata
+    {name: job_memory, sub_key: memory, options_from_metadata_path: __configuration/ctimp_info,
+    sources: [ {path: job/key} ]}
 #
-#  - !ArgumentFromMetadata
-#    {name: job_walltime, sub_key: walltime, options_from_metadata_path: __configuration/ctimp_info,
-#    sources: [ {path: job/key} ]}
+  - !ArgumentFromMetadata
+    {name: job_walltime, sub_key: walltime, options_from_metadata_path: __configuration/ctimp_info,
+    sources: [ {path: job/key} ]}
 
 ########################################################################################################################
 

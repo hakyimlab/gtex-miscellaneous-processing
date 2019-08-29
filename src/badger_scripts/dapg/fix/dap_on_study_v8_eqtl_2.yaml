@@ -23,22 +23,20 @@ definitions:
 
     sub_batches: &SUB_BATCHES 80
 
-    output_folder: &OUTPUT resuls/dapg
-    scratch_folder: &SCRATCH scratch_dapg
-    torus_root: &TORUS /scratch/abarbeira3/v8_process/torus/eqtl/results/torus_prior
+    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/results_eur
+    scratch_folder: &SCRATCH /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/scratch_dapg
+    torus_root: &TORUS /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/torus_prior/eqtl
     expression_root: &EXPRESSION /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/expression
     covariate_root: &COVARIATE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/covariates
 
-    #genotype: &GENOTYPE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_maf0.01.variants.parquet
-    genotype_pattern: &GENOTYPE_PATTERN "/scratch/abarbeira3/data/parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
-    genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/data/parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
-    #genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_pattern: &GENOTYPE_PATTERN "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
 
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/rolling_white_list.txt
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_2.txt
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '([ -d results/dapg ] || mkdir -p results/dapg) && ([ -d scratch_dapg ] || mkdir -p scratch_dapg)'
+    - "([ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/results_eur ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/results_eur) && ([ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/scratch_dapg ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/scratch_dapg)"
 
 sub_configuration:
   -
@@ -150,8 +148,20 @@ arguments:
   - !ArgumentFromMetadata
     name: output
     prefix: "-output_folder"
-    prepend: "results/dapg_maf{af}_w{window}"
+    prepend: *OUTPUT_FOLDER
     format_rule: "{tissue}_chr{chromosome}_{sub_batch}"
+    sources: [
+      {path: tissue/name, destination: tissue},
+      {path: job/chromosome, destination: chromosome},
+      {path: parameters/window, destination: window},
+      {path: parameters/af, destination: af},
+      {path: job/sub_batch, destination: sub_batch}
+    ]
+
+  - !ArgumentFromMetadata
+    name: stats_name
+    prefix: "--stats_name"
+    format_rule: "{tissue}_chr{chromosome}_{sub_batch}.stats"
     sources: [
       {path: tissue/name, destination: tissue},
       {path: job/chromosome, destination: chromosome},

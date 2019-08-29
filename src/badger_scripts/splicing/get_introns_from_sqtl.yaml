@@ -1,19 +1,19 @@
 ---
 definitions:
-  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/v8/misc/gtex_sqtl_splicing_slice.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/v8/misc/gtex_sqtl_splicing_introns.py"
 
   template: get_introns.jinja
   default_arguments:
     n_cpu: "1"
-    job_memory: "2gb"
-    job_walltime: "4:00:00"
+    job_memory: "16gb"
+    job_walltime: "16:00:00"
     logs_folder: logs_gi
 
   submission:
     !PBSQueue
       jobs_folder: jobs_gi
       job_name_key: job_name
-      fake_submission: true
+      #fake_submission: true
 
   constants:
 

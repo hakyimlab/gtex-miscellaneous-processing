@@ -16,7 +16,7 @@ definitions:
       #fake_submission: true
 
   constants:
-    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
     data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
 
     features_pattern: &FEATURES_PATTERN_K "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
@@ -26,13 +26,13 @@ definitions:
     # CHANGE THIS TO PARSED EUR!!!!!
     features_weight_folder: &FEATURES_WEIGHT_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/parsed_dapg_gtexruns
 
-    nested_cv_folds: &NESTED_CV_FOLDS_K 10
+    nested_cv_folds: &NESTED_CV_FOLDS_K 5
 
-    sub_batches: &SUB_BATCHES_K 120
+    sub_batches: &SUB_BATCHES_K 40
 
     output_folder: &OUTPUT results_en
 
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/wbl_white_list.txt
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_1_17.txt
 
   pre_command:
   - '([ -d results_en] || mkdir -p results_en)'
@@ -49,7 +49,7 @@ arguments:
     regexp_filter: "(.*).residual.expression.parquet"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
-  - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+  - !Whitelist { name: "whitelist", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !Scalar { name: data_annotation, prefix: "-data_annotation", value: *DATA_ANNOTATION_K }
 

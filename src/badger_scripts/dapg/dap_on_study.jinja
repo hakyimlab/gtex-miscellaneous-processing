@@ -14,6 +14,8 @@ module load boost/1.61.0
 module load bzip2/1.0.6
 module load python/3.5.3
 
+umask 007
+
 {% raw %}cd $PBS_O_WORKDIR {% endraw %}
 
 {{ command }} \
@@ -32,6 +34,7 @@ module load python/3.5.3
 {{ priors_folder }} \
 {{ intermediate_folder }} \
 {{ window }} \
+{{ stats_name }} \
 {% if parsimony %}{{ parsimony }} {% endif%} \
 {{ output }}
 

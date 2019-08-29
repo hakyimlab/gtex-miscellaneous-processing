@@ -17,16 +17,22 @@ def to_l(_l):
     return _l.encode()
 
 print("start")
+saved=set()
 with gzip.open(I) as i_:
     i_.readline()
     with gzip.open(O, "w") as o_:
-        o_.write(to_l(["gene_id", "intron_id", "cluster_id", "variant", "pvalue"]))
+        o_.write(to_l(["gene_id", "intron_id", "cluster_id", "chromosome", "start_location", "end_location"]))
         for i,l in enumerate(i_):
             comps = l.decode().strip().split()
             id_comps = comps[0].split(":")
             chr_=id_comps[0].replace("chr","")
             intron_id = "intron_{}_{}_{}".format(chr_, id_comps[1], id_comps[2])
-            o_.write(to_l([id_comps[4], intron_id, id_comps[3], comps[1], comps[5]]))
+            key="{}_{}_{}".format(id_comps[4], intron_id, id_comps[3])
+            if key in saved:
+                continue
+            else:
+                saved.add(key)
+            o_.write(to_l([id_comps[4], intron_id, id_comps[3], id_comps[0], id_comps[1], id_comps[2]]))
 
 print("done")
 

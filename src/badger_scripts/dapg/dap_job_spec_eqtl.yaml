@@ -4836,8 +4836,8 @@ spec:
     memory: 4gb
     walltime: '4:00:00'
   '8_2':
-    memory: 4gb
-    walltime: '4:00:00'
+    memory: 16gb
+    walltime: '48:00:00'
   '8_20':
     memory: 4gb
     walltime: '4:00:00'

@@ -17,13 +17,13 @@ export OPEN_BLAS_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 export OMP_NUM_THREADS=1
 
-python /group/im-lab/nas40t2/abarbeira/software/MetaXcan/software/CovarianceBuilder.py \
---models_folder /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/elastic_net_models/ \
---models_pattern "gtex_v8_(.*)_itm_signif.db" \
+python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/CovarianceBuilder.py \
+--models_folder /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/models/eqtl/en \
+--models_pattern "en_(.*).db" \
 --gtex_release_version V8 \
---gtex_genotype_file /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_filtered.txt.gz \
---gtex_snp_file /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz \
+--gtex_genotype_file /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_filtered.txt.gz \
+--gtex_snp_file /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz \
 --throw \
---snp_covariance_output results/gtex_v8_snp_covariance.txt.gz \
+--snp_covariance_output /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/models/eqtl/en/meta_covariance/gtex_v8_snp_covariance.txt.gz \
 --impute_to_mean \
 --verbosity 7
