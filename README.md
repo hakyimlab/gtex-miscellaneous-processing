@@ -1,3 +1,10 @@
+# Introduction
+
+This repository contains scripts to process GTEx data.
+Since these scripts were run in UCHicago's HPC Gardner cluster (CRI), it contains paths in that filesystem.
+
+Subfolders contain in-detail Readmes. An overview of each of those will be progressively added here.
+
 # BigQuery
 See `src/badger_scripts/bq`.
 
