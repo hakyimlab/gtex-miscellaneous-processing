@@ -23,7 +23,7 @@ definitions:
 
     sub_batches: &SUB_BATCHES 80
 
-    output_folder: &OUTPUT resuls/dapg
+    output_folder: &OUTPUT results/dapg
     scratch_folder: &SCRATCH scratch_dapg
     torus_root: &TORUS /scratch/abarbeira3/v8_process/torus/eqtl/results/torus_prior
     expression_root: &EXPRESSION /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/expression
@@ -34,7 +34,7 @@ definitions:
     genotype_metadata: &GENOTYPE_METADATA "/scratch/abarbeira3/data/parquet/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet"
     #genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
 
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/rolling_white_list.txt
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_1.txt
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
@@ -56,7 +56,7 @@ arguments:
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
   #Whole blood was done separately and we dont want it ran again
-  - !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+  - !Whitelist { name: "whitelist", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !ArgumentFromMetadata
     name: covariate
@@ -150,7 +150,7 @@ arguments:
   - !ArgumentFromMetadata
     name: output
     prefix: "-output_folder"
-    prepend: "results/dapg_maf{af}_w{window}"
+    prepend: *OUTPUT
     format_rule: "{tissue}_chr{chromosome}_{sub_batch}"
     sources: [
       {path: tissue/name, destination: tissue},

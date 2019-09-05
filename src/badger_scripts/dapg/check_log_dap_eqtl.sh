@@ -13,8 +13,8 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 --name_subfield sub_job 3 \
 --clean_target "scratch_dapg/{tissue}_chr{chromosome}_{sub_job}" \
 --clean_target "logs_dap/{tissue}_chr{chromosome}_{sub_job}_*" \
---clean_target "results/dapg_maf0.01_w1000000/{tissue}_chr{chromosome}_{sub_job}" \
---resubmit \
+--clean_target "results/dapg/{tissue}_chr{chromosome}_{sub_job}" \
 -output check_eqtl.txt
 
 #--resubmit \
+--resubmit \

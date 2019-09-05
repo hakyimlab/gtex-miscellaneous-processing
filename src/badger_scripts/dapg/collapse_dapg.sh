@@ -15,10 +15,9 @@ cd $PBS_O_WORKDIR
 
 python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/collapse_folder_files.py \
 -rule "(.*)_chr*" \
--input_folder /scratch/abarbeira3/v8_process/dapg/eqtl/results/dapg_maf0.01_w1000000/ \
--output_folder /scratch/abarbeira3/v8_process/dapg/eqtl/results/collapsed_dapg_maf0.01_w1000000/ \
+-input_folder /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/results_eur \
+-output_folder /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/dapg/dapg/collapsed_results_eur \
 --reentrant \
---move \
 -parsimony 8
 
 #--exclude Muscle_Skeletal_chr6_9 \
