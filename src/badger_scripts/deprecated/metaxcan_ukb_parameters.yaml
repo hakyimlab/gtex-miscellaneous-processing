@@ -2,7 +2,7 @@
 definitions:
   constants:
     #gwas_folder: &UKB_FOLDER /home/numa/Documents/Projects/data/GWAS/UKBN
-    gwas_folder: &UKB_FOLDER /group/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS/
+    gwas_folder: &UKB_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS/
 
 arguments:
   - !RulesMap

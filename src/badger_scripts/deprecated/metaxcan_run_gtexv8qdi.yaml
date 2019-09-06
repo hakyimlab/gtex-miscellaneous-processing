@@ -1,7 +1,7 @@
 ---
 definitions:
   #command: /home/numa/Documents/Projects/metaxcan/MetaXcan/software/MetaXcan.py
-  command: /group/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
+  command: /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
 
   template: MetaXcan.jinja
   default_arguments:
@@ -17,7 +17,7 @@ definitions:
       #fake_submission: true
 
   constants:
-    model_folder: &MODEL_FOLDER /group/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
     #model_folder: &MODEL_FOLDER /home/numa/Documents/Projects/data/metaxcan/GTExV8/qdi
 
     results_folder: &RESULTS_FOLDER results/sp_v8qdir
@@ -32,7 +32,7 @@ sub_configuration:
 
 arguments:
   - !Whitelist
-    list_from_file: "/group/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_public_meta_analysis_whitelist.txt"
+    list_from_file: "/gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_public_meta_analysis_whitelist.txt"
     #list_from_file: "/home/numa/Documents/Projects/data/GWAS/gwas_public_meta_analysis_whitelist.txt"
     in_metadata_path: "gwas/tag"
 

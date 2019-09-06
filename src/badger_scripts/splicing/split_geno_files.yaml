@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/split_model_training_genotypes.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/split_model_training_genotypes.py"
 
   template: split_geno_files.jinja
   default_arguments:

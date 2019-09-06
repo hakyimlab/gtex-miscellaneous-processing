@@ -1,7 +1,7 @@
 ---
 definitions:
-  #command: /home/numa/Documents/Projects/nextgen/genomic_tools/src/genomic_tools/gwas_parsing.py
-  command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/gwas_parsing.py"
+  #command: /home/numa/Documents/Projects/nextgen/genomic_tools/genomic_tools/src/gwas_parsing.py
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/gwas_parsing.py"
 
   template: gwas_parsing.jinja
   default_arguments:
@@ -24,13 +24,13 @@ definitions:
 #    hg19_snp_blacklist: &HG19_SNP_BLACKLIST /home/numa/Documents/Projects/data/ucsc-hg/synth/snp150_hg19_blacklist.txt.gz
 #    hg19_chain: &HG19_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg19ToHg38.over.chain.gz
 
-    gwas_folder: &GWAS_FOLDER /group/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS
 
-    # gwas_whitelist: &GWAS_WHITE_LIST /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/gwas_ukbiobank_neale_lab_whitelist.txt
-    gwas_whitelist: &GWAS_WHITE_LIST /group/im-lab/nas40t2/rbonazzola/GTEx/v8/gwas_conversion/gwas_ukbiobank_neale_lab_whitelist.txt
-    snp_reference_metadata: &SNP_REFERENCE_METADATA /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_selected_variants.txt.gz
+    # gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/gwas_ukbiobank_neale_lab_whitelist.txt
+    gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/rbonazzola/GTEx/v8/gwas_conversion/gwas_ukbiobank_neale_lab_whitelist.txt
+    snp_reference_metadata: &SNP_REFERENCE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_selected_variants.txt.gz
 
-    hg19_chain: &HG19_CHAIN /group/im-lab/nas40t2/abarbeira/data/liftover/hg19ToHg38.over.chain.gz
+    hg19_chain: &HG19_CHAIN /gpfs/data/im-lab/nas40t2/abarbeira/data/liftover/hg19ToHg38.over.chain.gz
 
     output_order: &OUTPUT_ORDER "variant_id panel_variant_id chromosome position effect_allele non_effect_allele frequency pvalue zscore effect_size standard_error sample_size cases"
     results_folder: &RESULTS_FOLDER results_gwas_ukbn

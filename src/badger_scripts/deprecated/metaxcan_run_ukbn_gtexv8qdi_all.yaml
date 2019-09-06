@@ -2,7 +2,7 @@
 #TODO: add argument from dictionary rule
 definitions:
   #command: /home/numa/Documents/Projects/metaxcan/MetaXcan/software/MetaXcan.py
-  command: /group/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
+  command: /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
 
   template: MetaXcan.jinja
   default_arguments:
@@ -18,10 +18,10 @@ definitions:
       fake_submission: true
 
   constants:
-    model_folder: &MODEL_FOLDER /group/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
     #model_folder: &MODEL_FOLDER /home/numa/Documents/Projects/data/metaxcan/GTExV8/qdi
 
-    gwas_folder: &GWAS_FOLDER /group/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS/
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/UKB_Neale_GWAS/
     #gwas_folder: &GWAS_FOLDER /home/numa/Documents/Projects/data/GWAS/UKBN/
 
     results_folder: &RESULTS_FOLDER results/sp_ukbn_v8qdir_all
@@ -41,7 +41,7 @@ arguments:
         path: gwas/code
 
 #  - !Whitelist
-#    list_from_file: "/group/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_ukbiobank_neale_lab_whitelist.txt"
+#    list_from_file: "/gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_ukbiobank_neale_lab_whitelist.txt"
 #    #list_from_file: "/home/numa/Documents/Projects/data/GWAS/gwas_ukbiobank_neale_lab_whitelist.txt"
 #    in_metadata_path: "gwas/code"
 

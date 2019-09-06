@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: /group/im-lab/nas40t2/abarbeira/software/MetaXcan/software/CrossModel.py
+  command: /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/CrossModel.py
 
   template: smultixcan.jinja
   default_arguments:
@@ -15,12 +15,12 @@ definitions:
       fake_submission: true
 
   constants:
-    models_folder: &MODELS_FOLDER /group/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
+    models_folder: &MODELS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/V8/qdir
     models_name_pattern: &MODELS_NAME_PATTERN '"gtex_v8_(.*)_qdir_signif.db"'
-    metaxcan_folder: &METAXCAN_FOLDER /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/metaxcan/results/sp_v8qdir
+    metaxcan_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/metaxcan/results/sp_v8qdir
     metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"spredixcan_gtexv8qdir_(.*)__PM__(.*).csv"'
     metaxcan_filter_pattern: &METAXCAN_FILTER_PATTERN '"spredixcan_gtexv8qdir_{study}__PM__(.*).csv"'
-    snp_covariance: &SNP_COVARIANCE /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/covariance_builder/results/gtex_v8_snp_covariance.txt.gz
+    snp_covariance: &SNP_COVARIANCE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/covariance_builder/results/gtex_v8_snp_covariance.txt.gz
     cutoff_condition_number: &CUTOFF_CONDITION_NUMBER "30"
     #model_folder: &MODEL_FOLDER /home/numa/Documents/Projects/data/metaxcan/GTExV8/qdi
 
@@ -36,7 +36,7 @@ sub_configuration:
 
 arguments:
   - !Whitelist
-    list_from_file: "/group/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_public_meta_analysis_whitelist.txt"
+    list_from_file: "/gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/gwas_public_meta_analysis_whitelist.txt"
     #list_from_file: "/home/numa/Documents/Projects/data/GWAS/gwas_public_meta_analysis_whitelist.txt"
     in_metadata_path: "gwas/tag"
 

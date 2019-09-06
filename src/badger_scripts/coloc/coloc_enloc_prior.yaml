@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/run_coloc.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/run_coloc.py"
   template: coloc.jinja
 
   copy_to_item: true

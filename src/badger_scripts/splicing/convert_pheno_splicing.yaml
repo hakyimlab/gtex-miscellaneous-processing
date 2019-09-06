@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/gtex_pheno_file_conversion.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/gtex_pheno_file_conversion.py"
 
   template: convert_pheno_splicing.jinja
   default_arguments:

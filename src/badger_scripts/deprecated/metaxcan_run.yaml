@@ -1,7 +1,7 @@
 ---
 definitions:
   #command: /home/numa/Documents/Projects/metaxcan/MetaXcan/software/MetaXcan.py
-  command: /group/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
+  command: /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
 
   template: MetaXcan.jinja
   default_arguments:
@@ -18,10 +18,10 @@ definitions:
 
   constants:
     model_folder: &MODEL_FOLDER /home/numa/Documents/Projects/data/metaxcan/GTEXV7
-    #model_folder: &MODEL_FOLDER /group/im-lab/nas40t2/abarbeira/data/metaxcan/V7/GTEXV7
+    #model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/V7/GTEXV7
     #No need to add a variable for the same folder, I do it for semantic ease of mind
     covariance_folder: &COVARIANCE_FOLDER /home/numa/Documents/Projects/data/metaxcan/GTEXV7
-    #covariance_folder: &COVARIANCE_FOLDER /group/im-lab/nas40t2/abarbeira/data/metaxcan/V7/GTEXV7
+    #covariance_folder: &COVARIANCE_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/V7/GTEXV7
     results_folder: &RESULTS_FOLDER results
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
@@ -35,7 +35,7 @@ sub_configuration:
 arguments:
   - !Whitelist
     list_from_file:  "/home/numa/Documents/Projects/data/GWAS/gtex_gwas_whitelist.txt"
-    #list_from_file: "/group/im-lab/nas40t2/abarbeira/data/metaxcan/gtex_gwas_whitelist.txt"
+    #list_from_file: "/gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/gtex_gwas_whitelist.txt"
     in_metadata_path: "gwas/tag"
 
   - !FilesInFolder

@@ -25,7 +25,7 @@ arguments:
     name: input_variable
     prefix: "-variable_file"
     sort: true
-    folder: /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/expression/
+    folder: /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/expression/
     regexp_filter: "(.*)_Analysis.expression.txt"
     metadata_rules:
       - !ExtractFromFileNameRegexpMetadata

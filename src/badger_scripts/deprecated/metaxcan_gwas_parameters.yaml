@@ -2,7 +2,7 @@
 definitions:
   constants:
     #gwas_folder: &GWAS_FOLDER /home/numa/Documents/Projects/data/GWAS
-    gwas_folder: &GWAS_FOLDER /group/im-lab/nas40t2/Data/SummaryResults/Production
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/Production
     beta_parameters:
       ADIPOGen_PARAMETERS : &ADIPOGen_PARAMETERS_K "--snp_column marker --non_effect_allele_column other_allele --effect_allele_column reference_allele --beta_column beta --pvalue_column pvalue --se_column se"
       AMD_PARAMETERS : &AMD_PARAMETERS_K "--snp_column Marker --non_effect_allele_column Allele2 --effect_allele_column Allele1 --beta_sign_column Overall --pvalue_column GC.Pvalue"

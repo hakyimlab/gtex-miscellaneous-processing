@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/gtex_association_conversion.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/gtex_association_conversion.py"
 
 
   template: gtex_association_conversion.jinja
@@ -25,7 +25,7 @@ arguments:
   - !Scalar
     name: snp_annotation
     prefix: -snp_annotation
-    value: /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
+    value: /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
 
   - !Scalar
     name: parsimony
@@ -36,7 +36,7 @@ arguments:
     name: gtex_eqtl_file
     prefix: -gtex_eqtl_file
     sort: true
-    folder: /group/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations
+    folder: /gpfs/data/im-lab/nas40t2/Data/GTEx/V8/GTEx_Analysis_v8_eQTL_all_associations
     regexp_filter: "(.*).allpairs.txt.gz"
     metadata_rules:
       - !ExtractFromFileNameRegexpMetadata

@@ -1,7 +1,7 @@
 ---
 definitions:
-  # command: /home/numa/Documents/Projects/nextgen/genomic_tools/src/genomic_tools/gwas_parsing.py
-  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/gwas_parsing.py"
+  # command: /home/numa/Documents/Projects/nextgen/genomic_tools/genomic_tools/src/gwas_parsing.py
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/gwas_parsing.py"
 
   template: gwas_parsing.jinja
   default_arguments:

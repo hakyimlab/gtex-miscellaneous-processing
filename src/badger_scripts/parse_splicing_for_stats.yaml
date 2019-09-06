@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/parse_splicing_for_stats.py
+  command: python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/parse_splicing_for_stats.py
 
   template: parse_splicing_for_stats.jinja
   default_arguments:

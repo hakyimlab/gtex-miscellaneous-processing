@@ -1,7 +1,7 @@
 ---
 #TODO: add argument from dictionary rule
 definitions:
-  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/patch_gene_name.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/patch_gene_name.py"
 
   template: patch_gene_name.jinja
   default_arguments:

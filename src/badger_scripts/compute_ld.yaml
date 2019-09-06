@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/compute_ld_in_region.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/compute_ld_in_region.py"
 
   template: compute_ld.jinja
   default_arguments:
@@ -20,11 +20,11 @@ definitions:
 
     #genotype_folder: &GENOTYPE_FOLDER "/scratch/abarbeira3/v8_process/to_parquet/results/parquet/"
     #genotype_metadata: &GENOTYPE_METADATA /scratch/abarbeira3/v8_process/to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
-    genotype_folder: &GENOTYPE_FOLDER /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet
-    genotype_metadata: &GENOTYPE_METADATA /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_folder: &GENOTYPE_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet
+    genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet/gtex_v8_eur_itm.variants_metadata.parquet
     genotype_pattern: &GENOTYPE_PATTERN '"gtex_v8_eur_itm.chr(.*).variants.parquet"'
 
-    by_region_file: &BY_REGION_FILE /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
+    by_region_file: &BY_REGION_FILE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
 
     results_folder: &RESULTS_FOLDER results
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"

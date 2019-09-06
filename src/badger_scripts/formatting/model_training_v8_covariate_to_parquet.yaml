@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python3 /group/im-lab/nas40t2/abarbeira/software/genomic_tools/src/genomic_tools/model_training_variable_to_parquet.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/model_training_variable_to_parquet.py"
 
 
   template: model_training_variable_to_parquet.jinja
@@ -26,7 +26,7 @@ arguments:
     name: input_variable
     prefix: -variable_file
     sort: true
-    folder: /group/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/covariates/
+    folder: /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/covariates/
     regexp_filter: "(.*)_Analysis.combined_covariates.txt"
     metadata_rules:
       - !ExtractFromFileNameRegexpMetadata
