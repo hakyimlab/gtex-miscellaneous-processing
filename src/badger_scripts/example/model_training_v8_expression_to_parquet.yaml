@@ -1,0 +1,55 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/model_training_variable_to_parquet.py"
+
+  template: model_training_variable_to_parquet.jinja
+
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      fake_submission: true
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/expression ] || mkdir -p results/expression'
+
+sub_configuration:
+  -
+    optional: true
+    how: before_arguments
+    path: model_training_expression_spec.yaml
+
+arguments:
+  - !FilesInFolder
+    name: input_variable
+    prefix: "-variable_file"
+    sort: true
+    folder: /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/expression/
+    regexp_filter: "(.*)_Analysis.expression.txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue/name
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-parquet_output"
+    prepend: "results/expression"
+    format_rule: "{tissue}.expression.parquet"
+    sources:
+    -
+      path: tissue/name
+      destination: tissue
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "model_training_expression_to_parquet_{tissue}"
+    sources:
+    -
+      path: tissue/name
+      destination: tissue
