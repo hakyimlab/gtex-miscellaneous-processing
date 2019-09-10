@@ -17,10 +17,10 @@ definitions:
       #fake_submission: true
 
   constants:
-    bin: &BIN_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc_bin
+    bin: &BIN_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc_bin_2
     dapg_runs: &DAPG_RUNS_K /scratch/abarbeira3/v8_process/dapg/eqtl/results/collapsed_dapg
-    gwas: &SLICED_GWAS_K /scratch/abarbeira3/v8_process/slice/results/
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/wb_white_list.txt
+    gwas: &SLICED_GWAS_K /scratch/abarbeira3/v8_process/slice/results
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/as_white_list.txt
     trait_whitelist: &TRAIT_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/undeflated_gwas.txt
     output_folder: &OUTPUT_FOLDER_K results
 
@@ -45,7 +45,7 @@ arguments:
     regexp_filter: "(.*)"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
-  #- !Whitelist { name: "wb", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+  - !Whitelist { name: "whitelist", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
 
   - !FilesInFolder
     name: gwas_path

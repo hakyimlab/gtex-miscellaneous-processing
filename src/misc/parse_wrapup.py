@@ -13,6 +13,7 @@ def run(args):
     r, subfield_names, subfield_position, subfield_regexp = helpers.name_parse_prepare(args.name_subfield_regexp, args.name_subfield)
     p = re.compile("Resources Used:\s+cput=(.*),vmem=(.*)kb,walltime=(.*),mem=(.*)kb,energy_used=(.*)")
 
+    names_re_ = re.compile(args.logs_pattern) if args.logs_pattern else None
     files = [x for x in os.listdir(args.logs_folder) if r.search(x)]
     r = []
     for i, file in enumerate(files):
@@ -29,7 +30,8 @@ def run(args):
                     vmem = int(s.group(2))/1024
                     walltime= _to_sec(s.group(3))
                     cputime = _to_sec(s.group(1))
-                    r_ = (file, mem, vmem, walltime,cputime)
+                    name_ = names_re_.search(file).group(1) if names_re_ else file
+                    r_ = (name_, mem, vmem, walltime,cputime)
                     if values:
                         r_ += values
                     r.append(r_)
@@ -42,6 +44,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Compare jobs to expected result")
     parser.add_argument("-logs_folder", help="Where the submission jobs will be saved", default="jobs")
+    parser.add_argument("-logs_pattern", help="Log name pattern")
     parser.add_argument("-output", help="Path where the output will be saved", default="job_log.txt")
     parser.add_argument("-verbosity", help="Log verbosity level. 1 is everything being logged. 10 is only high level messages, above 10 will hardly log anything", default = 10, type=int)
     parser.add_argument("-name_subfield", help="Specify multiple key-value pairs to specify format conversion", nargs=2, action="append", default =[])

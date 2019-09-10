@@ -15,12 +15,12 @@ definitions:
       #fake_submission: true
 
   constants:
-    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/dapg/eqtl/results/collapsed_dapg_maf0.01_w1000000
-    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/v8_process/dapg/eqtl/results/packed/dapg_maf0.01_w1000000
+    input_folder: &INPUT_FOLDER results/collapsed_dapg
+    output_folder: &OUTPUT_FOLDER results/packed/dapg_eur
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 
   pre_command:
-  - '([ -d /scratch/abarbeira3/v8_process/dapg/eqtl/results/packed/dapg_maf0.01_w1000000 ] || mkdir -p /scratch/abarbeira3/v8_process/dapg/eqtl/results/packed/dapg_maf0.01_w1000000)'
+  - '([ -d results/packed/dapg_eur ] || mkdir -p results/packed/dapg_eur)'
 
 arguments:
 

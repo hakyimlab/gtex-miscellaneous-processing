@@ -7,6 +7,10 @@ Subfolders may contain in-detail Readmes. An overview of each of those will be p
 
 There is a wide variety of scripts, written in bash, python, R and a few more tools. There is a heavy dependency on 
 [Badger](https://github.com/hakyimlab/badger) job submission (an overview is given below in this readme).
+The actual scripts run in most jobs are here: [genomic tools](https://github.com/hakyimlab/summary-gwas-imputation)
+
+*Hint*: executing jobs with inputs and outputs in CRI's `/scratch` folder has a significant I/O gain.
+ The downside is scratch is not backed up, and old files get erased.
 
 # Layout
 
@@ -14,8 +18,105 @@ The folder `src/badger_scripts` contains different processing schemes centered a
 
 The other folders may contain miscellaneous processing and verifications, most of them needed for one-shot analysis or data exploration.
 
+# Environment
+
+CRI Gardner offers different software environments via lmod. 
+Sometimes, when a tool I needed wasn't installed yet, I would use miniconda to create my own working environment to move forward while CRI staff performs installation.
+There might be a few scripts that depended on a cnda environment I built, and users will not have it. They would have to create their own via:
+`src/emergency_conda.sh`.
+
 ## job management
 
+After submitting jobs, I typically use `watch qstat` for a while to see if the jobs start running successfully. Then I would run `watch 'qstat | wc'` to see how many jobs are on the queue. 
+You can pipe `grep` for specific jobs. 
+
+### Log examination
+
+After the jobs have run, there is a script that can process logs and expected outputs to verify a job finished successfully. 
+`src/misc/check_log.py` can parse log files for particular text, and presence of files or folders. See the following example:
+```bash
+#!/usr/bin/env bash
+
+module load gcc/6.2.0
+module load python/3.5.3
+
+python3 $PATH_TO_REPO/src/misc/check_log.py \
+-jobs_folder jobs \
+-logs_folder logs_dap \
+-finish_token "Ran DAP in" \
+--name_subfield_regexp "(.*)_chr(\d+)_(\d+)_gtexv8_dapg_eqtl" \
+--name_subfield tissue 1 \
+--name_subfield chromosome 2 \
+--name_subfield sub_job 3 \
+--check_product output "results/dapg/{tissue}_chr{chromosome}_{sub_job}" \
+-output check_eqtl.txt
+```
+
+* `-jobs_folder` specifies are folder where the jobs are.
+* `-jobs_pattern` specifies a regular expression to filter files in the `jobs` folder
+* `-logs_folder` specifies are folder where the logs are.
+* `-logs_pattern` specifies a regular expression to filter files in the `lobs` folder
+* `-finish_token` A string to be searched in the log files: if found, the job will be reported as completed
+* `--name_subfield_regexp` A regular expression to parse the job names. Groups can be used to extract subfields (e.g.: tissues, traits, etc written in the job file name)
+* `--name_subfield` specifies a field name and group position in the previous argument. Can be specified multiple times.
+* `--check_product` specifies a path that should be checked for presence. Can be specified multiple times. 
+* `-output` a file were to store a report. The report will contain job names, status, subfields, and presence of products
+* `--resubmit` optional. Whenever a job is marked as incomplete, or a product is missing, it will be resubmitted.
+* `--clean_target` you can specify a path to a file or folder that needs to be deleted when resubmitting a job (this can be incomplete results, logs, etc)
+
+### Job resource statistics
+
+CRI appends a table detailing execution resources, looking like this:
+```bash
+------------ Job WrapUp ------------
+
+Job ID:            16648309.cri16sc001
+User ID:           abarbeira3
+Job Name:          Adipose_Subcutaneous_chr1_0_gtexv8_dapg_eqtl
+Queue Name:        express
+Working Directory: /scratch/abarbeira3/v8_process/dapg/eqtl
+Resource List:     walltime=04:00:00,mem=4gb,nodes=1:ppn=1,neednodes=1:ppn=1
+Resources Used:    cput=00:08:30,vmem=3581328kb,walltime=00:08:33,mem=1582216kb,energy_used=0
+Exit Code:         0
+Mother Superior:   cri16cn002
+
+Execution Nodes: 
+cri16cn002
+```
+The `src/misc` script to parse these statistics into a nice table for further study and optimization. Example:
+```bash
+#!/usr/bin/env bash
+
+module load gcc/6.2.0
+module load python/3.5.3
+
+python3 $PATH_TO_REPO/src/misc/parse_wrapup.py \
+-logs_folder /scratch/abarbeira3/v8_process/enloc/eqtl/logs_enloc \
+-output enloc_wrapup.txt \
+-name_subfield_regexp "(.*)__PM__(.*)_enloc_eqtl_gtexv8\.o(\d+)\.cri(.*)" \
+-name_subfield trait 1 \
+-name_subfield tissue 2
+```
+
+The interface is very similar to the previous section.
+
+* `-logs_folder` specifies a folder with logs
+* `-output` where the report will be saved
+* `-name_subfield_regexp`: a regular expression to parse log files
+* `-name_subfield`: a mapping from regular expression group number to nfield name
+
+And you get a report like this:
+```bash
+cat enloc_wrapup.txt  | head | cut -f2-7
+memory          v_memory        walltime    cputime trait                                                       tissue 
+5629.07421875   5699.375        12535       12178   SSGAC_Depressive_Symptoms                                   Adrenal_Gland
+5629.04296875   5707.8984375    11370       11215   UKB_6152_5_diagnosed_by_doctor_Blood_clot_in_the_leg_DVT    Skin_Sun_Exposed_Lower_leg
+3945.99609375   4045.5390625    11323       10806   UKB_6152_8_diagnosed_by_doctor_Asthma                       Skin_Not_Sun_Exposed_Suprapubic
+4237.3671875    4307.5703125    10580       10351   MAGIC_FastingGlucose                                        Small_Intestine_Terminal_Ileum
+```
+
+This information can be used to optimize subsequent runs. 
+You can look at `badger_scripts/enloc/build_enloc_eqtl_spec.py` for an example on how to create per-tissue run requirements. 
 
 ## Processing genotypes
 
@@ -37,7 +138,9 @@ These can be taken as a starting point to extract GTEx data into convenient text
 
 Most GTEx data processing involving job submission was handled via [Badger] (https://github.com/hakyimlab/badger). 
 Badger aids the creation of families of jobs (executable programs meant to be run in an HPC cluster).
-Badger scripts specify and define mappings from possible parameter configurations to actual job execution (i.e. instances of a program execution with a full complement of command-line parameters).
+Badger scripts specify and define mappings from possible parameter configurations to actual job execution (i.e. instances of a program execution with a full complement of command-line parameters). It is a mapping of points in a parameter space to jobs that will be submitted to an HPC Queue.
+Badger scripts consist at the bare minimum of a job template (`.jinja`) and a configuration master definition (`.yaml`); possibly additional yaml files with subconfigurations might be used. 
+YAML is a format for specifying arbitraily complex structured data in a human readable format; you can specify lists of values, amppings, and we defined special arguments to handle common paarmeters such as lists of files in folders.
 Most scripts were defined for runing in CRI and its PBS queue, but a few were meant for a SLURM queue on google cloud.
 
 These scripts share a common behavior and consequences in CRI Gardner cluster:
@@ -58,6 +161,7 @@ Frequently, the CRI cluster is under heavy pressure, or some nodes might malfunc
 Badger supports two special submission modes: `fake_submission` that will generate all related jobs (bash files) but not submit them, and `crude_submission` that merely executes each job as a subprocess (one a ta a time)
 
 Please make sure to understand the Badger example below before moving into any specific workflow. 
+Each set of scripts were mostly meant to be copied over to an `execution folder`(i.e. copy badger scripts to a folder in scratch) so that each run can be managed separately. 
 
 ### Badger workflow Example
 
@@ -65,7 +169,7 @@ The following example shows a minimal badger workflow in CRI.
 It assumes:
 * This gtex processing repository downloaded somewhere (`$PATH_TO_REPO` will represent the root of this repository).
 * [Badger] (https://github.com/hakyimlab/badger) (`$PATH_TO_BADGER` will represent the root of this repository).
-* [Genomic tools](git@github.com:hakyimlab/summary-gwas-imputation.git)
+* [Genomic tools](git@github.com:hakyimlab/summary-gwas-imputation.git) accesible at `/gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools`. If you downloaded it somewhere else, modify the `.yaml` files accordingly.
 
 *Note:* Genomic tools is called `summary-gwas-imputation` for marketing reasons.
 
@@ -136,8 +240,10 @@ This produces a file called `wrapup.txt` listing resources used by each job.
 4) Refining resource consumption declaration
 
 For the sake of this example, assume these jobs have to be executed more than once.
+By running `python3 src/badger_scripts/example/build_spec.py`, you will get a subconfiguration file describing resource consumption per job.
+In this case, it will give you a specification of memory and walltime per tissue (in this toy example, it is likely they will all have the actual same numbers sine they ar very small jobs) 
 
-#### Closing words
+#### Example closing words
 
 Some jobs will be executed many times in the life of a research project. For example, [S-PrediXcan](https://github.com/hakyimlab/MetaXcan)
 was ran several times because many of its input were regenerated aftyer issues or improvements were found.
@@ -160,14 +266,13 @@ This stategy is motivated by CRI express queue (reserved for jobs under 4gb and 
 allowing a faster overall execution, and the rest will consume conservative limits.
 
 
+## Index of badger workflows
 
-### BigQuery
+**BigQuery**: There are several scripts to process and upload text files into google BigQuery. See `src/badger_scripts/bq` for details.
 
-There are several scripts to process and upload text files into google BigQuery.
+**torus** (`src/badger_scripts/torus`), **DAPG** (`src/badger_scripts/dapg`), **ENLOC** (`src/badger_scripts/enloc`): these are closely related (in order of dependency: torus is needed for DAPG, DAPG is needed for enloc)
+ 
+ 
 
-See `src/badger_scripts/bq` for details.
 
-For GWAS preprocessing, first convert to plain text files with phenotype column (`column_add_gwas.yaml`),
-then convert mixed data columns (`n_samples`, `sample_size` that might have integers and floats depending on pandas whims),
-then upload to big query
 

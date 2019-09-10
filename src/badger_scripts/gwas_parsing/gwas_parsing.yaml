@@ -13,7 +13,7 @@ definitions:
     !PBSQueue
       jobs_folder: jobs_gwas_parsing
       job_name_key: job_name
-      #fake_submission: true
+      fake_submission: true
 
   constants:
 #    gwas_whitelist: &GWAS_WHITE_LIST /home/numa/Documents/Projects/data/GWAS/gwas_public_meta_analysis_whitelist.txt
@@ -28,7 +28,7 @@ definitions:
 #    hg18_chain: &HG18_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg18ToHg38.over.chain.gz
 #    hg19_chain: &HG19_CHAIN /home/numa/Documents/Projects/data/LiftOver/hg19ToHg38.over.chain.gz
 
-    gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist_2.txt
+#    gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist_2.txt
 #    gwas_whitelist: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/rbonazzola/GTEx/v8/gwas_conversion/gwas_public_meta_analysis_whitelist.txt
 
     snp_reference_metadata: &SNP_REFERENCE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_filtered_maf0.01_monoallelic_variants.txt.gz METADATA
@@ -56,9 +56,9 @@ sub_configuration:
     path: gwas_parameters.yaml
 
 arguments:
-  - !Whitelist
-    list_from_file:  *GWAS_WHITE_LIST
-    in_metadata_path: "gwas/tag"
+#  - !Whitelist
+#    list_from_file:  *GWAS_WHITE_LIST
+#    in_metadata_path: "gwas/tag"
 
   - !ArgumentFromMetadata
     name: fill_from_snp_info

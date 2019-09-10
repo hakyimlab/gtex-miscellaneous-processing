@@ -69,7 +69,7 @@ def post_check(r, resubmit=False, resubmit_log_only=False, clean_targets=None, s
                     redo=True
                     break
 
-        if redo:
+        if redo and resubmit:
             redone.append(t.job_name)
             logging.info("Cleaning %s", t.job_name)
             values = tuple(t)[5:]
@@ -84,10 +84,9 @@ def post_check(r, resubmit=False, resubmit_log_only=False, clean_targets=None, s
                 logging.info("Cleaning product: %s", target)
                 clean_target(target)
 
-            if resubmit:
-                logging.info("Resubmitting %s", t.job_name)
-                subprocess.call(["qsub", t.job_path])
-                time.sleep(0.1)
+            logging.info("Resubmitting %s", t.job_name)
+            subprocess.call(["qsub", t.job_path])
+            time.sleep(0.1)
     logging.info("Redid %i", len(redone))
 
 

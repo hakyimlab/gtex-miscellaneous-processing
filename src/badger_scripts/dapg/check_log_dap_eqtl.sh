@@ -11,10 +11,12 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 --name_subfield tissue 1 \
 --name_subfield chromosome 2 \
 --name_subfield sub_job 3 \
---clean_target "scratch_dapg/{tissue}_chr{chromosome}_{sub_job}" \
---clean_target "logs_dap/{tissue}_chr{chromosome}_{sub_job}_*" \
---clean_target "results/dapg/{tissue}_chr{chromosome}_{sub_job}" \
+--check_product output "results/dapg/{tissue}_chr{chromosome}_{sub_job}" \
 -output check_eqtl.txt
 
+
+#--clean_target "scratch_dapg/{tissue}_chr{chromosome}_{sub_job}" \
+#--clean_target "logs_dap/{tissue}_chr{chromosome}_{sub_job}_*" \
+
 #--resubmit \
---resubmit \
+#--resubmit \
