@@ -23,5 +23,13 @@ To make the job management easier, each job outputs into its own folder. To be u
  `build_eqtl_spec.py` will process the job resource statistics and build an optimized specification of resource declaration per each job (this will write `dap_job_spec_eqtl.yaml` mentioned earlier)
   
  `upload_dapg_sqtl.sh` will upload to google cloud storage the packed results
+ 
+## Splitting run among users
+
+The folder `src/badger_scripts/fix` contains dap-g runs split in 5 subsets. The idea was to split these runs among many CRI users;
+but it quickly became too cumbersome. CRI would dump logs with stringent permissions (even with UNIX utilities like umask), and parsing logs
+from others required people to change permissions, one user resubmitting failed jobs from another would also find permission issues, etc.
+ 
+ 
 
 `

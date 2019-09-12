@@ -128,6 +128,8 @@ GTEx genotypes are obtained in vcf format. A combination of samtools, awk and py
 
 These can be taken as a starting point to extract GTEx data into convenient text files.
 
+They can be converted to Parquet columnar databases for fast access using `src/v8/ModelTrainingToParquetV8CRI.sh`
+
 ## Geuvadis
 
 `src/geuvadis` contains GEUVADIS data parsing. The outputs are mostly used for predicting expression in GEUVADIS data, and comparing said predictions with GEUVADIS measured expression.
@@ -142,6 +144,8 @@ Badger scripts specify and define mappings from possible parameter configuration
 Badger scripts consist at the bare minimum of a job template (`.jinja`) and a configuration master definition (`.yaml`); possibly additional yaml files with subconfigurations might be used. 
 YAML is a format for specifying arbitraily complex structured data in a human readable format; you can specify lists of values, amppings, and we defined special arguments to handle common paarmeters such as lists of files in folders.
 Most scripts were defined for runing in CRI and its PBS queue, but a few were meant for a SLURM queue on google cloud.
+
+Even if a badger script is meant to generate a vast list of jobs, you can generate specidifc subsets using whitelists (i.e. run only for specific tissue-trat combinations, or only for one chromosome)
 
 These scripts share a common behavior and consequences in CRI Gardner cluster:
 
@@ -169,7 +173,8 @@ The following example shows a minimal badger workflow in CRI.
 It assumes:
 * This gtex processing repository downloaded somewhere (`$PATH_TO_REPO` will represent the root of this repository).
 * [Badger] (https://github.com/hakyimlab/badger) (`$PATH_TO_BADGER` will represent the root of this repository).
-* [Genomic tools](git@github.com:hakyimlab/summary-gwas-imputation.git) accesible at `/gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools`. If you downloaded it somewhere else, modify the `.yaml` files accordingly.
+* [Genomic tools](git@github.com:hakyimlab/summary-gwas-imputation.git) accesible at `/gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools`. 
+If you downloaded it somewhere else, modify the `.yaml` files accordingly.
 
 *Note:* Genomic tools is called `summary-gwas-imputation` for marketing reasons.
 
@@ -246,7 +251,7 @@ In this case, it will give you a specification of memory and walltime per tissue
 #### Example closing words
 
 Some jobs will be executed many times in the life of a research project. For example, [S-PrediXcan](https://github.com/hakyimlab/MetaXcan)
-was ran several times because many of its input were regenerated aftyer issues or improvements were found.
+was ran several times because many of its input were regenerated after issues or improvements were found.
 
 Depending on the family of jobs and consumption patterns, you might want to adopt different strategies to make follow-up executions more efficient.
 A pattern of resource consumption must be identified from the logs
@@ -266,13 +271,47 @@ This stategy is motivated by CRI express queue (reserved for jobs under 4gb and 
 allowing a faster overall execution, and the rest will consume conservative limits.
 
 
-## Index of badger workflows
+## Some available badger workflows
 
 **BigQuery**: There are several scripts to process and upload text files into google BigQuery. See `src/badger_scripts/bq` for details.
 
-**torus** (`src/badger_scripts/torus`), **DAPG** (`src/badger_scripts/dapg`), **ENLOC** (`src/badger_scripts/enloc`): these are closely related (in order of dependency: torus is needed for DAPG, DAPG is needed for enloc)
+**torus** (`src/badger_scripts/torus`), **DAPG** (`src/badger_scripts/dapg`), **ENLOC** (`src/badger_scripts/enloc`): 
+these are closely related (in order of dependency: torus is needed for DAPG, DAPG is needed for enloc). [DAP](https://github.com/xqwen/dap) and [enloc](https://github.com/xqwen/integrative)
+must be built beforehand.
+
+**coloc** (`src/badger_scripts/coloc`) contains scripts to run R's vanilla coloc method with different possible arguments.
+
+**formatting** (`src/badger_scripts/formatting`) converts [PredictDBPipeline](https://github.com/hakyimlab/PredictDB_Pipeline_GTEx_v7) variables (expression, covariates, etc) into parquet files for fast access.
+
+**gwas_parsing** (`src/badger_scripts/gwas_parsing`) containst two types of jobs: converting GWAS summary statistics into a homogeneous format in hg38 human genome release, or slicing GWAS by ld-region.
+ **gwas_imputation** (`src/badger_scripts/gwas_parsing`) uses as inputs the parsed GWAS from **gwas_parsing** 
+
+**model_training** (`src/badger_scripts/model_training`) contains badger scripts to train different expression prediction models (for PrediXcan and S-PrediXcan). 
+There is also `regress_eqtl.yaml`, that will regress covariates out of expression traits. This precomputed correction was performed because the crude covariate correction was used in many analysis.
+To build S-MultiXcan covariance, check `src/v8/misc/GTExV8ExpressionCovarianceBuilder.sh` and `src/v8/misc/GTExV8SplicingCovarianceBuilder.sh`.
+
+**model_training_ctimp** (`src/badger_scripts/model_training_ctimp`) covers submission of CTIMP (utmost) models.
+
+**syntethic_model**
  
- 
+**models_from_gene_snp** (`src/badger_scripts/models_from_gene_snp`) take lists of genes and snps and converts them to model training output. (i.e. top eqtl models)
 
+**postprocess_model** (`src/badger_scripts/postprocess_model`) serves all `model_*` workflows: it takes their output and compiles dbs and covariances.
 
+**synthetic_models** (`src/badger_scripts/synthetic_models`) This takes files deailing genes and variant effect sizes and converts them to preduiction models. This was used for MASHR models.
 
+**twas_builder** takes the bayesian model average from DAPG and builds Predixcan-like prediction models.
+
+**predixcan_family** (`src/badger_scripts/predixcan_family`) covers execution of S-PrediXcan and S-MultiXcan on different GWAS and transcriptomics prediction models.
+
+**splicing** (`src/badger_scripts/splicing`) has miscellaneous parsing and conversion of Splicing summary stats. **split** (`src/badger_scripts/split`) splits large text files by gene.
+
+**susier** (`src/badger_scripts/susier`) automates execution of susie-R finemapping. Its environment was built va conda. susier package got updated since this was run, so watch for issues.
+
+Some of this workflows have specific Readmes with additional details (model training, torus/dapg/enloc, predixcan, gwas parsing)
+
+## Miscellaneous scripts
+
+`src/v8/misc` contains several miscellaneous scripts where you can fish useful commands. `upload_*` are concerned mostly with uploading files to google cloud.
+
+`src/v8/misc/compute_ld_in_region.sh` creates covariances fpr Berisa-Pickrell LD-regions.
