@@ -284,7 +284,7 @@ must be built beforehand.
 **formatting** (`src/badger_scripts/formatting`) converts [PredictDBPipeline](https://github.com/hakyimlab/PredictDB_Pipeline_GTEx_v7) variables (expression, covariates, etc) into parquet files for fast access.
 
 **gwas_parsing** (`src/badger_scripts/gwas_parsing`) containst two types of jobs: converting GWAS summary statistics into a homogeneous format in hg38 human genome release, or slicing GWAS by ld-region.
- **gwas_imputation** (`src/badger_scripts/gwas_parsing`) uses as inputs the parsed GWAS from **gwas_parsing** 
+ **gwas_imputation** (`src/badger_scripts/gwas_imputation`) uses as inputs the parsed GWAS from **gwas_parsing** 
 
 **model_training** (`src/badger_scripts/model_training`) contains badger scripts to train different expression prediction models (for PrediXcan and S-PrediXcan). 
 There is also `regress_eqtl.yaml`, that will regress covariates out of expression traits. This precomputed correction was performed because the crude covariate correction was used in many analysis.
