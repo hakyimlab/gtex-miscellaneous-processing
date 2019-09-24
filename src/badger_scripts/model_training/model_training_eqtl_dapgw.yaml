@@ -7,24 +7,23 @@ definitions:
     job_memory: "4gb"
     job_walltime: "04:00:00"
     n_cpu: 1
-    logs_folder: logs
+    logs_folder: logs_pv
 
   submission:
     !PBSQueue
-      jobs_folder: jobs
+      jobs_folder: jobs_pv
       job_name_key: job_name
       #fake_submission: true
 
   constants:
-    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
     data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
 
     features_pattern: &FEATURES_PATTERN_K "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
     features_annotation: &FEATURES_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
     features_whitelist: &FEATURES_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz
 
-    # CHANGE THIS TO PARSED EUR!!!!!
-    features_weight_folder: &FEATURES_WEIGHT_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/parsed_dapg_gtexruns
+    features_weight_folder: &FEATURES_WEIGHT_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/parsed_dapg_eur_v1/
 
     sub_batches: &SUB_BATCHES_K 15
 
@@ -65,7 +64,7 @@ arguments:
     format_rule: "{tissue}.variants_pip.txt.gz PIP 0.01"
     sources: [ {path: tissue/name, destination: tissue} ]
 
-  - !Scalar { name: output_rsids, prefix: "--output_rsids" }
+  #- !Scalar { name: output_rsids, prefix: "--output_rsids" }
 
   - !Scalar { name: window, prefix: "-window", value: "1000000",
     metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }

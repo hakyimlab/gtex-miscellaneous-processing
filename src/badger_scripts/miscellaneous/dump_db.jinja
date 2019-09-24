@@ -9,19 +9,10 @@
 #PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
 
 module load gcc/6.2.0
-module load R/3.4.1
 module load python/3.5.3
-
-export MKL_NUM_THREADS={{ n_cpu }}
-export OPEN_BLAS_NUM_THREADS={{ n_cpu }}
-export NUMEXPR_NUM_THREADS={{ n_cpu }}
-export OMP_NUM_THREADS={{ n_cpu }}
 
 {% raw %}cd $PBS_O_WORKDIR {% endraw %}
 
 {{ command }} \
-{{ parsimony }} \
-{{ input_prefix }} \
-{% if output_prefix %}{{ output_prefix }} {% endif %}{% if output_prefix_text %}{{output_prefix_text}} {% endif %}
-
-
+{{ input }} \
+{{ output_prefix }}

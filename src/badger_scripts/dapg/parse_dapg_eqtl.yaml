@@ -17,7 +17,7 @@ definitions:
   constants:
     #dapg_folder: &DAPG_FOLDER /scratch/abarbeira3/data/3rd/dapg/eqtl_u/
     #input_pattern: &INPUT_PATTERN '"(.*).fm.rst"'
-    dapg_folder: &DAPG_FOLDER /scratch/abarbeira3/v8_process/dapg/eqtl/results/collapsed_dapg_maf0.01_w1000000/
+    dapg_folder: &DAPG_FOLDER /scratch/abarbeira3/v8_process/dapg/eqtl/results/collapsed_dapg
     input_pattern: &INPUT_PATTERN '"(.*).dap.txt"'
     whitelist: &WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_c.txt
     output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/parsed_dapg_eur

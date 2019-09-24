@@ -40,7 +40,7 @@ arguments:
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata
-    {name: input_prefix, prefix: "-output_prefix", prepend: *OUTPUT_FOLDER_K, format_rule: 'en_{tissue}',
+    {name: output_prefix, prefix: "-output_prefix", prepend: *OUTPUT_FOLDER_K, format_rule: 'en_{tissue}',
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata

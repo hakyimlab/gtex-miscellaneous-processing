@@ -8,6 +8,8 @@
 #PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
 #PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
 
+ulimit -c unlimited
+
 module load gcc/6.2.0
 module load R/3.4.1
 module load python/3.5.3

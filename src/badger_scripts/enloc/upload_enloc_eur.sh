@@ -18,7 +18,7 @@ rm enloc_eqtl_eur.tar.gz
 
 
 cd /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/sqtl
- cp -r formatted/ results_sqtl_eur
+cp -r formatted/ results_sqtl_eur
 tar -czvpf enloc_sqtl_eur.tar.gz results_sqtl_eur
 gsutil cp -a public-read enloc_sqtl_eur.tar.gz gs://gtex-gwas-share/enloc/enloc_sqtl_eur.tar.gz
 rm -rf results_sqtl_eur

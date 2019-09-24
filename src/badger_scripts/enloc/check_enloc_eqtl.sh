@@ -13,6 +13,7 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 --check_product enloc "results/{trait}__PM__{tissue}.enloc.rst" \
 -output check.txt
 
+#--logs_pattern "(.*)\.o(\d+)\.cri(.*)\.out$" \
 #--clean_target "logs_enloc/{trait}__PM__{tissue}_enloc_eqtl*" \
 #--clean_target "results/{trait}__PM__{tissue}" \
 #--resubmit \

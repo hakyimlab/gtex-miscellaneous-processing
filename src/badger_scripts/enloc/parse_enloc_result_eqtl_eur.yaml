@@ -18,10 +18,10 @@ definitions:
   constants:
     key: &KEY_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_key_name.txt.gz
     input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/enloc/eqtl/results
-    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur
+    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur_fix
 
   pre_command:
-  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur'
+  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur_fix ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur_fix'
 
 arguments:
   - !Scalar { name: key, value: *KEY_K}

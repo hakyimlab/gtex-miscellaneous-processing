@@ -5,19 +5,19 @@ definitions:
   template: post_process_model.jinja
 
   default_arguments:
-    job_memory: "16gb"
-    job_walltime: "24:00:00"
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
     n_cpu: "1"
-    logs_folder: logs_pp_ols
+    logs_folder: logs_pp
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_pp_ols
+      jobs_folder: jobs_pp
       job_name_key: job_name
       #fake_submission: true
 
   constants:
-    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/results_ols
+    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/en_dapgw_rsid/results
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 
     output_folder: &OUTPUT_FOLDER_K models

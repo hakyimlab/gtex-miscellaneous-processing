@@ -17,12 +17,12 @@ definitions:
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    models_folder: &MODELS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/elastic_net_models
+    models_folder: &MODELS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/models/eqtl/en
     models_name_pattern: &MODELS_NAME_PATTERN '"en_(.*).db"'
-    metaxcan_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/results/sp_imputed_gwas_gtexv8_en
+    metaxcan_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fix/predixcan/sp_imputed_gwas_gtexv8_en
     metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"spredixcan_igwas_gtexenv8_(.*)__PM__(.*).csv"'
     metaxcan_filter_pattern: &METAXCAN_FILTER_PATTERN '"spredixcan_igwas_gtexenv8_{study}__PM__(.*).csv"'
-    snp_covariance: &SNP_COVARIANCE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/meta_covariance/en/gtex_v8_snp_covariance.txt.gz
+    snp_covariance: &SNP_COVARIANCE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/meta_covariance/en_dapgw/gtex_v8_expression_endapgw_snp_covariance.txt.gz
     cutoff_condition_number: &CUTOFF_CONDITION_NUMBER "30"
     #whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/kosher_whitelist.txt
 
@@ -47,7 +47,7 @@ arguments:
   #- !Whitelist { list_from_file: *WHITELIST, in_metadata_path: "gwas/tag" }
   #- !Whitelist { from_list:["GLGC_Mc_HDL", "GLGC_Mc_LDL", "GLGC_Mc_TG"], in_metadata_path: "gwas/tag" }
 
-  - !Scalar { value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+  - !Scalar { value: "--snp_column panel_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
 
   - !Scalar { name: models_folder, prefix: "--models_folder", value: *MODELS_FOLDER }
 

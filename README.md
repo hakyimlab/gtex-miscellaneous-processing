@@ -296,7 +296,7 @@ To build S-MultiXcan covariance, check `src/v8/misc/GTExV8ExpressionCovarianceBu
  
 **models_from_gene_snp** (`src/badger_scripts/models_from_gene_snp`) take lists of genes and snps and converts them to model training output. (i.e. top eqtl models)
 
-**postprocess_model** (`src/badger_scripts/postprocess_model`) serves all `model_*` workflows: it takes their output and compiles dbs and covariances.
+**postprocess_model** (`src/badger_scripts/postprocess_model`) serves all `model_*` workflows: it takes their output and compiles dbs and covariances. It also has scripts for S-MultiXcan covariances.
 
 **synthetic_models** (`src/badger_scripts/synthetic_models`) This takes files deailing genes and variant effect sizes and converts them to preduiction models. This was used for MASHR models.
 

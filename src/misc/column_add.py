@@ -34,6 +34,7 @@ def run(args):
             for n,l in enumerate(f):
                 l = l_(l)
                 if n == 0:
+                    l = l.replace(".", "_")
                     header = format.format(*([l.strip()]+fields))
                     o.write(header)
                     continue

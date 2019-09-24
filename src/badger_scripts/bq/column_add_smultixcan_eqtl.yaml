@@ -1,0 +1,57 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_parse_sme
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_sme
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/smultixcan_v1/smp_expression_v8/
+    output_folder: &OUTPUT_FOLDER smultixcan/eqtl
+
+  pre_command:
+  - '[ -d smultixcan/eqtl ] || mkdir -p smultixcan/eqtl'
+
+arguments:
+
+  #- !Scalar { name: pattern, prefix: "-pattern", value: '"(.*)__PM__(.*).enloc.rst.gz"' }
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "smultixcan_imputed_gwas_gtexelv8_(.*)_ccn30.txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: trait
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{trait}"
+    sources: [ {path: trait, destination: trait}]
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait}.txt"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "parse_gwas_{trait}"
+    sources: [ { path: trait, destination: trait } ]

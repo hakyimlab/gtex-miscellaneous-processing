@@ -1,0 +1,48 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/dump_model_db.py'
+
+  template: dump_db.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_dump_db_sqtl
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_dump_db_sqtl
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v0/elastic_net_models_splicing
+    output_folder: &OUTPUT_FOLDER models/sqtl_dump
+
+  pre_command:
+  - '[ -d models/sqtl_dump ] || mkdir -p models/sqtl_dump'
+
+arguments:
+
+  - !FilesInFolder
+    name: input
+    prefix: "-input"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "gtex_splicing_v8_eur_(.*)_signif.db"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue
+
+
+  - !ArgumentFromMetadata
+    name: output_prefix
+    prefix: "-output_prefix"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{tissue}_t"
+    sources: [ {path: tissue, destination: tissue}]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "dump_model_{tissue}"
+    sources: [ { path: tissue, destination: tissue } ]

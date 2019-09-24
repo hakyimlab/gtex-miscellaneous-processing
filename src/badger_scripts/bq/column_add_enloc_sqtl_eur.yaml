@@ -6,21 +6,21 @@ definitions:
   default_arguments:
     job_memory: "1gb"
     job_walltime: "0:10:00"
-    logs_folder: logs_parse_enloc
+    logs_folder: logs_parse_enloc_sqtl
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_parse_enloc
+      jobs_folder: jobs_parse_enloc_sqtl
       job_name_key: job_name
       #fake_submission: true
       #crude_submission: true
 
   constants:
-    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/eqtl/results_eur_fix
-    output_folder: &OUTPUT_FOLDER enloc/eqtl
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/sqtl/formatted
+    output_folder: &OUTPUT_FOLDER enloc/sqtl
 
   pre_command:
-  - '[ -d enloc/eqtl ] || mkdir -p enloc/eqtl'
+  - '[ -d enloc/sqtl ] || mkdir -p enloc/sqtl'
 
 arguments:
 
@@ -53,5 +53,5 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{trait}__PM__{tissue}_parse_enloc_eqtl"
+    format_rule: "{trait}__PM__{tissue}_parse_enloc_sqtl"
     sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
