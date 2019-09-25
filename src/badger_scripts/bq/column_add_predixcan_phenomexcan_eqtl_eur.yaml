@@ -57,5 +57,5 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{trait}_{tissue}_parse_spredixcan"
+    format_rule: "{trait}-gtex_v8-{tissue}_parse_spredixcan"
     sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
