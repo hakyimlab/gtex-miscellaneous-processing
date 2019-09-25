@@ -16,7 +16,7 @@ definitions:
       #fake_submission: true
 
   constants:
-    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded.txt
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
     data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
 
     features_pattern: &FEATURES_PATTERN_K "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"

@@ -145,7 +145,7 @@ Badger scripts consist at the bare minimum of a job template (`.jinja`) and a co
 YAML is a format for specifying arbitraily complex structured data in a human readable format; you can specify lists of values, amppings, and we defined special arguments to handle common paarmeters such as lists of files in folders.
 Most scripts were defined for runing in CRI and its PBS queue, but a few were meant for a SLURM queue on google cloud.
 
-Even if a badger script is meant to generate a vast list of jobs, you can generate specidifc subsets using whitelists (i.e. run only for specific tissue-trat combinations, or only for one chromosome)
+Even if a badger script is meant to generate a vast list of jobs, you can generate specific subsets using whitelists (i.e. run only for specific tissue-trat combinations, or only for one chromosome)
 
 These scripts share a common behavior and consequences in CRI Gardner cluster:
 
@@ -166,6 +166,14 @@ Badger supports two special submission modes: `fake_submission` that will genera
 
 Please make sure to understand the Badger example below before moving into any specific workflow. 
 Each set of scripts were mostly meant to be copied over to an `execution folder`(i.e. copy badger scripts to a folder in scratch) so that each run can be managed separately. 
+
+CRI imposes limits on the number of jobs to be submitted. At the time of this writing, there was a maximum of 10000 jobs allowed in the queue for a given user.
+Badger supports submitting portions of the full set of jobs. Suppose you have a configuration that will produce 25000 jobs: 
+you can execute badger with `--page_width 10000` and `-page 0` to submit the first 10000 jobs, 
+then execute again with `--page_width 10000` and `-page 1` to submit the second 10000 jobs,
+then `--page_width 10000` and `-page 2` to submit the last 5000 jobs
+
+
 
 ### Badger workflow Example
 

@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -S /bin/bash
+#PBS -l walltime={{job_walltime}}
+#PBS -l mem={{job_memory}}
+#PBS -l nodes=1:ppn=1
+
+#PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
+#PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
+
+{% raw %}cd $PBS_O_WORKDIR {% endraw %}
+
+tar -xzvpf {{ input }}
+
+echo "Done"

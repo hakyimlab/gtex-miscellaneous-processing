@@ -21,7 +21,7 @@ definitions:
     output_folder: &OUTPUT_FOLDER results/parsed_dapg_maf0.01_w1000000
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '([ -d results/parsed_dapg_maf0.01_w1000000 ] || mkdir -p results/parseddapg_maf0.01_w1000000)'
+  - '([ -d results/parsed_dapg_maf0.01_w1000000 ] || mkdir -p results/parsed_dapg_maf0.01_w1000000)'
 
 
 arguments:

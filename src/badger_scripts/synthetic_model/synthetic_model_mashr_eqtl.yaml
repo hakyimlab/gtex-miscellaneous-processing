@@ -19,9 +19,9 @@ definitions:
 
   constants:
     input: &INPUT_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/mashr_weights
-    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_stranded_everything.txt
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_all.txt
     variant_annotation: &VARIANT_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
-    models_filter_folder: &MODELS_FILTER_FOLDER_K /scratch/abarbeira3/data/3rd/results/parsed_dapg/
+    models_filter_folder: &MODELS_FILTER_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/parsed_dapg_eur_v1/
 
     output: &OUTPUT_K results/models
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
