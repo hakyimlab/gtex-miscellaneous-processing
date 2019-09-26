@@ -1,0 +1,61 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/owen/gtex-miscellaneous-processing/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+#      fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /scratch/meliao/multixcan/input
+    output_folder: &OUTPUT_FOLDER /scratch/meliao/multixcan/converted
+
+  pre_command:
+  - '[ -d /scratch/meliao/multixcan/converted ] || mkdir -p /scratch/meliao/multixcan/converted'
+
+arguments:
+
+  #- !Scalar { name: pattern, prefix: "-pattern", value: '"(.*)__PM__(.*).enloc.rst.gz"' }
+
+#  - !Scalar { name: sep, prefix: "-sep", value: "\t" }
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "smultixcan_(.*)_ccn30.txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        name: "kk"
+        paths: [ trait ]
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{trait}"
+    sources: [ {path: trait, destination: trait}]
+
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "smultixcan_{trait}_ccn30.txt"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{trait}_parse_smultixcan_ccn30"
+    sources: [ {path: trait, destination: trait} ]
