@@ -196,3 +196,17 @@ gsutil -q -m rm -r $2
 #gs://tempo-imlab/upload-bigquery/gwas \
 #gtex-awg-im:GWAS_all.gwas \
 #variant_id:STRING,panel_variant_id:STRING,chromosome:STRING,position:INTEGER,effect_allele:STRING,non_effect_allele:STRING,current_build:STRING,frequency:FLOAT,sample_size:INTEGER,zscore:FLOAT,pvalue:FLOAT,effect_size:FLOAT,standard_error:FLOAT,imputation_status:STRING,n_cases:INTEGER,phenotype:STRING
+
+#echo "Loading harmonized gwas"
+#load_bq_f_2 \
+#/scratch/abarbeira3/v8_process/bq/gwas/formatted_gwas \
+#gs://tempo-imlab/upload-bigquery/formatted_gwas \
+#gtex-awg-im:GWAS_all.formatted_gwas \
+#variant_id:STRING,panel_variant_id:STRING,chromosome:STRING,position:INTEGER,effect_allele:STRING,non_effect_allele:STRING,frequency:FLOAT,pvalue:FLOAT,zscore:FLOAT,effect_size:FLOAT,standard_error:FLOAT,sample_size:INTEGER,n_cases:INTEGER,phenotype:STRING
+
+#echo "Loading gwas imputation verification"
+#load_bq_f_2 \
+#/scratch/abarbeira3/v8_process/bq/gwas/gwas_imputation_verification_clean \
+#gs://tempo-imlab/upload-bigquery/gwas_imputation_verification_clean \
+#gtex-awg-im:GWAS_all.gwas_imputation_verification \
+#variant_id:STRING,panel_variant_id:STRING,chromosome:STRING,position:INTEGER,effect_allele:STRING,non_effect_allele:STRING,current_build:STRING,frequency:FLOAT,sample_size:INTEGER,zscore:FLOAT,pvalue:FLOAT,effect_size:FLOAT,standard_error:FLOAT,imputation_status:STRING,n_cases:INTEGER,phenotype:STRING

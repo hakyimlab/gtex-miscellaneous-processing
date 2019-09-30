@@ -18,7 +18,7 @@ export NUMEXPR_NUM_THREADS=1
 export OMP_NUM_THREADS=1
 
 python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/meta_covariance_for_models.py \
--model_db_folder /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/elastic_net_models_dapgw \
+-model_db_folder /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/elastic_net_models_dapgw \
 -model_db_file_pattern "dapgw_(.*).db" \
 -parquet_genotype_folder /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic \
 -parquet_genotype_pattern "gtex_v8_eur_itm.chr(\d+).variants.parquet" \
