@@ -6,20 +6,21 @@ definitions:
   copy_to_item: true
 
   default_arguments:
-    job_memory: "16gb"
+    job_memory: "24gb"
     job_walltime: "04:00:00"
-    logs_folder: logs_ld
+    logs_folder: logs_ld_mashr_sqtl
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_ld
+      jobs_folder: jobs_ld_mash_sqtl
       job_name_key: job_name
       #fake_submission: true
 
   constants:
-    parquet_genotype: &PARQUET_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic
+    parquet_genotype: &PARQUET_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_maf0.01_biallelic
     parquet_pattern: &PARQUET_PATTERN_K '"gtex_v8_itm.chr(\d+).variants.parquet"'
-    twas_builder: &MODELS_K /scratch/abarbeira3/v8_process/model_training/mashr/results/models
+    models: &MODELS_K /scratch/abarbeira3/v8_process/model_training/sqtl/mashr/results/models
+    individuals: &INDIVIDUALS_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/sk_eur_individuals
     output_folder: &OUTPUT results/covariances
 
   pre_command:
@@ -38,6 +39,13 @@ arguments:
     folder: *MODELS_K
     regexp_filter: "mashr_(.*).db"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: individuals
+    prefix: "--individuals"
+    prepend: *INDIVIDUALS_FOLDER_K
+    format_rule: "{tissue}_individuals.txt"
+    sources: [ {path: tissue/name, destination: tissue} ]
 
   - !ArgumentFromMetadata
     name: output

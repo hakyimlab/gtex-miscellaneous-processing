@@ -1,0 +1,50 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/integerize.py'
+
+  template: clean.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_clean_smem
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_clean_smem
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/bq/smultixcan/eqtl/mashr
+    output_folder: &OUTPUT_FOLDER smultixcan/eqtl/mashr_clean
+
+  pre_command:
+  - '[ -d smultixcan/eqtl/mashr_clean ] || mkdir -p smultixcan/eqtl/mashr_clean'
+
+arguments:
+
+  - !Scalar { name: columns, prefix: "-columns", value: '3 4' }
+
+  - !FilesInFolder
+    name: input
+    prefix: "-input"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*).txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: trait
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait}.txt"
+    sources: [ {path: trait, destination: trait}]
+
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "clean_{trait}"
+    sources: [ { path: trait, destination: trait } ]

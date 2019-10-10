@@ -6,25 +6,27 @@ definitions:
   default_arguments:
     job_memory: "1gb"
     job_walltime: "0:10:00"
-    logs_folder: logs_parse_enloc
+    logs_folder: logs_parse_spem
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_parse_enloc
+      jobs_folder: jobs_parse_spem
       job_name_key: job_name
       #fake_submission: true
       #crude_submission: true
 
   constants:
-    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc_v1/eqtl/results_eur
-    output_folder: &OUTPUT_FOLDER enloc/eqtl
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/eqtl/sp_imputed_gwas_gtexv8_mashr_eqtl
+    output_folder: &OUTPUT_FOLDER predixcan/eqtl/mashr
 
   pre_command:
-  - '[ -d enloc/eqtl ] || mkdir -p enloc/eqtl'
+  - '[ -d predixcan/eqtl/mashr ] || mkdir -p predixcan/eqtl/mashr'
 
 arguments:
 
   #- !Scalar { name: pattern, prefix: "-pattern", value: '"(.*)__PM__(.*).enloc.rst.gz"' }
+
+  - !Scalar { name: sep, prefix: "-sep", value: ',' }
 
   - !Scalar { name: fields, prefix: "-fields", value: 'phenotype tissue' }
 
@@ -33,9 +35,10 @@ arguments:
     prefix: "-input_file"
     sort: true
     folder: *INPUT_FOLDER
-    regexp_filter: "(.*)__PM__(.*).enloc.rst.gz"
+    regexp_filter: "spredixcan_igwas_gtexmashrv8_(.*)__PM__(.*).csv"
     metadata_rules:
       - !ExtractFromFileNameRegexpMetadata
+        name: "kk"
         paths: [ trait, tissue ]
 
   - !ArgumentFromMetadata
@@ -48,10 +51,10 @@ arguments:
     name: output_file
     prefix: "-output_file"
     prepend: *OUTPUT_FOLDER
-    format_rule: "{trait}__PM__{tissue}.enloc.txt"
+    format_rule: "spredixcan_igwas_gtexmashrv8_{trait}__PM__{tissue}.csv"
     sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{trait}__PM__{tissue}_parse_enloc_eqtl"
+    format_rule: "{trait}__PM__{tissue}_parse_spredixcan_igwas_gtexmashrv8"
     sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]

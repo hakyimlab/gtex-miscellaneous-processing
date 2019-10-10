@@ -16,7 +16,7 @@ definitions:
       #crude_submission: true
 
   constants:
-    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/sqtl/formatted
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc_v0/sqtl/formatted
     output_folder: &OUTPUT_FOLDER enloc/sqtl
 
   pre_command:

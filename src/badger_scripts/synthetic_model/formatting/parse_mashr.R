@@ -1,3 +1,6 @@
+###############################################################################
+# Initial mashr models, from GTERx eQTL on all individuals for expression, "V0"
+
 library(dplyr)
 library(readr)
 library(tidyr)

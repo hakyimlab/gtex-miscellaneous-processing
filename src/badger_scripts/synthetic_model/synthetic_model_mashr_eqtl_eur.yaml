@@ -1,0 +1,61 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/synthetic_model.py"
+
+  template: synthetic_model.jinja
+
+  default_arguments:
+    job_memory: "16gb"
+    job_walltime: "4:00:00"
+    n_cpu: 1
+    logs_folder: logs
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs
+      job_name_key: job_name
+      #crude_submission: true
+      #fake_submission: true
+
+  constants:
+    input: &INPUT_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/mashr_weights_eur/expression
+    data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_all.txt
+    variant_annotation: &VARIANT_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/PredictDB_Pipeline_GTEx_v8/prepare_data/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz
+    models_filter_folder: &MODELS_FILTER_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/parsed_dapg_eur_v1
+
+    output: &OUTPUT_K results/models
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/models ] || mkdir -p results/models'
+
+
+arguments:
+  - !FilesInFolder
+    name: model_input
+    prefix: "-model_input"
+    sort: true
+    folder: *INPUT_K
+    regexp_filter: "(.*).txt"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: model_filter
+    prefix: --model_filter
+    prepend: *MODELS_FILTER_FOLDER_K
+    format_rule: "{tissue}.variants_pip.txt.gz PIP 0.01"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 9 }
+
+  - !Scalar { name: data_annotation, prefix: "-data_annotation", value: *DATA_ANNOTATION_K }
+
+  - !Scalar { name: variant_annotation, prefix: "-variant_annotation", value: *VARIANT_ANNOTATION_K }
+
+  - !ArgumentFromMetadata
+    {name: output, prefix: "-output", prepend: *OUTPUT_K, format_rule: "mashr_{tissue}.db",
+    sources: [ {path: tissue/name, destination: tissue} ]}
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_mashr"
+    sources: [ {path: tissue/name, destination: tissue }]

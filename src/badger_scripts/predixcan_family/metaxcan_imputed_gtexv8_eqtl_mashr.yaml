@@ -7,22 +7,22 @@ definitions:
   default_arguments:
     job_memory: "2gb"
     job_walltime: "0:30:00"
-    logs_folder: logs_en_mashr
+    logs_folder: logs_en_mashr_eqtl
     n_cpu: "1"
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_en_mashr
+      jobs_folder: jobs_en_mashr_eqtl
       job_name_key: job_name
       #fake_submission: true
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models/mashr
-    results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_mashr
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/mashr
+    results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_mashr_eqtl
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '[ -d results/sp_imputed_gwas_gtexv8_mashr ] || mkdir -p results/sp_imputed_gwas_gtexv8_mashr'
+  - '[ -d results/sp_imputed_gwas_gtexv8_mashr_eqtl ] || mkdir -p results/sp_imputed_gwas_gtexv8_mashr_eqtl'
 
 
 arguments:
@@ -49,14 +49,10 @@ arguments:
     format_rule: "mashr_{model_name}.txt.gz"
     sources: [ { path: model/name, destination: model_name} ]
 
-  - !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
+  - !Scalar {value: "--snp_column panel_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
 
-  - !Scalar {name: extra, value: "--additional_output"}
+  - !Scalar {name: extra, value: "--keep_non_rsid --additional_output --model_db_snp_key varID"}
 
-  # note that the models were done with rsids, and the covariance files list rsids
-  #- !Scalar {value: "--snp_column variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore"}
-  #- !Scalar {name: model_db_snp_key, prefix: "--model_db_snp_key", value: "varID" }
-  #- !Scalar {name: keep_non_rsid, prefix: "--keep_non_rsid" }
 
   - !ArgumentFromMetadata
     name: output
@@ -70,7 +66,7 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "spredixcan_igwas_gtexmashrv8_{study}__PM__{model}"
+    format_rule: "{study}__PM__{model}_spredixcan_igwas_gtexmashrv8_eqtl"
     sources: [
       { path: gwas/tag, destination: study },
       { path: model/name, destination: model }

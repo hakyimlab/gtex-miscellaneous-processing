@@ -18,7 +18,7 @@ definitions:
 
   constants:
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
-    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models/ctimp_hapmap
+    model_folder: &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/ctimp
     results_folder: &RESULTS_FOLDER results/sp_imputed_gwas_gtexv8_ctimp
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:

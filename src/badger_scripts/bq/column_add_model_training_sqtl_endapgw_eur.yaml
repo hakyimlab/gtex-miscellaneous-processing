@@ -1,0 +1,57 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_parse_model_bq
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_model_bq
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/model_training/sqtl/en_dapgw/models_text
+    output_folder: &OUTPUT_FOLDER models/splicing/en_dapgw
+
+  pre_command:
+  - '[ -d models/splicing/en_dapgw/extra ] || mkdir -p models/splicing/en_dapgw/extra'
+  - '[ -d models/splicing/en_dapgw/weights ] || mkdir -p models/splicing/en_dapgw/extra'
+
+arguments:
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'tissue' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "endapgw_(.*)_t_(.*).txt"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        paths: [ tissue, table ]
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{tissue}"
+    sources: [ {path: tissue, destination: tissue}]
+
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{table}/{tissue}.txt"
+    sources: [ {path: tissue, destination: tissue}, {path: table, destination: table} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{table}_{tissue}_bq_model_sqtl_endapgw"
+    sources: [ {path: tissue, destination: tissue}, {path: table, destination: table} ]
