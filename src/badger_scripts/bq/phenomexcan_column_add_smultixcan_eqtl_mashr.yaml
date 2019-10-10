@@ -2,6 +2,8 @@
 definitions:
   command:  'python3 /gpfs/data/im-lab/nas40t2/owen/gtex-miscellaneous-processing/src/misc/column_add.py'
 
+  copy_to_item: true
+
   template: /gpfs/data/im-lab/nas40t2/owen/gtex-miscellaneous-processing/src/badger_scripts/bq/column_add.jinja
   default_arguments:
     job_memory: "1gb"
@@ -19,8 +21,18 @@ definitions:
     input_folder: &INPUT_FOLDER /scratch/meliao/smultixcan_mashr/input
     output_folder: &OUTPUT_FOLDER /scratch/meliao/smultixcan_mashr/converted
 
+    #input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/owen/smultixcan_mashr/input
+    #output_folder: &OUTPUT_FOLDER converted
+
   pre_command:
   - '[ -d /scratch/meliao/smultixcan_mashr/converted ] || mkdir -p /scratch/meliao/smultixcan_mashr/converted'
+  #- '[ -d converted ] || mkdir -p converted'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: ukb_filename_map.yaml
+
 
 arguments:
 
@@ -28,7 +40,7 @@ arguments:
 
 #  - !Scalar { name: sep, prefix: "-sep", value: ',' }
 
-  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype tissue' }
+  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype' }
 
   - !FilesInFolder
     name: input_file
@@ -38,14 +50,19 @@ arguments:
     regexp_filter: "smultixcan_(.*)_ccn30.tsv"
     metadata_rules:
       - !ExtractFromFileNameRegexpMetadata
-        name: "kk"
-        paths: [ trait ]
+        path: trait
+
+  - !ArgumentFromMetadata
+    name: output_name
+    options_from_metadata_path: __configuration/ukb_name
+    sources: [ {path: trait} ]
+    metadata_rules: [ !SaveValueInMetadata {path: "output_name"} ]
 
   - !ArgumentFromMetadata
     name: values
     prefix: "-values"
-    format_rule: "{trait}"
-    sources: [ {path: trait, destination: trait}]
+    format_rule: "{output_name}"
+    sources: [ {path: output_name, destination: output_name}]
 
 
   - !ArgumentFromMetadata
