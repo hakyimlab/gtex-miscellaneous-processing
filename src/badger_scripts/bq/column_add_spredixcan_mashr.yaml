@@ -1,0 +1,61 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/owen/gtex-miscellaneous-processing/src/misc/column_add.py'
+
+  template: /gpfs/data/im-lab/nas40t2/owen/gtex-miscellaneous-processing/src/badger_scripts/bq/column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_parse
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse
+      job_name_key: job_name
+      fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /scratch/meliao/spredixcan_mashr/input_extracted
+    output_folder: &OUTPUT_FOLDER /scratch/meliao/spredixcan_mashr/converted
+
+  pre_command:
+  - '[ -d /scratch/meliao/spredixcan_mashr/converted ] || mkdir -p /scratch/meliao/spredixcan_mashr/converted'
+
+arguments:
+
+  #- !Scalar { name: pattern, prefix: "-pattern", value: '"(.*)__PM__(.*).enloc.rst.gz"' }
+
+  - !Scalar { name: sep, prefix: "-sep", value: ',' }
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype tissue' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*)-gtex_v8-(.*)-2018_10.csv"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        name: "kk"
+        paths: [ trait, tissue ]
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{trait} {tissue}"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
+
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait}-gtex_v8-{tissue}-2018_10.csv"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{trait}-gtex_v8-{tissue}_parse_spredixcan"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
