@@ -1,0 +1,73 @@
+---
+definitions:
+  command:  'python /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/post_process_and_merge.py'
+
+  copy_to_item: true
+
+  template: postprocess_fastenloc.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "6:00:00"
+    logs_folder: logs_parse_ppfe
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_ppfe
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    #Also subincluded in this yaml
+    trait_map: &TRAIT_MAP /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/badger_scripts/bq/ukb_filename_map.yaml
+    gencode: &GENCODE_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_all.txt
+
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/miltondp/phenomexcan/fastenloc/with_torus
+    output_folder: &OUTPUT_FOLDER fastenloc/phenomexan/eqtl
+
+  pre_command:
+  - '[ -d fastenloc/phenomexan/eqtl ] || mkdir -p fastenloc/phenomexan/eqtl'
+
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: ukb_filename_map.yaml
+
+arguments:
+
+  - !Range { name: trait, keys_from_metadata_path: __configuration/ukb_name,
+      metadata_rules: [ !SaveValueInMetadata { path: trait } ]
+   }
+
+  - !Scalar { name: header_names, prefix: "--header_names", value: 'signal_name n_snps eqtl_pip gwas_pip_woe gwas_pip_we rcp' }
+
+  - !Scalar { name: specific_post_processing, prefix: "--specific_post_processing", value: "FAST_ENLOC" }
+
+  - !Scalar { name: trait_map, prefix: "-trait_map", value: *TRAIT_MAP }
+
+  - !Scalar { name: input_folder, prefix: "-input_folder", value: *INPUT_FOLDER }
+
+  - !Scalar { name: gene_annotation, prefix: "-gene_annotation", value: *GENCODE_K}
+
+  - !ArgumentFromMetadata
+    name: input_filter
+    prefix: "--input_filter"
+    format_rule: "fastenloc-{trait}-.*sig.out.gz"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !Scalar { name: input_pattern, prefix: "-input_pattern", value: '"fastenloc-(.*?)-(.*?).enloc.sig.out.gz"' }
+
+  - !Scalar { name: name_subfield, value: "-name_subfield trait 1 -name_subfield tissue 2"}
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "fastenloc-{trait}.txt"
+    sources: [ {path: trait, destination: trait}]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{trait}_parse_fastenloc"
+    sources: [ {path: trait, destination: trait}]

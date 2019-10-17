@@ -24,3 +24,7 @@ conda install -c bioconda bioconductor-biomart -y
 #install.packages("coloc")
 #install.packages("dplyr")
 #install.packages("ggplot2")
+
+conda create --name pyr3.7 python=3.7 -y
+conda activate pyr3.7
+conda install scipy numpy pandas pyyaml ipython -y

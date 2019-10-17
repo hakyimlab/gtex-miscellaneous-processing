@@ -61,6 +61,8 @@ echo "Ending at $NOW"
 
 INPUT=/scratch/abarbeira3/data/1000G/ALL.chr${PBS_ARRAYID}.shapeit2_integrated_snvindels_v2a_27022019.GRCh38.phased.vcf.gz
 SAMPLES=/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur_hg38/dosage/sample_ids.txt
-OUTPUT=/scratch/abarbeira3/data/1000G_C/chr${PBS_ARRAYID}.txt.gz
+OUTPUT=/scratch/abarbeira3/data/1000G_GEUV_EUR/chr${PBS_ARRAYID}.txt.gz
+[ -d /scratch/abarbeira3/data/1000G_GEUV_EUR ] || mkdir -p /scratch/abarbeira3/data/1000G_GEUV_EUR
+
 filter_and_convert $INPUT $SAMPLES  $OUTPUT
 
