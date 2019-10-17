@@ -130,10 +130,14 @@ These can be taken as a starting point to extract GTEx data into convenient text
 
 They can be converted to Parquet columnar databases for fast access using `src/v8/ModelTrainingToParquetV8CRI.sh`
 
-## Geuvadis
+## Geuvadis & 1000G
 
-`src/geuvadis` contains GEUVADIS data parsing. The outputs are mostly used for predicting expression in GEUVADIS data, and comparing said predictions with GEUVADIS measured expression.
-`src/geuvadis/1000G_geuv_eur_conversion.sh` is another example of parsing a vcf file (1000G in hg38)
+`src/1000G` contains thousand genomes data parsing. 
+The outputs are mostly used for predicting expression in GEUVADIS data, and comparing said predictions with GEUVADIS measured expression.
+`src/1000G/1000G_hg38_geuv_eur_conversion.sh` is another example of parsing a vcf file (1000G in hg38)
+
+`src/geuvadis` contains miscellaneous processing and parsing of Geuvadis files,
+as well as support data files for predicted expression in geuvadis cohort.
 
 
 ## Badger-based workflows
@@ -314,7 +318,11 @@ To build S-MultiXcan covariance, check `src/v8/misc/GTExV8ExpressionCovarianceBu
 
 **splicing** (`src/badger_scripts/splicing`) has miscellaneous parsing and conversion of Splicing summary stats. **split** (`src/badger_scripts/split`) splits large text files by gene.
 
-**susier** (`src/badger_scripts/susier`) automates execution of susie-R finemapping. Its environment was built va conda. susier package got updated since this was run, so watch for issues.
+**susier** (`src/badger_scripts/susier`) automates execution of susie-R finemapping. 
+Its environment was built va conda. 
+susier package got updated since this was run, so watch for issues.
+
+`src/badger_scripts/compare_predixcan` contains scripts to compare predicted expression to actual values.
 
 Some of this workflows have specific Readmes with additional details (model training, torus/dapg/enloc, predixcan, gwas parsing)
 

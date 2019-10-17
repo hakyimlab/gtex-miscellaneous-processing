@@ -116,13 +116,11 @@ def name_parse_prepare(name_subfield_regexp, name_subfield):
         r = re.compile(name_subfield_regexp)
         subfield_names = [x[0] for x in name_subfield]
         subfield_positions = [int(x[1]) for x in name_subfield]
-        subfield_regexp = re.compile(name_subfield_regexp)
     else:
         r = None
         subfield_names = None
         subfield_positions = None
-        subfield_regexp = None
-    return r, subfield_names, subfield_positions, subfield_regexp
+    return r, subfield_names, subfield_positions
 
 def name_parse(file, subfield_regexp, subfield_positions):
     if subfield_positions:

@@ -1,0 +1,60 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_parse_spec
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_spec
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/eqtl/sp_imputed_gwas_gtexv8_ctimp
+    output_folder: &OUTPUT_FOLDER predixcan/eqtl/ctimp
+
+  pre_command:
+  - '[ -d predixcan/eqtl/ctimp ] || mkdir -p predixcan/eqtl/ctimp'
+
+arguments:
+
+  #- !Scalar { name: pattern, prefix: "-pattern", value: '"(.*)__PM__(.*).enloc.rst.gz"' }
+
+  - !Scalar { name: sep, prefix: "-sep", value: ',' }
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'phenotype tissue' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "spredixcan_igwas_gtexctimpv8_(.*)__PM__(.*).csv"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        name: "kk"
+        paths: [ trait, tissue ]
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{trait} {tissue}"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "spredixcan_igwas_gtexctimpv8_{trait}__PM__{tissue}.csv"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{trait}__PM__{tissue}_parse_spredixcan_igwas_gtexctimpv8"
+    sources: [ {path: trait, destination: trait}, {path: tissue, destination: tissue}]

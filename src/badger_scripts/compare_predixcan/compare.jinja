@@ -9,14 +9,14 @@
 #PBS -e {{logs_folder}}/${PBS_JOBNAME}.e${PBS_JOBID}.err
 
 module load gcc/6.2.0
-module load python/3.5.3
+module load R/3.4.1
 
 {% raw %}cd $PBS_O_WORKDIR {% endraw %}
 
 {{ command }} \
-{{ predict }} \
-{{ dosages }} \
-{{ samples }} \
-{{ weights }} \
-{{ __unnamed }} \
-{{ output_prefix }}
+{{ observed }} \
+{{ predicted }} \
+{{ tissue }} \
+{{ method }} \
+{{ key }} \
+{{ output }}

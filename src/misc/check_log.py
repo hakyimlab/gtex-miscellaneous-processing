@@ -8,7 +8,7 @@ from helpers import helpers
 ########################################################################################################################
 
 def run(args):
-    r, subfield_names, subfield_positions, subfield_regexp = helpers.name_parse_prepare(args.name_subfield_regexp, args.name_subfield)
+    r, subfield_names, subfield_positions = helpers.name_parse_prepare(args.name_subfield_regexp, args.name_subfield)
 
     job_regexp = re.compile(args.jobs_pattern)
     job_names, job_paths = helpers.parse_with_regexp(args.jobs_folder, job_regexp)
@@ -19,7 +19,7 @@ def run(args):
     result=[]
 
     for (i,job_name) in enumerate(job_names):
-        values = helpers.name_parse(job_name, subfield_regexp, subfield_positions) if r else None
+        values = helpers.name_parse(job_name, r, subfield_positions) if r else None
         if not job_name in logs_by_name:
             log_path = None
             present = False
