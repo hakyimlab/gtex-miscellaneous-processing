@@ -79,7 +79,7 @@ gsutil -q -m rm -r $2
 
 #echo "Loading fast enloc"
 load_bq_f_2 \
-/scratch/abarbeira3/v8_process/bq/fastenloc/phenomexan/eqtl \
-gs://tempo-imlab/upload-bigquery/tmp/fastenloc/phenomexan/eqtl \
-gtex-awg-im:GTEx_V8_UKB_PhenomeXcan.fastenloc_eqtl \
-gene_id:STRING,gene_name:STRING,n_signals:INTEGER,n_snps:INTEGER,eqtl_pip:FLOAT,gwas_pip_woe:FLOAT,gwas_pip_we:FLOAT,rcp:FLOAT,trait:STRING,tissue:STRING
+/scratch/abarbeira3/v8_process/bq/spredixcan/phenomexan/eqtl \
+gs://tempo-imlab/upload-bigquery/tmp/spredixcan/phenomexan/eqtl \
+gtex-awg-im:GTEx_V8_UKB_PhenomeXcan.spredixcan_eqtl \
+gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:INTEGER,n_snps_in_cov:INTEGER,n_snps_in_model:INTEGER,best_gwas_p:FLOAT,largest_weight:FLOAT,trait:STRING,tissue:STRING
