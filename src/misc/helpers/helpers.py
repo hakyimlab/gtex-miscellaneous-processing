@@ -122,10 +122,10 @@ def name_parse_prepare(name_subfield_regexp, name_subfield):
         subfield_positions = None
     return r, subfield_names, subfield_positions
 
-def name_parse(file, subfield_regexp, subfield_positions):
+def name_parse(name, subfield_regexp, subfield_positions):
     if subfield_positions:
         values = []
-        s_ = subfield_regexp.search(file)
+        s_ = subfield_regexp.search(name)
         for position in subfield_positions:
             values.append(s_.group(position))
         values = tuple(values)
