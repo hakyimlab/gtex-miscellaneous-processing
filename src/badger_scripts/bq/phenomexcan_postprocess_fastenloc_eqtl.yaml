@@ -4,7 +4,7 @@ definitions:
 
   copy_to_item: true
 
-  template: postprocess_fastenloc.jinja
+  template: postprocess_and_merge.jinja
   default_arguments:
     job_memory: "4gb"
     job_walltime: "6:00:00"
@@ -56,7 +56,7 @@ arguments:
     format_rule: "fastenloc-{trait}-.*sig.out.gz"
     sources: [ {path: trait, destination: trait} ]
 
-  - !Scalar { name: input_pattern, prefix: "-input_pattern", value: '"fastenloc-(.*)-(.*?).enloc.sig.out.gz"' }
+  - !Scalar { name: input_pattern, prefix: "-input_pattern", value: '"fastenloc-(.*?)-(.*?).enloc.sig.out.gz"' }
 
   - !Scalar { name: name_subfield, value: "-name_subfield trait 1 -name_subfield tissue 2"}
 
