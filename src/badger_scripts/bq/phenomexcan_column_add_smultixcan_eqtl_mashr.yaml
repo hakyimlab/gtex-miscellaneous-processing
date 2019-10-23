@@ -31,7 +31,7 @@ definitions:
 sub_configuration:
   -
     how: before_arguments
-    path: ukb_filename_map.yaml
+    path: ukb_filename_maps.yml
 
 
 arguments:

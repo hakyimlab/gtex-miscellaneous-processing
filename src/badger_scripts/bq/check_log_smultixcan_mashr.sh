@@ -11,7 +11,8 @@ python3 /gpfs/data/im-lab/nas40t2/owen/gtex-miscellaneous-processing/src/misc/ch
 --name_subfield_regexp "(.*)_parse_smultixcan_mashr" \
 --name_subfield trait 1 \
 --check_product output "converted/smultixcan_{trait}_ccn30.tsv" \
+-finish_token "End" \
 --clean_target "logs_parse/{trait}_parse_smultixcan_mashr*" \
 --resubmit \
--finish_token "End" \
--output third_check.txt
+-output new_check.txt
+
