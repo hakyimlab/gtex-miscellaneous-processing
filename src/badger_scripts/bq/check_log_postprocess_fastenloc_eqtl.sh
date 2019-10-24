@@ -12,7 +12,6 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 --clean_target "logs_parse_ppfe/{trait}*" \
 --check_product output "fastenloc/phenomexan/eqtl/fastenloc-{trait}.txt" \
 -finish_token "Finished processing." \
---resubmit \
 -output check_fast_enloc.txt
 
 #--clean_target "logs_parse_ppfe/{trait}_*" \

@@ -78,8 +78,15 @@ gsutil -q -m rm -r $2
 #gene:STRING,genename:STRING,gene_id:STRING,band:STRING
 
 #echo "Loading fast enloc"
+#load_bq_f_2 \
+#/scratch/abarbeira3/v8_process/bq/spredixcan/phenomexan/eqtl \
+#gs://tempo-imlab/upload-bigquery/tmp/spredixcan/phenomexan/eqtl \
+#gtex-awg-im:GTEx_V8_UKB_PhenomeXcan.spredixcan_eqtl \
+#gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:INTEGER,n_snps_in_cov:INTEGER,n_snps_in_model:INTEGER,best_gwas_p:FLOAT,largest_weight:FLOAT,trait:STRING,tissue:STRING
+
+echo "Loading sme"
 load_bq_f_2 \
-/scratch/abarbeira3/v8_process/bq/spredixcan/phenomexan/eqtl \
-gs://tempo-imlab/upload-bigquery/tmp/spredixcan/phenomexan/eqtl \
-gtex-awg-im:GTEx_V8_UKB_PhenomeXcan.spredixcan_eqtl \
-gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:INTEGER,n_snps_in_cov:INTEGER,n_snps_in_model:INTEGER,best_gwas_p:FLOAT,largest_weight:FLOAT,trait:STRING,tissue:STRING
+/scratch/abarbeira3/v8_process/bq/shiny/sme \
+gs://tempo-imlab/upload-bigquery/tmp/shiny/sme \
+gtex-awg-im:GTEx_V8_UKB_PhenomeXcan.sme_eqtl \
+gene:STRING,gene_name:STRING,pvalue:FLOAT,n:INTEGER,n_indep:INTEGER,p_i_best:FLOAT,t_i_best:STRING,p_i_worst:FLOAT,t_i_worst:STRING,status:INTEGER,phenotype:STRING,rcp:FLOAT
