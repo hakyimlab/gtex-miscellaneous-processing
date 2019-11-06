@@ -5,7 +5,7 @@ definitions:
 
   template: compare.jinja
   default_arguments:
-    job_memory: "4gb"
+    job_memory: "6gb"
     job_walltime: "12:00:00"
     logs_folder: logs_compare_mashr
     n_cpu: "1"

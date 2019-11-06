@@ -8,53 +8,53 @@ definitions:
   default_arguments:
     job_memory: "4gb"
     job_walltime: "6:00:00"
-    logs_folder: logs_parse_smet
+    logs_folder: logs_parse_smepgt
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_parse_smet
+      jobs_folder: jobs_parse_smepgt
       job_name_key: job_name
       #fake_submission: true
       #crude_submission: true
 
   constants:
     #Also subincluded in this yaml
-    trait_map: &TRAIT_MAP /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/badger_scripts/bq/ukb_filename_map.yaml
+    trait_map: &TRAIT_MAP /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/badger_scripts/bq/public_gwas_filename_map.yaml
     gencode: &GENCODE_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_all.txt
 
-    sm_folder: &SM_FOLDER /gpfs/data/im-lab/nas40t2/owen/smultixcan_mashr/converted
-    e_folder: &E_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fastenloc_with_torus
-    output_folder: &OUTPUT_FOLDER shiny/sme
+    sm_folder: &SM_FOLDER /scratch/abarbeira3/v8_process/bq/smultixcan/eqtl/mashr
+    e_folder: &E_FOLDER /scratch/abarbeira3/v8_process/bq/shiny/enloc/eqtl/
+    output_folder: &OUTPUT_FOLDER shiny/smepg
 
   pre_command:
-  - '[ -d shiny/sme ] || mkdir -p shiny/sme'
+  - '[ -d shiny/smepg ] || mkdir -p shiny/smepg'
 
 
 sub_configuration:
   -
     how: before_arguments
-    path: ukb_filename_map.yaml
+    path: public_gwas_filename_map.yaml
 
 arguments:
 
-  - !Range { name: trait, keys_from_metadata_path: __configuration/ukb_name,
+  - !Range { name: trait, keys_from_metadata_path: __configuration/name,
       metadata_rules: [ !SaveValueInMetadata { path: trait } ]
    }
 
-  - !Scalar { name: "k", prefix: "-k", value: "ph_ukb_fastenloc" }
+  - !Scalar { name: "k", prefix: "-k", value: "gwas_enloc" }
 
   - !ArgumentFromMetadata
     name: sm
     prefix: "-sm"
     prepend: *SM_FOLDER
-    format_rule: "smultixcan_{trait}_ccn30.tsv"
+    format_rule: "{trait}.txt"
     sources: [ {path: trait, destination: trait} ]
 
   - !ArgumentFromMetadata
-    name: fe
-    prefix: "-fe"
+    name: e
+    prefix: "-e"
     prepend: *E_FOLDER
-    format_rule: "fastenloc-{trait}.txt"
+    format_rule: "{trait}__parse_e.txt"
     sources: [ {path: trait, destination: trait} ]
 
   - !ArgumentFromMetadata
@@ -66,5 +66,5 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{trait}_parse_fastenloc"
+    format_rule: "{trait}_parse_enloc"
     sources: [ {path: trait, destination: trait}]
