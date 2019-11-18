@@ -15,6 +15,7 @@ source activate pyr
 conda install scipy numpy pandas -y
 conda install -c r r rpy2 r-rcurl -y
 conda install -c conda-forge pyarrow r-bigrquery r-workflowr r-cowplot r-glue -y
+conda install -c anaconda scikit-learn -y
 conda install -c bioconda pyliftover -y
 conda install -c bioconda r-argparse -y
 conda install -c bioconda bioconductor-biomart -y
