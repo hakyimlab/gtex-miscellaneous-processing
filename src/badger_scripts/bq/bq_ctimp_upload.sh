@@ -95,11 +95,19 @@ gsutil -q -m rm -r $2
 ## Edge case: S-PrediXcan output contains entries with empty columns.
 ## Needed to run sed -i 's/,,/,NA,/g' predixcan/eqtl/ctimp/*
 #echo "Loading expression spredixcan ctimp"
-load_bq_f_4 \
-/scratch/abarbeira3/v8_process/bq/predixcan/eqtl/ctimp \
-gs://tempo-imlab/upload-bigquery/tmp/predixcan/eqtl/ctimp \
-gtex-awg-im:GTEx_V8_PF_CTIMP_EUR_v1.spredixcan_eqtl \
-gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:FLOAT,n_snps_in_cov:FLOAT,n_snps_in_model:FLOAT,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING
+#load_bq_f_4 \
+#/scratch/abarbeira3/v8_process/bq/predixcan/eqtl/ctimp \
+#gs://tempo-imlab/upload-bigquery/tmp/predixcan/eqtl/ctimp \
+#gtex-awg-im:GTEx_V8_PF_CTIMP_EUR_v1.spredixcan_eqtl \
+#gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:FLOAT,n_snps_in_cov:FLOAT,n_snps_in_model:FLOAT,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING
+
+load_bq_f_2 \
+/scratch/abarbeira3/v8_process/bq/predixcan/eqtl/ctimp_full_chr1 \
+gs://tempo-imlab/upload-bigquery/tmp/predixcan/eqtl/ctimp_full_chr1 \
+gtex-awg-im:GTEx_V8_PF_CTIMP_EUR_v1.spredixcan_as_chr1_eqtl \
+gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:INTEGER,n_snps_in_cov:INTEGER,n_snps_in_model:INTEGER,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING
+
+
 #
 #
 #echo "Loading splicing spredixcan ctimp"

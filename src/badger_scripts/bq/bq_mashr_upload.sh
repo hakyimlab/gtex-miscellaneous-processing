@@ -74,7 +74,7 @@ echo "cleaning up"
 gsutil -q -m rm -r $2
 }
 
-#
+
 echo "Loading expression mashr extra"
 load_bq_f_2 \
 /scratch/abarbeira3/v8_process/bq/models/expression/mashr/extra \
@@ -114,13 +114,13 @@ gs://tempo-imlab/upload-bigquery/tmp/predixcan/eqtl/mashr \
 gtex-awg-im:GTEx_V8_PF_MASHR_EUR_v1.spredixcan_eqtl \
 gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:FLOAT,n_snps_in_cov:FLOAT,n_snps_in_model:FLOAT,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING
 
-
 echo "Loading splicing spredixcan mashr"
 load_bq_f_4 \
 /scratch/abarbeira3/v8_process/bq/predixcan/sqtl/mashr \
 gs://tempo-imlab/upload-bigquery/tmp/predixcan/sqtl/mashr  \
 gtex-awg-im:GTEx_V8_PF_MASHR_EUR_v1.spredixcan_sqtl \
 gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:FLOAT,n_snps_in_cov:FLOAT,n_snps_in_model:FLOAT,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING
+
 
 echo "Loading expression smultixcan mashr"
 load_bq_f_2 \
@@ -135,3 +135,18 @@ load_bq_f_2 \
 gs://tempo-imlab/upload-bigquery/tmp/smultixcan/sqtl/mashr_clean \
 gtex-awg-im:GTEx_V8_PF_MASHR_EUR_v1.smultixcan_sqtl \
 gene:STRING,gene_name:STRING,pvalue:FLOAT,n:INTEGER,n_indep:INTEGER,p_i_best:FLOAT,t_i_best:STRING,p_i_worst:FLOAT,t_i_worst:STRING,eigen_max:FLOAT,eigen_min:FLOAT,eigen_min_kept:FLOAT,z_min:FLOAT,z_max:FLOAT,z_mean:FLOAT,z_sd:FLOAT,tmi:FLOAT,status:INTEGER,phenotype:STRING
+
+########################################################################################################################
+echo "Loading expression spredixcan mashr -quick harmonized-"
+load_bq_f_2 \
+/scratch/abarbeira3/v8_process/bq/predixcan/eqtl/mashr_hq \
+gs://tempo-imlab/upload-bigquery/tmp/predixcan/eqtl/mashr_hq \
+gtex-awg-im:GTEx_V8_PF_MASHR_EUR_v1.spredixcan_eqtl_hq \
+gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:FLOAT,n_snps_in_cov:FLOAT,n_snps_in_model:FLOAT,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING
+
+echo "Loading expression spredixcan mashr -full harmonized-"
+load_bq_f_2 \
+/scratch/abarbeira3/v8_process/bq/predixcan/eqtl/mashr_hn \
+gs://tempo-imlab/upload-bigquery/tmp/predixcan/eqtl/mashr_hn \
+gtex-awg-im:GTEx_V8_PF_MASHR_EUR_v1.spredixcan_eqtl_hn \
+gene:STRING,gene_name:STRING,zscore:FLOAT,effect_size:FLOAT,pvalue:FLOAT,var_g:FLOAT,pred_perf_r2:FLOAT,pred_perf_pval:FLOAT,pred_perf_qval:FLOAT,n_snps_used:FLOAT,n_snps_in_cov:FLOAT,n_snps_in_model:FLOAT,best_gwas_p:FLOAT,largest_weight:FLOAT,phenotype:STRING,tissue:STRING

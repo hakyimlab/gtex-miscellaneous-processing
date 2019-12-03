@@ -20,11 +20,11 @@ definitions:
     model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/results
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 
-    output_folder: &OUTPUT_FOLDER_K models
+    output_folder: &OUTPUT_FOLDER_K models_chr1_as
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '[ -d models ] || mkdir -p models'
+  - '[ -d models_chr1_as ] || mkdir -p models_chr1_as'
 
 
 arguments:
@@ -35,16 +35,16 @@ arguments:
    }
 
   - !ArgumentFromMetadata
-    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "ctimp_\\(\\.\\*\\)_{tissue}",
+    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "ctimp_w1000000_chr1_\\(\\.\\*\\)_{tissue}_t",
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata
-    {name: output_prefix, prefix: "-output_prefix", prepend: *OUTPUT_FOLDER_K, format_rule: "ctimp_{tissue}",
+    {name: output_prefix, prefix: "-output_prefix", prepend: *OUTPUT_FOLDER_K, format_rule: "ctimp_chr1as_{tissue}",
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{tissue}_postprocess"
+    format_rule: "{tissue}_postprocess_ctimp_chr1as"
     sources:
     -
       path: tissue/name

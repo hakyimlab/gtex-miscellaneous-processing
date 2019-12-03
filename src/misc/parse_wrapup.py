@@ -10,11 +10,11 @@ def _to_sec(s):
     return sum(x * int(t) for x, t in zip([3600, 60, 1], s.split(":")))
 
 def run(args):
-    r, subfield_names, subfield_position, subfield_regexp = helpers.name_parse_prepare(args.name_subfield_regexp, args.name_subfield)
+    subfield_regexp, subfield_names, subfield_position = helpers.name_parse_prepare(args.name_subfield_regexp, args.name_subfield)
     p = re.compile("Resources Used:\s+cput=(.*),vmem=(.*)kb,walltime=(.*),mem=(.*)kb,energy_used=(.*)")
 
     names_re_ = re.compile(args.logs_pattern) if args.logs_pattern else None
-    files = [x for x in os.listdir(args.logs_folder) if r.search(x)]
+    files = [x for x in os.listdir(args.logs_folder) if subfield_regexp.search(x)]
     r = []
     for i, file in enumerate(files):
         path = os.path.join(args.logs_folder, file)

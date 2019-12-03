@@ -25,14 +25,18 @@ def configure_logging(level=5, target=sys.stderr, log_file=None):
         logger.addHandler(fileHandler)
 
 
-def check_present(path, token):
+def check_present(path, token, error_token=None):
     present = False
+    failed = False
     with open(path) as f:
         for line in f:
             if token in line:
                 present = True
                 break
-    return present
+            if error_token and error_token in line:
+                failed = True
+                break
+    return present and not failed
 
 def clean_target(target):
     paths = glob.glob(target)
