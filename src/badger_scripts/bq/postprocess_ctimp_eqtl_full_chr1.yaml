@@ -50,10 +50,10 @@ arguments:
   - !ArgumentFromMetadata
     name: input_filter
     prefix: "--input_filter"
-    format_rule: "spredixcan_igwas_gtexctimpv8_{trait}__PM__.*.csv"
+    format_rule: "spredixcan_igwas_gtexctimpasv8_{trait}__PM__.*.csv"
     sources: [ {path: trait, destination: trait} ]
 
-  - !Scalar { name: input_pattern, prefix: "-input_pattern", value: '"spredixcan_igwas_gtexctimpv8_(.*)__PM__(.*).csv"' }
+  - !Scalar { name: input_pattern, prefix: "-input_pattern", value: '"spredixcan_igwas_gtexctimpasv8_(.*)__PM__(.*).csv"' }
 
   - !Scalar { name: name_subfield, value: "-name_subfield trait 1 -name_subfield tissue 2"}
 

@@ -22,7 +22,7 @@ def run(args):
         values = helpers.name_parse(job_name, subfield_regexp, subfield_positions) if subfield_regexp else None
         if not job_name in logs_by_name:
             log_path = None
-            present = False
+            ok = False
         else:
             log_path = os.path.join(args.logs_folder, logs_by_name[job_name])
             ok = helpers.check_present(log_path, args.finish_token, args.error_token)

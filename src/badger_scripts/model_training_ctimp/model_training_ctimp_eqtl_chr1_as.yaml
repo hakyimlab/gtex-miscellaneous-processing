@@ -35,12 +35,12 @@ definitions:
 
     sub_batches: &SUB_BATCHES_K 2420 #genes in chromosome 1
 
-    output_folder: &OUTPUT results
+    output_folder: &OUTPUT results_chr1_as
 
     whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/working_white_list.txt
 
   pre_command:
-  - '([ -d results] || mkdir -p results); (-d /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch || mkdir -p /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch)'
+  - '([ -d results_chr1_as] || mkdir -p results_chr1_as); (-d /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch || mkdir -p /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch)'
 
 sub_configuration:
   -
@@ -62,7 +62,7 @@ arguments:
 
   - !Scalar { name: data_annotation, prefix: -data_annotation, value: *DATA_ANNOTATION_K }
 
-  - !Scalar { name: rsid_whitelist, prefix: --rsid_whitelist, value: *RSID_WHITELIST_K }
+  #- !Scalar { name: rsid_whitelist, prefix: --rsid_whitelist, value: *RSID_WHITELIST_K }
 
 ########################################################################################################################
 
@@ -133,7 +133,7 @@ arguments:
 
   - !ArgumentFromMetadata
     name: job_name
-    format_rule: "ctimp_w{window}_chr{chromosome}_sb{sub_batch}_{sub_batches}_model_training"
+    format_rule: "ctimp_w{window}_chr{chromosome}_sb{sub_batch}_{sub_batches}_model_training_chr1_as"
     sources: [
       {path: parameters/window, destination: window},
       {path: job/chromosome, destination: chromosome},
