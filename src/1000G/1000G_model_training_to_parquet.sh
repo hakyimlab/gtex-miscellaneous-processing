@@ -5,7 +5,7 @@
 #PBS -S /bin/bash
 #PBS -l walltime=96:00:00
 #PBS -l nodes=1:ppn=1
-#PBS -l mem=128gb
+#PBS -l mem=32gb
 #PBS -o logs/${PBS_JOBNAME}.o${PBS_JOBID}.log
 #PBS -e logs/${PBS_JOBNAME}.e${PBS_JOBID}.err
 #PBS -t 1-22

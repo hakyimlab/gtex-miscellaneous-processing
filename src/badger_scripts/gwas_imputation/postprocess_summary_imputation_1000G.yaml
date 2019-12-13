@@ -1,0 +1,66 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/gwas_summary_imputation_postprocess.py"
+
+  template: postprocess_summary_imputation.jinja
+  default_arguments:
+    n_cpu: "1"
+    job_memory: "16gb"
+    job_walltime: "1:00:00"
+    logs_folder: logs_summary_imputation_pp
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_summary_imputation_pp
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/formatted_gwas_hg38_1.2
+
+    whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
+
+    imputed_folder: &IMPUTED_FOLDER /scratch/abarbeira3/v8_process/gwas_case/imputation/results_summary_imputation_1000G
+    output_folder: &RESULTS_FOLDER processed_summary_imputation_1000G
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d processed_summary_imputation_1000G ] || mkdir -p processed_summary_imputation_1000G'
+
+arguments:
+  - !Scalar { name: folder, prefix: "-folder", value: *IMPUTED_FOLDER }
+
+#  Only makes sense for non-palindromic, otherwise it hurts predixcan logic because of duplicates
+#  - !Scalar { name: keep_all_observed, prefix: "--keep_all_observed" }
+
+  - !FilesInFolder
+    name: gwas_file
+    prefix: "-gwas_file"
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "(.*).txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: "gwas/tag"
+
+  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", from_list: [ ADIPOGen_Adiponectin, GIANT_HEIGHT, CARDIoGRAM_C4D_CAD_ADDITIVE] }
+
+  - !ArgumentFromMetadata
+    mame: pattern
+    prefix: "-pattern"
+    format_rule: "{gwas}.*"
+    sources: [ {path: "gwas/tag", destination: gwas}]
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "7" }
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "imputed_{study}.txt.gz"
+    sources: [  {path: "gwas/tag", destination: "study"} ]
+
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "collect_imputed_{study}"
+    sources: [  {path: "gwas/tag", destination: study} ]

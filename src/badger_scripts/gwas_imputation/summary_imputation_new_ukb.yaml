@@ -15,7 +15,7 @@ definitions:
     !PBSQueue
       jobs_folder: jobs_summary_imputation
       job_name_key: job_name
-      fake_submission: true
+      #fake_submission: true
 
   constants:
     sub_batches: &SUB_BATCHES 10
@@ -27,7 +27,7 @@ definitions:
 
     by_region_file: &BY_REGION_FILE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
 
-    gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/formatted_gwas_hg38_1.2/
+    gwas_folder: &GWAS_FOLDER /scratch/abarbeira3/v8_process/ubk_sign/results_gwas_ukbn
     results_folder: &RESULTS_FOLDER results_summary_imputation
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
@@ -52,7 +52,7 @@ arguments:
 
 ########################################################################################################################
 
-  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", list_from_file: *WHITELIST }
+#  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", list_from_file: *WHITELIST }
 
   - !Range
     name: chromosome

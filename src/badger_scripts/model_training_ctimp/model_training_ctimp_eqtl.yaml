@@ -24,7 +24,7 @@ definitions:
     intermediate_folder: &INTERMEDIATE_FOLDER_K /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch
 
     data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
-    data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
+    data_folder: &DATA_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/regressed/eqtl
     data_name_pattern: &DATA_NAME_PATTERN_K '"(.*).residual.expression.parquet"'
 
     rsid_whitelist: &RSID_WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz
@@ -63,6 +63,8 @@ arguments:
   - !Scalar { name: data_annotation, prefix: -data_annotation, value: *DATA_ANNOTATION_K }
 
   - !Scalar { name: rsid_whitelist, prefix: --rsid_whitelist, value: *RSID_WHITELIST_K }
+
+  - !Scalar { name: discard_palindromic_snps, prefix: "--discard_palindromic_snps" }
 
 ########################################################################################################################
 

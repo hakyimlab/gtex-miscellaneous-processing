@@ -17,7 +17,7 @@ definitions:
       #fake_submission: true
 
   constants:
-    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/en/results_en
+    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/elastic_net/results_en
     #tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/wbl_white_list.txt
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 

@@ -8,27 +8,27 @@ definitions:
   default_arguments:
     n_cpu: "1"
     job_memory: "16gb"
-    job_walltime: "4:00:00"
+    job_walltime: "6:00:00"
     logs_folder: logs_summary_imputation
 
   submission:
     !PBSQueue
       jobs_folder: jobs_summary_imputation
       job_name_key: job_name
-      fake_submission: true
+      #fake_submission: true
 
   constants:
     sub_batches: &SUB_BATCHES 10
 
-    genotype_pattern: &GENOTYPE_PATTERN "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
-    genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_pattern: &GENOTYPE_PATTERN "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/1000G_hg38_EUR_maf0.01_parquet/chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/1000G_hg38_EUR_maf0.01_parquet/variant_metadata.parquet
 
-    whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
+    #whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
 
     by_region_file: &BY_REGION_FILE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
 
     gwas_folder: &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/formatted_gwas_hg38_1.2/
-    results_folder: &RESULTS_FOLDER results_summary_imputation
+    results_folder: &RESULTS_FOLDER results_summary_imputation_1000G
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
   - '[ -d results_summary_imputation ] || mkdir -p results_summary_imputation'
@@ -52,7 +52,8 @@ arguments:
 
 ########################################################################################################################
 
-  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", list_from_file: *WHITELIST }
+  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", from_list: [ ADIPOGen_Adiponectin, GIANT_HEIGHT, CARDIoGRAM_C4D_CAD_ADDITIVE] }
+  #- !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", from_list: [ CARDIoGRAM_C4D_CAD_ADDITIVE] }
 
   - !Range
     name: chromosome
@@ -135,7 +136,7 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{study}_chr{chromosome}_sb{sub_batch}_by_region"
+    format_rule: "{study}_chr{chromosome}_sb{sub_batch}_by_region_1000G"
     sources: [  {path: "gwas/tag", destination: study},
                 {path: "job/chromosome", destination: chromosome},
                 {path: "job/sub_batch", destination: "sub_batch"} ]

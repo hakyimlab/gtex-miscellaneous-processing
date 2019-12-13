@@ -21,7 +21,7 @@ definitions:
     ctimp_script: &CTIMP_SCRIPT_K /gpfs/data/im-lab/nas40t2/abarbeira/software/CTIMP/main_2.R
 
     #Unfortunately we need full path because of how CTIMP script works
-    intermediate_folder: &INTERMEDIATE_FOLDER_K /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch
+    intermediate_folder: &INTERMEDIATE_FOLDER_K /scratch/abarbeira3/v8_process/model_training/eqtl/utmost_as_chr1/ctimp_scratch
 
     data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
     data_folder: &DATA_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/regressed/eqtl
@@ -40,7 +40,7 @@ definitions:
     whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/working_white_list.txt
 
   pre_command:
-  - '([ -d results_chr1_as] || mkdir -p results_chr1_as); (-d /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch || mkdir -p /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/ctimp_scratch)'
+  - '([ -d results_chr1_as] || mkdir -p results_chr1_as); (-d /scratch/abarbeira3/v8_process/model_training/eqtl/utmost_as_chr1/ctimp_scratch || mkdir -p /scratch/abarbeira3/v8_process/model_training/eqtl/utmost_as_chr1/ctimp_scratch)'
 
 sub_configuration:
   -
