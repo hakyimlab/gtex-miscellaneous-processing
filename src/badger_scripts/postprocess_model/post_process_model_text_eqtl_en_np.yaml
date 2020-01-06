@@ -5,26 +5,27 @@ definitions:
   template: post_process_model.jinja
 
   default_arguments:
-    job_memory: "32gb"
+    job_memory: "16gb"
     job_walltime: "24:00:00"
     n_cpu: "1"
-    logs_folder: logs_pp
+    logs_folder: logs_ppt
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_pp
+      jobs_folder: jobs_ppt
       job_name_key: job_name
       #fake_submission: true
 
   constants:
-    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/utmost/results
+    model_training: &MODEL_TRAINING_K /scratch/abarbeira3/v8_process/model_training/eqtl/elastic_net/results_en/
+    #tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/wbl_white_list.txt
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 
-    output_folder: &OUTPUT_FOLDER_K models
+    output_folder: &OUTPUT_FOLDER_K models_text_np
 
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
-  - '[ -d models ] || mkdir -p models'
+  - '[ -d models_text ] || mkdir -p models_text'
 
 
 arguments:
@@ -35,16 +36,16 @@ arguments:
    }
 
   - !ArgumentFromMetadata
-    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "ctimp_\\(\\.\\*\\)_{tissue}_t",
+    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "en_{tissue}_\\(\\.\\*\\)",
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata
-    {name: output_prefix, prefix: "-output_prefix", prepend: *OUTPUT_FOLDER_K, format_rule: "ctimp_{tissue}",
+    {name: output_prefix_text, prefix: "-output_prefix_text", prepend: *OUTPUT_FOLDER_K, format_rule: 'en_{tissue}',
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{tissue}_postprocess"
+    format_rule: "{tissue}_postprocess_text"
     sources:
     -
       path: tissue/name

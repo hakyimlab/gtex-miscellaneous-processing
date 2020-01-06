@@ -1,0 +1,70 @@
+---
+# The use of 'all_114_trait_map.yaml' is convoluted.
+# This could be made more clear.
+# We are in a hurry, though
+definitions:
+  command:  'python /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/post_process_and_merge.py'
+
+  copy_to_item: true
+
+  template: postprocess_and_merge.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "6:00:00"
+    logs_folder: logs_parse_ppspennp
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_ppspennp
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    trait_map: &TRAIT_MAP /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/badger_scripts/bq/all_114_trait_map.yaml
+
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/eqtl/sp_imputed_gwas_gtexv8_en_np
+    output_folder: &OUTPUT_FOLDER predixcan/eqtl/en_np
+
+  pre_command:
+  - '[ -d predixcan/eqtl/en_np ] || mkdir -p predixcan/eqtl/en_np'
+
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: all_114_trait_map.yaml
+
+arguments:
+
+  - !Range { name: trait, keys_from_metadata_path: __configuration/name,
+      metadata_rules: [ !SaveValueInMetadata { path: trait } ]
+   }
+
+  - !Scalar { name: trait_map, prefix: "-trait_map", value: *TRAIT_MAP }
+
+  - !Scalar { name: input_folder, prefix: "-input_folder", value: *INPUT_FOLDER }
+
+  - !Scalar { name: separator, prefix: "--separator", value: "," }
+
+  - !ArgumentFromMetadata
+    name: input_filter
+    prefix: "--input_filter"
+    format_rule: "spredixcan_igwas_gtexennpv8_{trait}__PM__.*.csv"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !Scalar { name: input_pattern, prefix: "-input_pattern", value: '"spredixcan_igwas_gtexennpv8_(.*)__PM__(.*).csv"' }
+
+  - !Scalar { name: name_subfield, value: "-name_subfield trait 1 -name_subfield tissue 2"}
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{trait}__parse_spennp.txt"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{trait}__parse_spennp"
+    sources: [ {path: trait, destination: trait} ]

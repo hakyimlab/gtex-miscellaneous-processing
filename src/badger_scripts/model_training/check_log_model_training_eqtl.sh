@@ -21,7 +21,7 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 -finish_token "Finished" \
 -output check_eqtl.txt
 
-#--clean_target "logs_pv/en_{tissue}_w1000000_chr{chromosome}_sb{sub_job}_40_model_training*" \
+#--clean_target "logs_en/en_{tissue}_w1000000_chr{chromosome}_sb{sub_job}_40_model_training*" \
 #--clean_target "results_en/en_{tissue}_w1000000_chr{chromosome}_sb{sub_job}_40_*" \
 #--resubmit \
 

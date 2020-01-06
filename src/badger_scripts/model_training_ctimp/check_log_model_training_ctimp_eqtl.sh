@@ -10,10 +10,12 @@ python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc
 --name_subfield_regexp "ctimp_w1000000_chr(\d+)_sb(\d+)_800_model_training*" \
 --name_subfield chromosome 1 \
 --name_subfield sub_batch 2 \
---clean_target "results/ctimp_w1000000_chr{chromosome}_sb{sub_batch}_*" \
---clean_target "logs/ctimp_w1000000_chr{chromosome}_sb{sub_batch}_800_*" \
---resubmit \
 -output check_eqtl.txt
+
+
+#--clean_target "results/ctimp_w1000000_chr{chromosome}_sb{sub_batch}_*" \
+#--clean_target "logs/ctimp_w1000000_chr{chromosome}_sb{sub_batch}_800_*" \
+#--resubmit \
 
 #--clean_target "logs/{key}*" \
 #--clean_target "results/{key}*" \

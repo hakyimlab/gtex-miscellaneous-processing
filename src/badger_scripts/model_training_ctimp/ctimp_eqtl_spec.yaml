@@ -50970,7 +50970,7 @@ ctimp_info:
     memory: 11gb
     walltime: '72:00:00'
   '9_27':
-    memory: 6gb
+    memory: 22gb
     walltime: '72:00:00'
   '9_270':
     memory: 11gb
