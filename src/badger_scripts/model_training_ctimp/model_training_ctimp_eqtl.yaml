@@ -64,7 +64,7 @@ arguments:
 
   - !Scalar { name: rsid_whitelist, prefix: --rsid_whitelist, value: *RSID_WHITELIST_K }
 
-  - !Scalar { name: discard_palindromic_snps, prefix: "--discard_palindromic_snps" }
+  #- !Scalar { name: discard_palindromic_snps, prefix: "--discard_palindromic_snps" }
 
 ########################################################################################################################
 

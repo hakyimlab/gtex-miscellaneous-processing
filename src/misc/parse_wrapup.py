@@ -23,7 +23,6 @@ def run(args):
         with open(path) as f:
             for line in f:
                 s = p.search(line)
-
                 if s:
                     values = helpers.name_parse(file, subfield_regexp, subfield_position)
                     mem  = int(s.group(4))/1024

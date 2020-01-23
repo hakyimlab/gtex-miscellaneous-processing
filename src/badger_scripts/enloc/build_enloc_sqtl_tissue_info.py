@@ -17,5 +17,3 @@ with open(OUTPUT_YAML_SPEC, "w") as f:
         _m = int(numpy.ceil(t.memory/1000.0))+3
         l = '  {}:\n    {{ walltime: "{}:00:00", memory: "{}gb" }}\n'.format(t.tissue, _t, _m)
         f.write(l)
-
-#from IPython import embed; embed(); exit()

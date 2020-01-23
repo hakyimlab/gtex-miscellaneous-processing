@@ -67,7 +67,7 @@ arguments:
 
   - !Scalar { name: output_rsids, prefix: "--output_rsids" }
 
-  - !Scalar { name: discard_palindromic_snps, prefix: "--discard_palindromic_snps" }
+  #- !Scalar { name: discard_palindromic_snps, prefix: "--discard_palindromic_snps" }
 
   - !Scalar { name: window, prefix: "-window", value: "1000000",
     metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }
