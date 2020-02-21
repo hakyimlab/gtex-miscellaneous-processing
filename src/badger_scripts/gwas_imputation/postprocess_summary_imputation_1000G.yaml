@@ -20,9 +20,9 @@ definitions:
 
     whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
 
-    imputed_folder: &IMPUTED_FOLDER /scratch/abarbeira3/test/results_summary_imputation_1000G
+    imputed_folder: &IMPUTED_FOLDER /scratch/abarbeira3/test/results/summary_imputation_1000G
     #imputed_folder: &IMPUTED_FOLDER /scratch/abarbeira3/v8_process/gwas_case/imputation/results_summary_imputation_1000G
-    output_folder: &RESULTS_FOLDER processed_summary_imputation_1000G
+    output_folder: &RESULTS_FOLDER results/processed_summary_imputation_1000G
   #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
   pre_command:
   - '[ -d processed_summary_imputation_1000G ] || mkdir -p processed_summary_imputation_1000G'
@@ -43,7 +43,7 @@ arguments:
       - !ExtractFromFileNameRegexpMetadata
         path: "gwas/tag"
 
-  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", from_list: [ ADIPOGen_Adiponectin, GIANT_HEIGHT, CARDIoGRAM_C4D_CAD_ADDITIVE] }
+  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", from_list: [ CARDIoGRAM_C4D_CAD_ADDITIVE] }
 
   - !ArgumentFromMetadata
     mame: pattern

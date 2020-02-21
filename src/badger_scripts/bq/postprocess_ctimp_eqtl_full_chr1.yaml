@@ -3,7 +3,7 @@
 # This could be made more clear.
 # We are in a hurry, though
 definitions:
-  command:  'python /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/post_process_and_merge.py'
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/post_process_and_merge.py'
 
   copy_to_item: true
 

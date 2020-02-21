@@ -9,7 +9,7 @@
 #PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
 
 module load gcc/6.2.0
-module load python/2.7.13
+{% if python_version %}module load python/{{python_version}}{% else %}module load python/2.7.13{% endif %}
 
 {% raw %}cd $PBS_O_WORKDIR {% endraw %}
 

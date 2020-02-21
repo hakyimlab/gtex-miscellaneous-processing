@@ -1,7 +1,7 @@
 ---
 definitions:
   #command: /home/numa/Documents/Projects/metaxcan/MetaXcan/software/MetaXcan.py
-  command: /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/MetaXcan.py"
 
   template: metaxcan.jinja
   default_arguments:
@@ -9,6 +9,7 @@ definitions:
     job_walltime: "0:30:00"
     logs_folder: logs_en_v8_splicing
     n_cpu: "1"
+    python_version: "3.5.3"
 
   submission:
     !PBSQueue

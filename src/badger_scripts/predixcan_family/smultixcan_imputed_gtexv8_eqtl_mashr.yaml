@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/SMulTiXcan.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/SMulTiXcan.py"
 
   template: smultixcan.jinja
   default_arguments:
@@ -8,6 +8,7 @@ definitions:
     job_walltime: "48:00:00"
     logs_folder: logs_smp_mashr
     n_cpu: 1
+    python_version: "3.5.3"
 
   submission:
     !PBSQueue
@@ -22,7 +23,7 @@ definitions:
     metaxcan_folder: &METAXCAN_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/eqtl/sp_imputed_gwas_gtexv8_mashr_eqtl
     metaxcan_file_name_pattern: &METAXCAN_FILE_NAME_PARSE_PATTERN '"spredixcan_igwas_gtexmashrv8_(.*)__PM__(.*).csv"'
     metaxcan_filter_pattern: &METAXCAN_FILTER_PATTERN '"spredixcan_igwas_gtexmashrv8_{study}__PM__(.*).csv"'
-    snp_covariance: &SNP_COVARIANCE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/meta_covariance/gtex_v8_expression_mashr_snp_covariance.txt.gz
+    snp_covariance: &SNP_COVARIANCE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/meta_covariance/mashr/gtex_v8_expression_mashr_snp_covariance.txt.gz
     cutoff_condition_number: &CUTOFF_CONDITION_NUMBER "30"
     #whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/kosher_whitelist.txt
 

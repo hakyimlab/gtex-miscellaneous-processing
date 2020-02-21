@@ -1,6 +1,6 @@
 ---
 definitions:
-  command: "python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/SMulTiXcan.py"
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/SMulTiXcan.py"
 
   template: smultixcan.jinja
   default_arguments:
@@ -8,6 +8,7 @@ definitions:
     job_walltime: "48:00:00"
     logs_folder: logs_smp
     n_cpu: 1
+    python_version: "3.5.3"
 
   submission:
     !PBSQueue
