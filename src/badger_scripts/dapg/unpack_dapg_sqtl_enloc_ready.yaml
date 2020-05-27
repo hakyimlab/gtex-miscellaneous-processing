@@ -15,7 +15,7 @@ definitions:
       #fake_submission: true
 
   constants:
-    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/sqtl/compressed
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/sqtl/enloc_ready_maf0.01_w1000000
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 
   pre_command:

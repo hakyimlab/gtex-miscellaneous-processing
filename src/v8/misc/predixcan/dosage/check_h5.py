@@ -4,7 +4,7 @@ import h5py
 OLD="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_gtexv6/en/Adipose_Subcutaneous_predicted_expression.txt"
 old_p_run = pandas.read_table(OLD)
 
-NEW = "/scratch/abarbeira3/kk/en_geuv_v6/Adipose_Subcutaneous__predict.txt"
+NEW = "/scratch/abarbeira3/test/en_geuv_v6/Adipose_Subcutaneous__predict.txt"
 new_p_run = pandas.read_table(NEW)
 g_genes_ = list(new_p_run.columns.values[2:])
 
@@ -32,7 +32,7 @@ assert(old_p_run.shape[1] == new_p_run.shape[1])
 check(old_p_run, new_p_run, g_genes_, "on")
 
 
-NEW_H5="/scratch/abarbeira3/kk/en_geuv_v6_h5/Adipose_Subcutaneous__predict.h5"
+NEW_H5="/scratch/abarbeira3/test/en_geuv_v6_h5/Adipose_Subcutaneous__predict.h5"
 new_p_run_hdf5_ = h5py.File(NEW_H5, 'r')
 genes_ = [g for g in new_p_run_hdf5_['genes']]
 samples_ = [g for g in new_p_run_hdf5_['samples']]
@@ -53,4 +53,11 @@ assert(new_p_run_hdf5.shape[1] == new_p_run.shape[1])
 check(new_p_run, new_p_run_hdf5, g_genes_, "h5", 3)
 
 
-from IPython import embed; embed(); exit()
+NEW_ = "/scratch/abarbeira3/test/en_geuv_v6_b/Adipose_Subcutaneous__predict.txt"
+new_p_run_m = pandas.read_table(NEW)
+assert(new_p_run_m.shape[0] == new_p_run.shape[0])
+assert(new_p_run_m.shape[1] == new_p_run.shape[1])
+check(new_p_run_m, new_p_run, g_genes_, "onm")
+
+print("ok")
+#from IPython import embed; embed(); exit()

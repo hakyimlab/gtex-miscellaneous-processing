@@ -74,12 +74,12 @@ echo "cleaning up"
 gsutil -q -m rm -r $2
 }
 
-echo "Loading intron id mapping"
-load_bq_f_2 \
-/scratch/abarbeira3/v8_process/bq/intron_id_mapping \
-gs://tempo-imlab/upload-bigquery/tmp/intron_id_mapping  \
-gtex-awg-im:annotations.intron_id_mapping \
-gtex_intron_id:STRING,gene_id:STRING,intron_id:STRING,cluster_id:STRING,tissue:STRING
+#echo "Loading intron id mapping"
+#load_bq_f_2 \
+#/scratch/abarbeira3/v8_process/bq/intron_id_mapping \
+#gs://tempo-imlab/upload-bigquery/tmp/intron_id_mapping  \
+#gtex-awg-im:annotations.intron_id_mapping \
+#gtex_intron_id:STRING,gene_id:STRING,intron_id:STRING,cluster_id:STRING,tissue:STRING
 
 
 #echo "Loading grouped smultixcan sqtl"
@@ -89,4 +89,9 @@ gtex_intron_id:STRING,gene_id:STRING,intron_id:STRING,cluster_id:STRING,tissue:S
 #gtex-awg-im:GTEx_v8_e_s_QTL.grouped_smultixcan \
 #group:STRING,pvalue:FLOAT,n_variants:INTEGER,n_features:INTEGER,n_indep:INTEGER,tmi:FLOAT,status:STRING,tissue:STRING,phenotype:STRING
 
-
+echo "Loading grouped acat"
+load_bq_f_2 \
+/scratch/abarbeira3/bq/grouped_acat/mashr \
+gs://tempo-imlab/upload-bigquery/tmp/grouped_acat/mashr  \
+gtex-awg-im:GTEx_v8_e_s_QTL.grouped_acat  \
+group:STRING,pvalue:FLOAT,group_size:INTEGER,available_results:INTEGER,tissue:STRING,phenotype:STRING

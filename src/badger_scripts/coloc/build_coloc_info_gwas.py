@@ -17,7 +17,7 @@ g = pandas.read_table(GWAS_METADATA, usecols=["Tag", "new_Phenotype", "Sample_Si
 gtex = pandas.read_csv(GTEX_METADATA, usecols=["tissue", "v8_all"]).rename(columns={"v8_all":"gtex_sample_size"})
 d = e.merge(g, left_on="trait", right_on="new_Phenotype").\
     rename(columns={"Tag":"phenotype", "Sample_Size":"gwas_sample_size"}).\
-    merge(gtex, on="tissue")
+    merge(gtex, on="tissue")\
 [["phenotype", "tissue", "p1", "p2", "p12", "gwas_sample_size", "gtex_sample_size"]]
 d.to_csv(OUTPUT,index=False, sep="\t")
 

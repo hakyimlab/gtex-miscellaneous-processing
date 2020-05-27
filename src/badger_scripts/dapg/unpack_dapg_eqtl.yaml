@@ -6,20 +6,21 @@ definitions:
   default_arguments:
     job_memory: "4gb"
     job_walltime: "6:00:00"
-    logs_folder: logs_unpack_dapg_sqtl
+    logs_folder: logs_unpack_dapg
 
   submission:
     !PBSQueue
-      jobs_folder: jobs_unpack_dapg_sqtl
+      jobs_folder: jobs_unpack_dapg
       job_name_key: job_name
       #fake_submission: true
 
   constants:
-    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/sqtl/compressed
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/dapg/eqtl/packed_eur
+    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/data/dapg/eqtl/unpacked
     tissues: &TISSUES_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues.txt
 
   pre_command:
-  - '([ -d results/collapsed_dapg_maf0.01_w1000000 ] || mkdir -p results/collapsed_dapg_maf0.01_w1000000)'
+  - '([ -d /scratch/abarbeira3/data/dapg/eqtl/unpacked ] || mkdir -p /scratch/abarbeira3/data/dapg/eqtl/unpacked)'
 
 arguments:
 
@@ -33,5 +34,5 @@ arguments:
 
   - !ArgumentFromMetadata
     name: "job_name"
-    format_rule: "{tissue}_unpack_gtexv8_dapg_sqtl"
+    format_rule: "{tissue}_unpack_gtexv8_dapg_eqtl"
     sources: [ {path: tissue/name, destination: tissue} ]

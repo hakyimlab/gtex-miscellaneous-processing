@@ -1,0 +1,73 @@
+---
+definitions:
+  #command: /home/numa/Documents/Projects/metaxcan/MetaXcan/software/SMulTiXcanByFeature.py
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/ACAT.py"
+
+  template: group_acat.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "10:00:00"
+    logs_folder: logs_gacat
+    n_cpu: "1"
+    python_version: "3.5.3"
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_gacat
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    - &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
+    - &INTRON_ID_MAPPING_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_id_mapping
+    - &SPREDIXCAN_SQTL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/sqtl/sp_imputed_gwas_gtexv8_mashr_sqtl
+    - &RESULTS_FOLDER results/gacat_imputed_gwas_gtexv8_mashr
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/gacat_imputed_gwas_gtexv8_mashr ] || mkdir -p results/gacat_imputed_gwas_gtexv8_mashr'
+
+arguments:
+
+  #dummy argument to capture upstream gwas
+  - !FilesInFolder
+    name: gwas_file
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "imputed_(.*).txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: gwas/tag } ]
+
+  - !FilesInFolder
+    name: grouping
+    prefix: --grouping
+    sort: true
+    folder: *INTRON_ID_MAPPING_FOLDER
+    regexp_filter: "(.*).leafcutter.phenotype_groups.txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: model/name } ]
+
+  - !ArgumentFromMetadata
+    name: associations
+    prefix: --associations
+    prepend: *SPREDIXCAN_SQTL_FOLDER
+    format_rule: "spredixcan_igwas_gtexmashrv8_{study}__PM__{model_name}.csv"
+    sources: [ { path: gwas/tag, destination: study }, { path: model/name, destination: model_name} ]
+
+########################################################################################################################
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "--output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "gacat_igwas_gtexmashrv8_{study}__PM__{model}.txt"
+    sources: [
+      { path: gwas/tag, destination: study },
+      { path: model/name, destination: model }
+    ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{study}__PM__{model}_gacat_gtexv8mashr"
+    sources: [
+      { path: gwas/tag, destination: study },
+      { path: model/name, destination: model }
+    ]

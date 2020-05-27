@@ -10,12 +10,12 @@ python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/Predict.py
 --bgen_genotypes /gpfs/data/im-lab/nas40t2/owen/data/ukb_test_files/ukb_imp_chr22_v3.bgen \
 --force_mapped_metadata "_" \
 --force_colon \
---variant_mapping /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/oneshot/ukb_variant_mapping.txt.gz UKB \
+--variant_mapping /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/oneshot/ukb_variant_mapping.txt.gz variant panel_variant_id \
 --text_sample_ids /gpfs/data/im-lab/nas40t2/owen/data/ukb_test_files/ukb19526_imp_chr1_v3_s487395.sample UKB \
---prediction_output mashr/Whole_Blood_predict.txt \
+--prediction_output mashr/Whole_Blood_predict.h5 HDF5 \
 --prediction_summary_output mashr/Whole_Blood__summary.txt \
---sub_batches 10000 \
---sub_batch 9999 \
+--sub_batches 900 \
+--sub_batch 899 \
 --verbosity 6 \
 --throw
 

@@ -2,6 +2,8 @@
 
 module load gcc/6.2.0 bgen-reader/3.0.3
 
+cd $PBS_O_WORKDIR
+
 printf "Predict expression\n\n"
 python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/Predict.py \
 --model_db_path /gpfs/data/im-lab/nas40t2/abarbeira/data/metaxcan/GTEx-V6p-HapMap-2016-09-08/TW_Adipose_Subcutaneous_0.5.db \

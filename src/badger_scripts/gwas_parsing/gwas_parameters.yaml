@@ -566,6 +566,11 @@ definitions:
         -output_column_map beta effect_size -output_column_map se  standard_error
         -output_column_map chromosone chromosome --chromosome_format -output_column_map position position
 
+      UKB_1: &UKB_1_K
+        -output_column_map rsID variant_id -output_column_map ALT effect_allele -output_column_map REF non_effect_allele
+        -output_column_map beta_ALT effect_size -output_column_map SE standard_error
+        -output_column_map CHROM chromosome --chromosome_format -output_column_map POS position
+
 arguments:
   - !Scalar
     name: output_order
