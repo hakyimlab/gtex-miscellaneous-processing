@@ -1,0 +1,56 @@
+---
+definitions:
+  command:  'python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/misc/column_add.py'
+
+  template: column_add.jinja
+  default_arguments:
+    job_memory: "1gb"
+    job_walltime: "0:10:00"
+    logs_folder: logs_parse_intron_id_bq
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_intron_id_bq
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    input_folder: &INPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/guimin/models/intron_id_mapping
+    output_folder: &OUTPUT_FOLDER intron_id_mapping
+
+  pre_command:
+  - '[ -d intron_id_mapping ] || mkdir -p intron_id_mapping'
+
+arguments:
+
+  - !Scalar { name: fields, prefix: "-fields", value: 'tissue' }
+
+  - !FilesInFolder
+    name: input_file
+    prefix: "-input_file"
+    sort: true
+    folder: *INPUT_FOLDER
+    regexp_filter: "(.*).leafcutter.phenotype_groups.txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: tissue
+
+  - !ArgumentFromMetadata
+    name: values
+    prefix: "-values"
+    format_rule: "{tissue}"
+    sources: [ {path: tissue, destination: tissue}]
+
+
+  - !ArgumentFromMetadata
+    name: output_file
+    prefix: "-output_file"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "{tissue}.txt"
+    sources: [ {path: tissue, destination: tissue}]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "intron_id_mapping_{tissue}"
+    sources: [ { path: tissue, destination: tissue } ]

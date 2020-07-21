@@ -17,11 +17,11 @@ definitions:
 
   constants:
     key_folder: &KEY_FOLDER /scratch/abarbeira3/v8_process/dapg/sqtl/results/enloc_ready_maf0.01_w1000000_list/
-    input_folder: &INPUT_FOLDER /scratch/abarbeira3/v8_process/enloc/sqtl/results
-    output_folder: &OUTPUT_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted
+    input_folder: &INPUT_FOLDER /scratch/abarbeira3/guimin/results/dapg/sqtl
+    output_folder: &OUTPUT_FOLDER /scratch/abarbeira3/guimin/results/dapg/sqtl_parsed
 
   pre_command:
-  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/enloc/results/sqtl/formatted'
+  - '[ -d /scratch/abarbeira3/guimin/results/dapg/sqtl_parsed ] || mkdir -p /scratch/abarbeira3/guimin/results/dapg/sqtl_parsed'
 
 arguments:
   - !FilesInFolder

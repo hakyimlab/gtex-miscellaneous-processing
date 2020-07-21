@@ -89,7 +89,7 @@ enloc_sqtl_tissue_info:
   Stomach:
     { walltime: "22:00:00", memory: "16gb" }
   Testis:
-    { walltime: "33:00:00", memory: "29gb" }
+    { walltime: "33:00:00", memory: "50gb" }
   Thyroid:
     { walltime: "23:00:00", memory: "17gb" }
   Uterus:

@@ -1,0 +1,70 @@
+---
+definitions:
+  command:  'Rscript /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/badger_scripts/bq/shiny_smultixcan_enloc_table.R'
+
+  copy_to_item: true
+
+  template: shiny_smultixcan_enloc_table.jinja
+  default_arguments:
+    job_memory: "4gb"
+    job_walltime: "6:00:00"
+    logs_folder: logs_parse_smet
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_parse_smet
+      job_name_key: job_name
+      #fake_submission: true
+      #crude_submission: true
+
+  constants:
+    #Also subincluded in this yaml
+    trait_map: &TRAIT_MAP /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/gtex/src/badger_scripts/bq/ukb_filename_map.yaml
+    gencode: &GENCODE_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26_all.txt
+
+    sm_folder: &SM_FOLDER /gpfs/data/im-lab/nas40t2/owen/smultixcan_mashr/converted
+    e_folder: &E_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/fastenloc_with_torus
+    output_folder: &OUTPUT_FOLDER shiny/sme
+
+  pre_command:
+  - '[ -d shiny/sme ] || mkdir -p shiny/sme'
+
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: ukb_filename_map.yaml
+
+arguments:
+
+  - !Range { name: trait, keys_from_metadata_path: __configuration/ukb_name,
+      metadata_rules: [ !SaveValueInMetadata { path: trait } ]
+   }
+
+  - !Scalar { name: "k", prefix: "-k", value: "ph_ukb_fastenloc" }
+
+  - !ArgumentFromMetadata
+    name: sm
+    prefix: "-sm"
+    prepend: *SM_FOLDER
+    format_rule: "smultixcan_{trait}_ccn30.tsv"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !ArgumentFromMetadata
+    name: fe
+    prefix: "-fe"
+    prepend: *E_FOLDER
+    format_rule: "fastenloc-{trait}.txt"
+    sources: [ {path: trait, destination: trait} ]
+
+  - !ArgumentFromMetadata
+    name: o
+    prefix: "-o"
+    prepend: *OUTPUT_FOLDER
+    format_rule: "sme-{trait}.txt"
+    sources: [ {path: trait, destination: trait}]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{trait}_parse_fastenloc"
+    sources: [ {path: trait, destination: trait}]

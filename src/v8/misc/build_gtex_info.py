@@ -30,5 +30,3 @@ with open(OUTPUT_YAML_GTEX, "w") as f:
     for t in gtex.itertuples():
         l = "  {}:\n    {{ gtex_sample_size:{:d} }}\n".format(t.tissue, int(t.gtex_sample_size))
         f.write(l)
-
-#from IPython import embed; embed(); exit()

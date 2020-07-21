@@ -17,7 +17,7 @@ definitions:
 
   constants:
     data_annotation: &DATA_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/gencode_v26.txt
-    data_folder: &DATA_FOLDER_K /scratch/abarbeira3/v8_process/regress/eqtl/results/regressed
+    data_folder: &DATA_FOLDER_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/regressed/eqtl
 
     features_pattern: &FEATURES_PATTERN_K "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
     features_annotation: &FEATURES_ANNOTATION_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
@@ -32,7 +32,7 @@ definitions:
 
     output_folder: &OUTPUT results_en
 
-    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_1_17.txt
+    whitelist: &WHITELIST_K /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/tissues_35_49.txt
 
   pre_command:
   - '([ -d results_en] || mkdir -p results_en)'
@@ -49,7 +49,8 @@ arguments:
     regexp_filter: "(.*).residual.expression.parquet"
     metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
 
-  - !Whitelist { name: "whitelist", list_from_file:  *WHITELIST_K, in_metadata_path: "tissue/name" }
+
+  - !Whitelist { name: "whitelist", in_metadata_path: "tissue/name", list_from_file:  *WHITELIST_K }
 
   - !Scalar { name: data_annotation, prefix: "-data_annotation", value: *DATA_ANNOTATION_K }
 
@@ -65,6 +66,8 @@ arguments:
   - !Scalar { name: features_annotation, prefix: "-features_annotation", value: *FEATURES_ANNOTATION_K }
 
   - !Scalar { name: output_rsids, prefix: "--output_rsids" }
+
+  #- !Scalar { name: discard_palindromic_snps, prefix: "--discard_palindromic_snps" }
 
   - !Scalar { name: window, prefix: "-window", value: "1000000",
     metadata_rules: [ !SaveValueInMetadata {path: "parameters/window"} ] }

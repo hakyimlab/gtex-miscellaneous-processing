@@ -27,5 +27,4 @@ for t in d.itertuples():
         os.remove(t.job_path)
 
     except Exception as e:
-        #from IPython import embed; embed(); exit()
         traceback.print_exc()

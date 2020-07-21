@@ -1,0 +1,31 @@
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -S /bin/bash
+#PBS -l walltime={{job_walltime}}
+#PBS -l mem={{job_memory}}
+#PBS -l nodes=1:ppn={{ n_cpu }}
+
+#PBS -o {{logs_folder}}/{% raw %}${PBS_JOBNAME}.o${PBS_JOBID}.log{% endraw %}
+#PBS -e {{logs_folder}}/{% raw %}${PBS_JOBNAME}.e${PBS_JOBID}.err{% endraw %}
+
+module load gcc/6.2.0
+{% if python_version %}module load python/{{python_version}}{% else %}module load python/2.7.13{% endif %}
+
+export MKL_NUM_THREADS={{ n_cpu }}
+export OPEN_BLAS_NUM_THREADS={{ n_cpu }}
+export NUMEXPR_NUM_THREADS={{ n_cpu }}
+export OMP_NUM_THREADS={{ n_cpu }}
+
+{% raw %}cd $PBS_O_WORKDIR {% endraw %}
+
+{{ command }} \
+{% if gwas_file %}{{ gwas_file }}{% else %}{{gwas_folder}} {{gwas_file_pattern}}{% endif %} \
+{{ __unnamed }} \
+{{ model }} \
+{{ model_db_snp_key }} \
+{{ keep_non_rsid }} \
+{{ single_snp_model }} \
+{{ covariance }} \
+{{ extra }} \
+--throw \
+{{ output }}

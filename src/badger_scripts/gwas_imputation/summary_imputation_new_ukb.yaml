@@ -1,0 +1,141 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/gwas_summary_imputation.py"
+
+  copy_to_item: true
+
+  template: summary_imputation.jinja
+  default_arguments:
+    n_cpu: "1"
+    job_memory: "16gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_summary_imputation
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_summary_imputation
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    sub_batches: &SUB_BATCHES 10
+
+    genotype_pattern: &GENOTYPE_PATTERN "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+
+    whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
+
+    by_region_file: &BY_REGION_FILE /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/eur_ld.bed.gz
+
+    gwas_folder: &GWAS_FOLDER /scratch/abarbeira3/v8_process/ubk_sign/results_gwas_ukbn
+    results_folder: &RESULTS_FOLDER results_summary_imputation
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results_summary_imputation ] || mkdir -p results_summary_imputation'
+
+#Todo: replace with configuration in each item
+sub_configuration:
+  -
+    how: before_arguments
+    path: summary_imputation_memory.yaml
+
+arguments:
+  - !FilesInFolder
+    name: gwas_file
+    prefix: "-gwas_file"
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "(.*).txt.gz"
+    metadata_rules:
+      - !ExtractFromFileNameRegexpMetadata
+        path: "gwas/tag"
+
+########################################################################################################################
+
+#  - !Whitelist { name: whitelist, in_metadata_path: "gwas/tag", list_from_file: *WHITELIST }
+
+  - !Range
+    name: chromosome
+    prefix: "-chromosome"
+    start: 1
+    end: 23
+    metadata_rules: [ !SaveValueInMetadata {path: "job/chromosome"} ]
+
+########################################################################################################################
+
+  - !Scalar { name: parquet_genotype_metadata, prefix: "-parquet_genotype_metadata", value: *GENOTYPE_METADATA }
+
+  - !ArgumentFromMetadata
+    name: parquet_genotype
+    prefix: "-parquet_genotype"
+    format_rule: *GENOTYPE_PATTERN
+    sources: [ {path: "job/chromosome", destination: chromosome}]
+########################################################################################################################
+
+  - !Scalar { name: by_region_file, prefix: "-by_region_file", value: *BY_REGION_FILE }
+
+########################################################################################################################
+
+  - !Scalar { name: sub_batches, prefix: "-sub_batches", value: *SUB_BATCHES }
+
+  - !Range
+    name: sub_batch
+    prefix: "-sub_batch"
+    start: 0
+    end: *SUB_BATCHES
+    metadata_rules: [ !SaveValueInMetadata {path: "job/sub_batch"} ]
+
+#########################################################################################################################
+  - !ArgumentFromMetadata
+    name: dummy_memory
+    format_rule: "M_{chromosome}_{sub_batch}"
+    sources: [ {path: "job/chromosome", destination: chromosome}, {path: "job/sub_batch", destination: sub_batch }]
+    metadata_rules: [ !SaveValueInMetadata {path: "job/memory_key"} ]
+
+  - !ArgumentFromMetadata
+    name: job_memory
+    options_from_metadata_path: __configuration/memory_table
+    sources: [ {path: job/memory_key} ]
+########################################################################################################################
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: "7" }
+
+  #- !Scalar { name: cache_variants, prefix: "--cache_variants" }
+  #- !Scalar { name: keep_palindromic_imputation, prefix: "--keep_palindromic_imputation" }
+  #- !Scalar { name: use_palindromic_snps, prefix: "--use_palindromic_snps" }
+
+  - !Scalar { name: standardise_dosages, prefix: "--standardise_dosages" }
+
+  - !Scalar { name: window, prefix: "-window", value: 100000 }
+
+  - !Scalar { name: frequency_filter, prefix: "-frequency_filter", value: "0.01",
+    metadata_rules: [ !SaveValueInMetadata { path: "job/frequency_filter" } ]
+  }
+
+#  - !Scalar { name: cutoff, prefix: "-cutoff", value: "0.001",
+#    metadata_rules: [ !SaveValueInMetadata {path: "job/cutoff"} ]
+#  }
+
+  - !Scalar { name: regularization, prefix: "-regularization", value: "0.1",
+    metadata_rules: [ !SaveValueInMetadata {path: "job/regularization"} ]
+  }
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+#    format_rule: "{study}_chr{chromosome}_sb{sub_batch}_cr{cutoff}_ff{frequency_filter}_by_region.txt.gz"
+    format_rule: "{study}_chr{chromosome}_sb{sub_batch}_reg{regularization}_ff{frequency_filter}_by_region.txt.gz"
+    sources: [  {path: "gwas/tag", destination: "study"},
+                {path: "job/chromosome", destination: "chromosome"},
+                {path: "job/sub_batch", destination: "sub_batch"},
+                {path: "job/frequency_filter", destination: "frequency_filter"},
+                {path: "job/regularization", destination: "regularization"} ]
+#                {path: "job/cutoff", destination: "cutoff"} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{study}_chr{chromosome}_sb{sub_batch}_by_region"
+    sources: [  {path: "gwas/tag", destination: study},
+                {path: "job/chromosome", destination: chromosome},
+                {path: "job/sub_batch", destination: "sub_batch"} ]

@@ -21,4 +21,3 @@ with gzip.open("/scratch/abarbeira3/v8_process/twas_builder/results/covariances/
             i = len(genes) -1
             if e.gene.values[i] != gene:
                 print("Mismatch {} - {}".format(gene, e.gene.values[i]))
-                from IPython import embed; embed(); exit()

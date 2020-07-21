@@ -1,0 +1,58 @@
+---
+definitions:
+  #a modified predixcan that creates output folder if non-existing is needed
+  command: Rscript /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/analysis/compare_predicted_to_observed.R
+
+  template: compare.jinja
+  default_arguments:
+    job_memory: "8gb"
+    job_walltime: "12:00:00"
+    logs_folder: logs_compare_en_np
+    n_cpu: "1"
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_compare_en_np
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    key: &KEY /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/expression_prediction_key.txt.gz
+    observed: &OBSERVED /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur_hg38/expression.txt.gz
+    method: &METHOD v8_en_np
+    predicted_folder: &PREDICTED_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/en_np
+    results_folder: &RESULTS_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/compare/en_np
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/compare/en_np ] || mkdir -p /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/compare/en_np'
+
+
+arguments:
+  - !FilesInFolder
+    name: predicted
+    prefix: -predicted
+    sort: true
+    folder: *PREDICTED_FOLDER
+    regexp_filter: "(.*)_predicted_expression.txt"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: tissue } ]
+
+  - !ArgumentFromMetadata { name: tissue, prefix: -tissue, format_rule: "{tissue}",
+    sources: [ { path: tissue, destination: tissue } ] }
+
+  - !Scalar { name: observed, prefix: -observed, value: *OBSERVED}
+
+  - !Scalar { name: method, prefix: -method, value: *METHOD }
+
+  - !Scalar { name: key, prefix: -key, value: *KEY }
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "{tissue}_comparison.txt"
+    sources: [ { path: tissue, destination: tissue } ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{tissue}_compare"
+    sources: [ { path: tissue, destination: tissue } ]

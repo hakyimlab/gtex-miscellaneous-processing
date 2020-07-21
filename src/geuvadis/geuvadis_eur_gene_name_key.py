@@ -10,6 +10,9 @@ GE="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/geuvadis_eur_hg38/
 EN="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/elastic_net_models"
 EN_P=re.compile("en_(.*).db")
 
+EN_NP="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/elastic_net_np_models"
+EN_NP_P=re.compile("en_(.*).db")
+
 EN_DAPGW="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/elastic_net_models_dapgw"
 EN_DAPGW_P=re.compile("dapgw_(.*).db")
 
@@ -18,6 +21,9 @@ MASHR_P=re.compile("mashr_(.*).db")
 
 CTIMP="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/ctimp"
 CTIMP_P=re.compile("ctimp_(.*).db")
+
+CTIMP_NP ="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/ctimp_np"
+CTIMP_NP_P=re.compile("ctimp_(.*).db")
 
 OM="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/available_models.txt.gz"
 OK="/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/predixcan_geuvadis_hg38_v1/expression_prediction_key.txt.gz"
@@ -60,12 +66,17 @@ print("process models")
 model_genes = []
 print("en")
 model_genes.extend(read_genes(EN, EN_P, "v8_en"))
+print("en_np")
+model_genes.extend(read_genes(EN_NP, EN_NP_P, "v8_en_np"))
 print("en_dapgw")
 model_genes.extend(read_genes(EN_DAPGW, EN_DAPGW_P, "v8_en_dapgw"))
 print("mashr")
 model_genes.extend(read_genes(MASHR, MASHR_P, "v8_mashr"))
 print("ctimp")
 model_genes.extend(read_genes(CTIMP, CTIMP_P, "v8_ctimp"))
+print("ctimp_np")
+model_genes.extend(read_genes(CTIMP_NP, CTIMP_NP_P, "v8_ctimp_np"))
+print("all togetehr now")
 model_genes = pandas.concat(model_genes)
 model_genes["key"] = model_genes.gene_id.str.replace("\.(.*)", "")
 print("saving available models")

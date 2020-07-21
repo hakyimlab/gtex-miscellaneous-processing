@@ -35,7 +35,7 @@ arguments:
    }
 
   - !ArgumentFromMetadata
-    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "ctimp_\\(\\.\\*\\)_{tissue}",
+    {name: input_prefix, prefix: "-input_prefix", prepend: *MODEL_TRAINING_K, format_rule: "ctimp_\\(\\.\\*\\)_{tissue}_t",
     sources: [ {path: tissue/name, destination: tissue} ]}
 
   - !ArgumentFromMetadata

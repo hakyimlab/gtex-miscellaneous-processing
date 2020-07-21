@@ -1,0 +1,71 @@
+---
+definitions:
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/genomic_tools/genomic_tools/src/covariance_for_model_group.py"
+  template: covariance_for_model_group.jinja
+
+  copy_to_item: true
+
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "24:00:00"
+    logs_folder: logs_ldg
+    n_cpu: "1"
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_ldg
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    - &GROUP_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_id_mapping
+    - &PARQUET_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic
+    - &PARQUET_PATTERN '"gtex_v8_eur_itm.chr(\d+).variants.parquet"'
+    - &MODELS_EQTL /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/eqtl/mashr
+    - &MODELS_SQTL /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/sqtl/mashr
+    - &OUTPUT results/group_covariances
+
+  pre_command:
+  - '[ -d results/group_covariances ] || mkdir -p results/group_covariances'
+
+arguments:
+
+  - !Scalar { name: parquet_folder, prefix: "-parquet_genotype_folder", value: *PARQUET_FOLDER }
+  - !Scalar { name: parquet_pattern, prefix: "-parquet_genotype_pattern", value: *PARQUET_PATTERN }
+
+  - !Scalar { name: parsimony, prefix: "-parsimony", value: 8 }
+
+  - !FilesInFolder
+    name: group
+    prefix: "-group"
+    sort: true
+    folder: *GROUP_FOLDER
+    regexp_filter: "(.*).leafcutter.phenotype_groups.txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata {path: tissue/name} ]
+
+  - !ArgumentFromMetadata
+    name: model_db_group_key
+    prefix: "-model_db_group_key"
+    prepend: *MODELS_EQTL
+    format_rule: "mashr_{tissue}.db"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: model_db_group_value
+    prefix: "-model_db_group_value"
+    prepend: *MODELS_SQTL
+    format_rule: "mashr_{tissue}.db"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "-output"
+    prepend: *OUTPUT
+    format_rule: "mashr_{tissue}.txt.gz"
+    sources: [ {path: tissue/name, destination: tissue} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "mashr_{tissue}_covariance"
+    sources: [ {path: tissue/name, destination: tissue}]
+

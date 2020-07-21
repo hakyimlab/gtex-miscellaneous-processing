@@ -16,7 +16,7 @@ def _write(o, x):
 
 files = [x for x in sorted(os.listdir(F)) if r.search(x)]
 found = set()
-#from IPython import embed; embed(); exit()
+
 if len(sys.argv) == 2:
     files = [files[int(sys.argv[1])-1]]
     mod="_{}".format(r.search(files[0]).groups()[0])

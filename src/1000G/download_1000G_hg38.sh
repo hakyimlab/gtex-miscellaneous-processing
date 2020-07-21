@@ -12,6 +12,9 @@
 
 cd $PBS_O_WORKDIR
 
+#SOURCE:
+#https://www.internationalgenome.org/announcements/Variant-calls-from-1000-Genomes-Project-data-on-the-GRCh38-reference-assemlby/
+
 #I=1
 #for I in {1..22}
 #do

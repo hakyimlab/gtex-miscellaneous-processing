@@ -4,6 +4,7 @@ __author__ = "alvaro barbeira"
 import os
 import gzip
 
+# from http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/hapmapSnpsCEU.txt.gz
 SNP_LIST="/group/im-lab/nas40t2/abarbeira/data/hapmapSnpsCEU_f.list.gz"
 SNP_FREQUENCIES="/scratch/abarbeira3/test/gtex_v8_eur_shapeit2_phased_maf01_snps.txt.gz"
 ANNOTATION="/group/gtex-group/v8/60111/gtex/exchange/GTEx_phs000424/exchange/analysis_releases/GTEx_Analysis_2017-06-05_v8/genotypes/WGS/variant_calls/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz"

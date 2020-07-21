@@ -10,7 +10,6 @@ d = d[d.complete == False]
 for t in d.itertuples():
     #os.remove(t.log_path)
     stem = os.path.split(t.log_path)[1].split("_model_training")[0]
-    from IPython import embed; embed(); exit()
     print("removing logs")
     subprocess.call(["rm", os.path.join("logs","stem")+"*"])
 

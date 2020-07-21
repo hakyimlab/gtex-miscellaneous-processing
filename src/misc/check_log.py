@@ -22,12 +22,12 @@ def run(args):
         values = helpers.name_parse(job_name, subfield_regexp, subfield_positions) if subfield_regexp else None
         if not job_name in logs_by_name:
             log_path = None
-            present = False
+            ok = False
         else:
             log_path = os.path.join(args.logs_folder, logs_by_name[job_name])
-            present = helpers.check_present(log_path, args.finish_token)
+            ok = helpers.check_present(log_path, args.finish_token, args.error_token)
 
-        r = (job_name, job_paths[i], log_path, present)
+        r = (job_name, job_paths[i], log_path, ok)
         if values:
             r += tuple(values)
 
@@ -61,7 +61,8 @@ if __name__ == "__main__":
     parser.add_argument("-jobs_pattern", help="Job name pattern", default="(.*).sh")
     parser.add_argument("-logs_folder", help= "Path to results files")
     parser.add_argument("-logs_pattern", help="Log name pattern", default="(.*)\.e(\d+)\.cri(.*)\.err$")
-    parser.add_argument("-finish_token", help="what to look for in the file")
+    parser.add_argument("-finish_token", help="look for this pattern to deem a run complete")
+    parser.add_argument("--error_token", help="look for this pattern as an error to overrun status")
     parser.add_argument("-output", help="Path where the output will be saved", default="job_log.txt")
     parser.add_argument("-parsimony", help="Log verbosity level. 1 is everything being logged. 10 is only high level messages, above 10 will hardly log anything", default = 10, type=int)
     parser.add_argument("--check_product", help="name of product, and pattern to find it", nargs="+", action="append", default=[])

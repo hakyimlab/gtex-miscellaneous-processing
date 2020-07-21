@@ -1,0 +1,66 @@
+---
+definitions:
+  #command: /home/numa/Documents/Projects/nextgen/genomic_tools/genomic_tools/src/gwas_parsing.py
+  command: "python /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/M03_betas.py"
+
+  template: m_gwas_parsing.jinja
+  default_arguments:
+    job_memory: "32gb"
+    job_walltime: "8:00:00"
+    logs_folder: logs_gwas_parsing
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_gwas_parsing
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    gwas_white_list: &GWAS_WHITE_LIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
+
+    snp_reference_metadata: &SNP_REFERENCE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/vcf_process/gtex_v8_eur_filtered_maf0.01_monoallelic_variants.txt.gz
+
+    hg17_map: &HG17_MAP /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/coordinate_map/map_snp125_hg17.txt.gz
+    hg18_map: &HG18_MAP /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/coordinate_map/map_snp130_hg18.txt.gz
+    hg19_map: &HG19_MAP /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/coordinate_map/map_snp150_hg19.txt.gz
+
+
+    results_folder: &RESULTS_FOLDER results_gwas
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results_gwas ] || mkdir -p results_gwas'
+
+sub_configuration:
+  -
+    how: before_arguments
+    path: m_gwas_parameters.yaml
+
+arguments:
+  - !Scalar { name: misc, value: "--keep_non_rsid --throw" }
+
+  - !Whitelist
+    list_from_file:  *GWAS_WHITE_LIST
+    in_metadata_path: "gwas/tag"
+
+  - !ArgumentFromMetadata
+    name: snp_map_file
+    prefix: "--snp_map_file"
+    options: { hg17: *HG17_MAP, hg18: *HG18_MAP, hg19: *HG19_MAP }
+    sources: [ {path: gwas/map_from} ]
+
+#  - Scalar
+#    name: output_folder
+#    prefix: "--output_folder"
+#    value: *RESULTS_FOLDER
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "--output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "{study}.txt.gz"
+    sources: [ {path: gwas/tag, destination: study} ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "gwas_parsing_{study}"
+    sources: [ {path: gwas/tag, destination: study} ]

@@ -1,0 +1,109 @@
+---
+definitions:
+  #command: /home/numa/Documents/Projects/metaxcan/MetaXcan/software/SMulTiXcanByFeature.py
+  command: "python3 /gpfs/data/im-lab/nas40t2/abarbeira/software/MetaXcan/software/SMulTiXcanByFeature.py"
+
+  template: smultixcan_grouped.jinja
+  default_arguments:
+    job_memory: "8gb"
+    job_walltime: "4:00:00"
+    logs_folder: logs_smg
+    n_cpu: "1"
+    python_version: "3.5.3"
+
+  submission:
+    !PBSQueue
+      jobs_folder: jobs_smg
+      job_name_key: job_name
+      #fake_submission: true
+
+  constants:
+    - &CUTOFF_CONDITION_NUMBER "30"
+    - &GWAS_FOLDER /gpfs/data/im-lab/nas40t2/Data/SummaryResults/imputed_gwas_hg38_1.1
+    - &MODEL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/models_v1/sqtl/mashr
+    - &INTRON_ID_MAPPING_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/intron_id_mapping
+    - &SPREDIXCAN_SQTL_FOLDER /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/predixcan_family/spredixcan_v1/sqtl/sp_imputed_gwas_gtexv8_mashr_sqtl
+    - &RESULTS_FOLDER results/smg_imputed_gwas_gtexv8_mashr
+
+  #Kind of ugly kink... need to add support for configurable inline template to pick up from configuration, to avoid duplicating "results"
+  pre_command:
+  - '[ -d results/smg_imputed_gwas_gtexv8_mashr ] || mkdir -p results/smg_imputed_gwas_gtexv8_mashr'
+
+
+arguments:
+
+########################################################################################################################
+
+  - !Scalar { name: verbosity, prefix: "--verbosity", value: "10" }
+
+  - !Scalar { name: cutoff_condition_number, prefix: "--cutoff_condition_number", value: *CUTOFF_CONDITION_NUMBER,
+    metadata_rules: [ !SaveValueInMetadata { path: run/condition_number } ]
+   }
+
+########################################################################################################################
+
+  - !FilesInFolder
+    name: gwas_file
+    prefix: --gwas_file
+    sort: true
+    folder: *GWAS_FOLDER
+    regexp_filter: "imputed_(.*).txt.gz"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: gwas/tag } ]
+
+  - !Scalar {value: "--snp_column panel_variant_id --effect_allele_column effect_allele --non_effect_allele_column non_effect_allele --zscore_column zscore "}
+
+########################################################################################################################
+
+  - !FilesInFolder
+    name: model_db_path
+    prefix: --model_db_path
+    sort: true
+    folder: *MODEL_FOLDER
+    regexp_filter: "mashr_(.*).db"
+    metadata_rules: [ !ExtractFromFileNameRegexpMetadata { path: model/name } ]
+
+  - !Scalar {name: extra, value: "--keep_non_rsid --model_db_snp_key varID"}
+
+  - !ArgumentFromMetadata
+    name: covariance
+    prefix: --covariance
+    prepend: *MODEL_FOLDER
+    format_rule: "mashr_{model_name}.txt.gz"
+    sources: [ { path: model/name, destination: model_name} ]
+
+########################################################################################################################
+
+  - !ArgumentFromMetadata
+    name: grouping
+    prefix: --grouping
+    prepend: *INTRON_ID_MAPPING_FOLDER
+    format_rule: "{model_name}.leafcutter.phenotype_groups.txt.gz GTEx_sQTL"
+    sources: [ { path: model/name, destination: model_name} ]
+
+  - !ArgumentFromMetadata
+    name: associations
+    prefix: --associations
+    prepend: *SPREDIXCAN_SQTL_FOLDER
+    format_rule: "spredixcan_igwas_gtexmashrv8_{study}__PM__{model_name}.csv SPrediXcan"
+    sources: [ { path: gwas/tag, destination: study }, { path: model/name, destination: model_name} ]
+
+########################################################################################################################
+
+  - !ArgumentFromMetadata
+    name: output
+    prefix: "--output"
+    prepend: *RESULTS_FOLDER
+    format_rule: "smg_igwas_gtexmashrv8_ccn{ccn}_{study}__PM__{model}.txt"
+    sources: [
+      { path: gwas/tag, destination: study },
+      { path: model/name, destination: model },
+      { path: run/condition_number, destination: ccn}
+    ]
+
+  - !ArgumentFromMetadata
+    name: "job_name"
+    format_rule: "{study}__PM__{model}_smultixcan_grouped"
+    sources: [
+      { path: gwas/tag, destination: study },
+      { path: model/name, destination: model }
+    ]

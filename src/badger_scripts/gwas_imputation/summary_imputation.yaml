@@ -20,8 +20,8 @@ definitions:
   constants:
     sub_batches: &SUB_BATCHES 10
 
-    genotype_pattern: &GENOTYPE_PATTERN "/scratch/abarbeira3/v8_process/to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
-    genotype_metadata: &GENOTYPE_METADATA /scratch/abarbeira3/v8_process/to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
+    genotype_pattern: &GENOTYPE_PATTERN "/gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.chr{chromosome}.variants.parquet"
+    genotype_metadata: &GENOTYPE_METADATA /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data_formatting/model_training_to_parquet/results/parquet_eur_maf0.01_biallelic/gtex_v8_eur_itm.variants_metadata.parquet
 
     whitelist: &WHITELIST /gpfs/data/im-lab/nas40t2/abarbeira/projects/gtex_v8/data/master_whitelist.txt
 
